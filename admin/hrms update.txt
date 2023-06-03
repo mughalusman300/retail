@@ -1,0 +1,5 @@
+
+						*********** HRMS Updates **********
+
+* Leave type table added to view reason of employee leaving. employee/detail page.
+* target blank on download document. document/index page.
