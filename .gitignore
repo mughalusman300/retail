@@ -124,9 +124,13 @@ nb-configuration.xml
 /results/
 /phpunit*.xml
 /.phpunit.*.cache
+
+
 admin/system
-admin/Raw files
+admin/raw_assets
 admin/writable
+
+admin-old
  
 C:\Users\mugha\Downloads\test.sql
 
