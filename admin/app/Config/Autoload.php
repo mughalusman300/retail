@@ -61,7 +61,10 @@ class Autoload extends AutoloadConfig
      *
      * @var array<string, string>
      */
-    public $classmap = [];
+    public $classmap = [
+        'channelEngine' => APPPATH.'Engines/channelEngine.php',
+        'numSeq' => APPPATH.'Engines/numSeq.php'
+    ];
 
     /**
      * -------------------------------------------------------------------

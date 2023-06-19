@@ -2,6 +2,7 @@
 
 use App\Models\Commonmodel;
 use CodeIgniter\HTTP\IncomingRequest;
+use numSeq;
 
 
 class channelEngine
@@ -70,6 +71,7 @@ class channelEngine
                 );
         if ($v_arr["error_flag"]>0)
         {
+            $_SESSION['module']                     = "Shop";
             
             //----Required  
             $v_arr_data["email"]                    = $p_email;
@@ -81,7 +83,7 @@ class channelEngine
             $v_arr_data["country"]                  = $p_country;
             $v_arr_data["sologo"]                   = $p_sologo;
             $v_arr_data["name"]                     = $p_name;
-            $v_arr_data["code"]                     = $p_code;  
+            $v_arr_data["code"]                     = numSeq::num();  
             $v_arr_data["apply_tax"]                = 0; 
             $v_arr_data["tax_group"]                = 0;     
             $v_arr_data["currency_code"]            = "";
