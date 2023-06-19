@@ -253,22 +253,26 @@ class Commonmodel extends Model {
     return $query;
     }
     
-    public function Custom_query_wor($query){
-    return $this->db->query($query);
+    public function Custom_query_wor($query)
+    {
+        return $this->db->query($query);
     }
     
-    public function Sms_Refiner(){
-    $query="UPDATE `saimtech_send_sms` SET `sms_status`='E' where `sms_phone`='' or LENGTH(sms_phone)<>11";  
-    $this->db->query($query);
+    public function Get_first_record($tablename)
+    {
+        $query = $this->db->table()->get()->getResultArray();
+        return $query;
     }
     
-    public function Custom_query_array($query){
-    return $this->db->query($query)->getResultArray();
+    public function Custom_query_array($query)
+    {
+        return $this->db->query($query)->getResultArray();
     }
     
     
-    public function Custom_query_rows($query){
-    return $this->db->query($query)->getResult();
+    public function Custom_query_rows($query)
+    {
+        return $this->db->query($query)->getResult();
     }
     //======================================================================
     //START--------------Generic Function For Model-------------------------
