@@ -48,14 +48,14 @@ class numSeq
             $v_arr_data['shop_code']    = $v_code;
 
         }
-        else if ($p_module=="Order")
+        else if ($_SESSION['module']=="Order")
         {
             $v_prefix                   = order_prefix;
             $v_code                     = $v_query_result['order_code'] + 1;
             $v_arr_data['shop_code']    = $v_code;
             
         }
-        else if ($p_module=="Item")
+        else if ($_SESSION['module']=="Item")
         {
             $v_prefix                   = item_prefix;
             $v_code                     = $v_query_result['item_code'] + 1;
