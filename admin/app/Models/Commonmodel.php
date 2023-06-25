@@ -91,11 +91,10 @@ class Commonmodel extends Model {
     return $this->db->insertID();
     }
 
-    public function Get_all_record($tablename){
-    $query = $this->db->table($tablename)
-             ->get()
-             ->getResultArray();
-    return $query;
+    public function getAllRecords($tablename){
+    $query = $this->db->table($tablename)->get();
+    $result = ($query->getNumRows() > 0) ? $query->getResult() : FALSE;         
+    return $result;
     }
 
     public function Get_record_by_condition($tablename, $columnname, $conditionvalue){
