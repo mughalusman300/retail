@@ -8,7 +8,7 @@
 	
 	<h1 class="page-header d-flex justify-content-between">
 		Categories 
-		<button type="button" class="btn btn-primary me-2 add-category">Add Category</button>
+		<button type="button" class="btn btn-outline-theme me-2 add-category">Add Category</button>
 		<!-- Categories <small>page header description goes here...</small> -->
 	</h1>
 
@@ -30,20 +30,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php if ($categories):?>
-							<?php $i = 1 ;?>
-							<?php foreach ($categories as $row):?>
-								<tr>
-									<td><?= $i ?></td>
-									<td><?= $row->title ?></td>
-									<td><?= $row->code ?></td>
-									<td><?= $row->desc ?></td>
-									<td>Active</td>
-									<td><button type="button" class="btn btn-primary mb-1">Edit</button></td>
-								</tr>
-								<?php $i++ ;?>
-							<?php endforeach; ?>
-						<?php endif; ?>
+				
 					</tbody>
 				</table>
 			</div>

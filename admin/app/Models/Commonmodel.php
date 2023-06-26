@@ -30,21 +30,21 @@ class Commonmodel extends Model {
     }
 
     public function Duplicate_check($condition_cols, $tablename, $not_in_cols = ''){
-        $this->db->table($tablename);
+        $builder = $this->db->table($tablename);
 
        if (is_array($condition_cols)) {
            foreach ($condition_cols as $key => $val) {
-               $this->db->where($key, $val);
+               $builder->where($key, $val);
            }
        }
 
        if ($not_in_cols != '' && is_array($not_in_cols)) {
            foreach ($not_in_cols as $key => $val) {
-               $this->db->whereNotIn($key, $val);
+               $builder->whereNotIn($key, array($val));
            }
        }
 
-        $rows = $this->db->get()->getNumRows(); 
+        $rows = $builder->get()->getNumRows(); 
         return  $rows;
           
     }
@@ -76,17 +76,17 @@ class Commonmodel extends Model {
     public function update_record($data, $col, $tablename){ //updated function
 
         if (!empty($data)) {
-            $this->db->table($tablename);
+            $builder = $this->db->table($tablename);
 
             if (is_array($col)) {
                 foreach ($col as $key => $val) {
-                    $this->db->where($key, $val);
+                    $builder->where($key, $val);
                 }
             } else {
-                $this->db->where($col, $data[$col]);
+                $builder->where($col, $data[$col]);
             }
 
-            $update = $this->db->update($data); 
+            $update = $builder->update($data); 
             return $update ? true : false;
         } 
 

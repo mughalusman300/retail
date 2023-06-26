@@ -5,34 +5,37 @@ class Categorymodel extends Model {
 
     public function __construct() { 
         parent::__construct(); 
-        $this->db      = \Config\Database::connect();  
+        $this->db = \Config\Database::connect();  
     }
 
     public function all_categories_count(){  
-        $query = $this->db->get('saimtech_category');
-        return $query->num_rows();  
+        $builder = $this->db->table('saimtech_category');
+        $query = $builder->get(); 
+        return $query->getNumRows();  
     }
 
-    public function all_categories($limit,$start){   
+    public function all_categories($limit,$start){  
+        $builder = $this->db->table('saimtech_category'); 
         if ($limit == -1){
             $limit = 12546464646464646;
         }
-        $this->db->limit($limit,$start);
+        $builder->limit($limit,$start);
         // $this->db->order_by('category_id',"asc");
-        $query = $this->db->get('saimtech_category');  
-        $result = ($query->num_rows() > 0) ? $query->result() : FALSE;
+        $query = $builder->get();  
+        $result = ($query->getNumRows() > 0) ? $query->getResult() : FALSE;
         return $result; 
         
     }
 
     public function categories_search_count($search){
-        $this->db->like('title', $search);
-        $this->db->or_like('code', $search);
-        $this->db->or_like('category_title', $desc);
+        $builder = $this->db->table('saimtech_category');
+        $builder->like('title', $search);
+        $builder->orLike('code', $search);
+        $builder->orLike('desc', $search);
 
-       $query = $this->db->get('saimtech_category');
+       $query = $builder->get();
     
-        return $query->num_rows();
+        return $query->getNumRows();
     }
 
     public function categories_search($limit,$start,$search){
@@ -40,15 +43,16 @@ class Categorymodel extends Model {
             $limit = 12546464646464646;
         }
 
-        $this->db->like('title', $search);
-        $this->db->or_like('code', $search);
-        $this->db->or_like('category_title', $desc);
+        $builder = $this->db->table('saimtech_category');
+        $builder->like('title', $search);
+        $builder->orLike('code', $search);
+        $builder->orLike('desc', $search);
 
-        $this->db->limit($limit,$start)
-        // $this->db->order_by('category_id',"asc")
-       $query = $this->db->get('saimtech_category');
+        $builder->limit($limit,$start);
+        // $builder->order_by('category_id',"asc")
+       $query = $builder->get();
     
-        $result = ($query->num_rows() > 0) ? $query->result() : FALSE;
+        $result = ($query->getNumRows() > 0) ? $query->getResult() : FALSE;
         return $result; 
     }
 

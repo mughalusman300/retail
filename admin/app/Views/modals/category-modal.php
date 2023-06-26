@@ -7,34 +7,27 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 					</div>
 					<div class="modal-body">
-						<div class="col-md-6 mb-3">
-							<input type="text" class="category_id">
-							
-							<label for="title" class="form-label">Title</label>
-							<input type="text" class="form-control is-invalid validate-input title" id="title" value="" required="">
-							<div class="invalid-feedback" id="validationInvalidInputFeedback">
-								Please provide a title
+						<div class="row">
+							<div class="col-md-6">
+								<input type="hidden" class="category_id">
+								
+								<label for="title" class="form-label">Title</label> <span class="color-red">*</span>
+								<input type="text" class="form-control validate-input cat_title" placeholder="Title" id="cat_title" value="" required="">
 							</div>
-						</div>
 
-						<div class="col-md-6 mb-3">
-							<label for="code" class="form-label">Code</label>
-							<input type="text" class="form-control is-invalid validate-input code" id="code" value="" required="">
-							<div class="invalid-feedback" id="validationInvalidInputFeedback">
-								Please provide a code
+							<div class="col-md-6">
+								<label for="code" class="form-label">Code</label> <span class="color-red">*</span>
+								<input type="text" class="form-control validate-input code uppercase" placeholder="Code" id="code" value="" required="">
 							</div>
-						</div>
 
-						<div class="col-md-6 mb-3">
-							<label for="desc" class="form-label">Description</label>
-							<input type="text" class="form-control is-invalid validate-input desc" id="desc" value="" required="">
-							<div class="invalid-feedback" id="validationInvalidInputFeedback">
-								Please provide a description
+							<div class="col-md-12 mb-3">
+								<label for="desc" class="form-label">Description</label>
+								<textarea type="textarea" class="form-control desc"  placeholder="Description" id="desc" rows="5" value=""required></textarea>
 							</div>
-						</div>
 
-						<div class="col-md-12">
-							<button type="button" class="btn btn-primary mb-1" data-type="add">Save</button>
+							<div class="col-md-12 text-end">
+								<button type="button" class="btn btn-primary mb-1 save" data-type="add">Save</button>
+							</div>
 						</div>
 
 					</div>

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Commonmodel;
+use App\Models\Categorymodel;
 use CodeIgniter\API\ResponseTrait;
 
 class Category extends BaseController
@@ -20,6 +21,7 @@ class Category extends BaseController
         // $data['category'] ="nav-active";
 
         $categories = $this->Commonmodel->getAllRecords('saimtech_category');
+        $data['categories'] = $categories;
         $data['main_content'] = 'category/category';
         return view('layouts/page',$data);;
     }
@@ -43,21 +45,13 @@ class Category extends BaseController
             $totalFiltered = $this->Categorymodel->categories_search_count($search);
 
         }
-
+        // echo '<pre>'; print_r($categories); die;
         $data = array();
         if (!empty($categories)) {
 
             $i = 1;
             foreach ($categories as $row) {
-
-                $btn_text = ($is_active) ? 'Deactive' : 'Active';
-                $action = '<button class="btn btn-primary change-status" 
-                    data-category_id="'.$row->category_id.'"
-                    data-is_active="'.$row->is_active.'"
-                    >'.$btn_text.'</button>
-                ';
-
-                $action .= '<button class="btn btn-primary edit-category"
+                $action = '<button class="btn btn-outline-theme edit-category"
                     data-category_id="'.$row->category_id.'"
                     data-title="'.$row->title.'"
                     data-code="'.$row->code.'" 
@@ -70,12 +64,18 @@ class Category extends BaseController
                 $nestedData['code'] = $row->code;
                 $nestedData['desc'] = $row->desc;
 
-                $status = ($is_active) ? 'Active' : 'Deactive';
+                $status = ($row->is_active) ? 'Active' : 'Deactive';
+                $checked = ($row->is_active) ? 'checked' : '';
+                $status = '<div class="form-check form-switch">
+                            <input type="checkbox" data-category_id="'.$row->category_id.'" class="form-check-input" id="is_active" '. $checked .'>
+                            <label class="form-check-label" for="customSwitch2">'. $status. '</label>
+                        </div>'  ;                          
                 $nestedData['status'] = $status;
                 $nestedData['Action'] = $action;
 
                 $data[] = $nestedData;
 
+                $i++;
             }
 
         }
@@ -93,7 +93,7 @@ class Category extends BaseController
     public function add(){
         $result = array('success' =>  false);
 
-        $type = $this->request->getVar('category_id');
+        $type = $this->request->getVar('type');
         $title = $this->request->getVar('title');
         $code = $this->request->getVar('code');
         $desc = $this->request->getVar('desc');
@@ -103,19 +103,20 @@ class Category extends BaseController
             'code' => $code,
             'desc' => $desc,
         );
+
         if ($type == 'add') {
-            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), $tablename);
-            
+            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), 'saimtech_category');
+
             if (!$code_exist) {
                 $this->Commonmodel->insert_record($data, 'saimtech_category');
                 $result = array('success' =>  true);
             } else {
-                $msg = 'This Category code '. $code . 'already exist. Please try diffrent code';
+                $msg = 'This Category code '. $code . ' already exist. Please try diffrent code';
                 $result = array('success' =>  false, 'msg' => $msg);
             }
         } else {
-
-            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), $tablename, array('category_id' => $category_id));
+            $category_id = $this->request->getVar('category_id');
+            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), 'saimtech_category', array('category_id' => $category_id));
 
             if (!$code_exist) {
                 $category_id = $this->request->getVar('category_id');
@@ -127,6 +128,20 @@ class Category extends BaseController
             }
         }
 
-        $this->output->set_content_type('application/json')->set_output(json_encode($result));
+        // echo json_encode($result);
+        // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+        return $this->response->setJSON($result);
+    }
+
+    public function statusUpdate(){
+        $category_id = $this->request->getVar('category_id');
+        $is_active = $this->request->getVar('is_active');
+
+        $data = array('is_active' => $is_active);
+        $this->Commonmodel->update_record($data, array('category_id' => $category_id), 'saimtech_category');
+        $msg = ($is_active) ? 'Category activated successfully!' : 'Category deactivated successfully!'; 
+        $result = array('success' =>  true, 'msg' => $msg);
+
+        return $this->response->setJSON($result);
     }
 }

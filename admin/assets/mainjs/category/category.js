@@ -1,7 +1,7 @@
 $(document).ready(function(){
-	categorylist();
+	categoryListNew();
 
-	function categorylist(){
+	function categorylistOLD(){
 		$('#category').DataTable({
 			dom: "<'row mb-3'<'col-md-4 mb-3 mb-md-0'l><'col-md-8 text-right'<'d-flex justify-content-end'f<'ms-2'B>>>>t<'row align-items-center'<'mr-auto col-md-6 mb-3 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
 			lengthMenu: [ 10, 20, 30, 40, 50 ],
@@ -15,37 +15,43 @@ $(document).ready(function(){
 
 	checkValidation('.category-modal');
 
+	var table = $('#category').DataTable({
+		responsive: true,
+		// buttons: [
+		// 	{ extend: 'print', className: 'btn btn-default btn-sm' },
+		// 	{ extend: 'csv', className: 'btn btn-default btn-sm' }
+		// ],
+    	"serverSide": true,
+		//"stateSave": true,
+		"paging": true,
+    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    	"order": [[ 0, "desc" ]],
+		// "dom": "<'row mb-3'<'col-md-4 mb-3 mb-md-0'l><'col-md-8 text-right'<'d-flex justify-content-end'f<'ms-2'B>>>>t<'row align-items-center'<'mr-auto col-md-6 mb-3 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+		"pageLength": 25,	
+		"ordering"   :false,
+        "processing": true,
+        "ajax":{
+	     	"url": base +"/category/categoryList",
+	     	"dataType": "json",
+	     	"type": "POST",
+	    },
+    	"columns": [
+	        { "data": "sr" },
+	        { "data": "title" },
+	        { "data": "code" },
+	        { "data": "desc" },
+	        { "data": "status" },
+	        { "data": "Action" },
+	    ],
+    	"columnDefs": [
+        	{ targets: 0, width: '150px' },
+        	{ targets: 1, width: '200px' },
+        	{ targets: 0, width: '200px' },
+        	{ targets: 3, width: '200px' },
+        	{ targets: 4, width: '200px' },
+        ]
+    });
 	function categoryListNew(){
-		var table = $('#category').DataTable({
-			responsive: true,
-			buttons: [
-				{ extend: 'print', className: 'btn btn-default btn-sm' },
-				{ extend: 'csv', className: 'btn btn-default btn-sm' }
-			],
-	    	"serverSide": true,
-			//"stateSave": true,
-			"paging": true,
-	    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-	    	"order": [[ 0, "desc" ]],
-			"dom": "<'row mb-3'<'col-md-4 mb-3 mb-md-0'l><'col-md-8 text-right'<'d-flex justify-content-end'f<'ms-2'B>>>>t<'row align-items-center'<'mr-auto col-md-6 mb-3 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-			"pageLength": 25,	
-			"ordering"   :false,
-	        "processing": true,
-	        "ajax":{
-		     	"url": base +"Category/categoryList",
-		     	"dataType": "json",
-		     	"type": "POST",
-		    },
-	    	"columns": [
-		        { "data": "sr" },
-		        { "data": "title" },
-		        { "data": "code" },
-		        { "data": "desc" },
-		        { "data": "status" },
-		        { "data": "Action" },
-		    ]	 
-
-	    });
 	}
 
 	$(document).on('click', '.add-category', function(){
@@ -55,23 +61,23 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '.edit-category', function(){
+		$('.category-modal').find('.modal-title').text('Update Category');
 		$('.category-modal').modal('show');
 		$('.save').data('type', 'update');
 		$('.save').text('Update');
 
 		$('.category_id').val($(this).data('category_id'));
-		$('.title').val($(this).data('title'));
+		$('.cat_title').val($(this).data('title'));
 		$('.code').val($(this).data('code'));
 		$('.desc').val($(this).data('desc'));
 	});
 
 	$(document).on('click', '.save', function(){
-		var model = $(".category-modal");
-		var validate = checkValidation(model);
+		var validate = checkValidation('.category-modal');
 		if (validate) {
 			var type = $(this).data('type');
 			var category_id = $('.category_id').val();
-			var title = $('.title').val();
+			var title = $('.cat_title').val();
 			var code = $('.code').val();
 			var desc = $('.desc').val();
 
@@ -86,16 +92,16 @@ $(document).ready(function(){
 			}
 
 			$.ajax({
-				url: base + "category/add",
+				url: base + "/category/add",
 				type: "POST",
 				data: mydata,        
 				success: function(data) {
 				    if (data.success) {
-					    new PNotify({title: notify_title, text: notify_text,type: 'success'});
-					    table.ajax.reload();
 					    $(".category-modal").modal('hide');	
+					    Swal.fire(notify_title, notify_text, 'success');
+					    table.ajax.reload();
 					} else {
-						new PNotify({title: '', text: data.msg, type: 'error'});
+						Swal.fire('', data.msg, 'error');
 						$('.code').addClass('is-invalid');
 					}
 				}
@@ -105,10 +111,32 @@ $(document).ready(function(){
 	});
 
 	$('.category-modal').on('hidden.bs.modal', function (e) {
+		$('.category-modal').find('.modal-title').text('Add Category');
 	    $('.category_id').val('');
-	    $('.title').val('');
+	    $('.cat_title').val('');
 	    $('.code').val('');
 	    $('.desc').val('');
+	});
+
+	$(document).on('click', '#is_active', function(){
+		var category_id = $(this).data('category_id');
+		if ($(this).is(":checked")) {
+			var is_active = 1;
+		} else {
+			var is_active = 0;
+		}
+
+		var mydata = {category_id: category_id, is_active: is_active};
+		$.ajax({
+			url: base + "/category/statusUpdate",
+			type: "POST",
+			data: mydata,        
+			success: function(data) {
+			    if (data.success) {
+				    Swal.fire('', data.msg, 'success');
+				}
+			}
+		});	
 	});
 
 });

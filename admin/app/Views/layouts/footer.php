@@ -62,6 +62,8 @@
     <script src="<?= URL ?>/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
     <script src="<?= URL ?>/assets/plugins/bootstrap-table/dist/bootstrap-table.min.js"></script>
 
+    <script src="<?= URL ?>/assets/plugins/sweetalert2/dist/sweetalert2.js"></script>
+
     <script src="<?= URL ?>/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
     <script src="<?= URL ?>/assets/js/demo/highlightjs.demo.js"></script>
     <!-- ================== END page-js ================== -->

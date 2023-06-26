@@ -124,7 +124,30 @@ $(document).on('select2:open','select', function() {
      $(this).siblings(".select2-container").find("span .select2-selection").css('border-color','#ccc');
 });
 
+//Capitlaize first letter
+$(document).on("change", ".uppercaseeach", function (e) {
+    var value = $(this).val();
+    if(value!=""){
+        const finalSentence = value.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+        $(this).val(finalSentence);
+    }
+});
+// Uppercase All letters
+$(document).on("change", ".uppercase", function (e) {
+    var value = $(this).val();
+    if(value!=""){
+        $(this).val(value.toUpperCase());
+    }
+});
+
+$(function () {
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+});
+
 function checkValidation(el) {
+    console.log('in');
     var check = true;
     var fields = $(el).find('.validate-input');
     for (var i = 0; i < fields.length; i++) {
