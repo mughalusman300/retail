@@ -73,7 +73,7 @@ class Commonmodel extends Model {
     }
 
 
-    public function Update($data, $col, $tablename){ //updated function
+    public function update_record($data, $col, $tablename){ //updated function
 
         if (!empty($data)) {
             $this->db->table($tablename);
@@ -111,7 +111,7 @@ class Commonmodel extends Model {
         return $this->db->affectedRows();      
     }
 
-    public function Insert($data, $tablename){ //function name change from Insert_record
+    public function insert_record($data, $tablename){ //function name change from Insert_record
         $this->db->table($tablename)->insert($data);  
         return $this->db->insertID();
     }

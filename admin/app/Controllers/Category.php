@@ -107,7 +107,7 @@ class Category extends BaseController
             $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), $tablename);
             
             if (!$code_exist) {
-                $this->Commonmodel->Insert($data, 'saimtech_category');
+                $this->Commonmodel->insert_record($data, 'saimtech_category');
                 $result = array('success' =>  true);
             } else {
                 $msg = 'This Category code '. $code . 'already exist. Please try diffrent code';
@@ -119,7 +119,7 @@ class Category extends BaseController
 
             if (!$code_exist) {
                 $category_id = $this->request->getVar('category_id');
-                $this->Commonmodel->Update($data,array('category_id' => $category_id), 'saimtech_category');
+                $this->Commonmodel->update_record($data,array('category_id' => $category_id), 'saimtech_category');
                 $result = array('success' =>  true);
             } else {
                 $msg = 'This Category code '. $code . 'already exist. Please try diffrent code';
