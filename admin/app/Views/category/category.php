@@ -8,7 +8,7 @@
 	
 	<h1 class="page-header d-flex justify-content-between">
 		Categories 
-		<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalLg">Add Category</button>
+		<button type="button" class="btn btn-primary me-2 add-category">Add Category</button>
 		<!-- Categories <small>page header description goes here...</small> -->
 	</h1>
 

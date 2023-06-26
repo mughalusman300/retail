@@ -29,11 +29,23 @@ class Commonmodel extends Model {
     $this->db->table($tablename)->delete(); 
     }
 
-    public function Duplicate_check($tablename, $columnname, $conditionvalue){
-    $query = $this->db->table($tablename)
-             ->where($columnname, $conditionvalue)
-             ->get()->getNumRows();
-             return  $query;
+    public function Duplicate_check($condition_cols, $tablename, $not_in_cols = ''){
+        $this->db->table($tablename);
+
+       if (is_array($condition_cols)) {
+           foreach ($condition_cols as $key => $val) {
+               $this->db->where($key, $val);
+           }
+       }
+
+       if ($not_in_cols != '' && is_array($not_in_cols)) {
+           foreach ($not_in_cols as $key => $val) {
+               $this->db->whereNotIn($key, $val);
+           }
+       }
+
+        $rows = $this->db->get()->getNumRows(); 
+        return  $rows;
           
     }
 
@@ -61,11 +73,24 @@ class Commonmodel extends Model {
     }
 
 
-    public function Update_record($tablename, $columnname, $conditionvalue, $data){
-    $query = $this->db->table($tablename)
-             ->where($columnname, $conditionvalue)
-             ->update($data); 
-    return $query;     
+    public function Update($data, $col, $tablename){ //updated function
+
+        if (!empty($data)) {
+            $this->db->table($tablename);
+
+            if (is_array($col)) {
+                foreach ($col as $key => $val) {
+                    $this->db->where($key, $val);
+                }
+            } else {
+                $this->db->where($col, $data[$col]);
+            }
+
+            $update = $this->db->update($data); 
+            return $update ? true : false;
+        } 
+
+        return false;  
     }
 
     public function Update_double_record($tablename, $columnname, $conditionvalue, $columnname1, $conditionvalue1, $data){
@@ -78,17 +103,17 @@ class Commonmodel extends Model {
     
     
     public function Update_triple_record($tablename, $columnname, $conditionvalue, $columnname1, $conditionvalue1, $columnname2, $conditionvalue2, $data){
-    $this->db->table($tablename)
-             ->where($columnname, $conditionvalue)
-             ->where($columnname1, $conditionvalue1)
-             ->where($columnname2, $conditionvalue2)
-             ->update($data); 
-    return $this->db->affectedRows();      
+        $this->db->table($tablename)
+                 ->where($columnname, $conditionvalue)
+                 ->where($columnname1, $conditionvalue1)
+                 ->where($columnname2, $conditionvalue2)
+                 ->update($data); 
+        return $this->db->affectedRows();      
     }
 
-    public function Insert_record($tablename, $data){
-    $this->db->table($tablename)->insert($data);  
-    return $this->db->insertID();
+    public function Insert($data, $tablename){ //function name change from Insert_record
+        $this->db->table($tablename)->insert($data);  
+        return $this->db->insertID();
     }
 
     public function getAllRecords($tablename){
