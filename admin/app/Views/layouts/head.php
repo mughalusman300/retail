@@ -15,3 +15,7 @@
 <link href="<?= URL ?>/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet">
 <!-- <link href="<?= URL ?>/assets/plugins/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet"> -->
 <!-- ================== END page-css ================== -->
+
+<script type="text/javascript">
+	var base = '<?= AJAXURL  ?>';
+</script>

@@ -38,7 +38,7 @@
 									<td><?= $row->title ?></td>
 									<td><?= $row->code ?></td>
 									<td><?= $row->desc ?></td>
-									<td><button type="button" class="btn btn-success mb-1">Active</button></td>
+									<td>Active</td>
 									<td><button type="button" class="btn btn-primary mb-1">Edit</button></td>
 								</tr>
 								<?php $i++ ;?>
