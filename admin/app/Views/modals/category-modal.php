@@ -26,7 +26,7 @@
 							</div>
 
 							<div class="col-md-12 text-end">
-								<button type="button" class="btn btn-primary mb-1 save" data-type="add">Save</button>
+								<button type="button" class="btn btn-theme mb-1 save" data-type="add">Save</button>
 							</div>
 						</div>
 

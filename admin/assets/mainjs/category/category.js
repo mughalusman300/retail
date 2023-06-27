@@ -122,8 +122,10 @@ $(document).ready(function(){
 		var category_id = $(this).data('category_id');
 		if ($(this).is(":checked")) {
 			var is_active = 1;
+			$(this).closest('.form-switch').find('label').text('Active');
 		} else {
 			var is_active = 0;
+			$(this).closest('.form-switch').find('label').text('Deactive');
 		}
 
 		var mydata = {category_id: category_id, is_active: is_active};
