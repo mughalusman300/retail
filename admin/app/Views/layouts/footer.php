@@ -69,6 +69,6 @@
     <!-- ================== END page-js ================== -->
     <script src="<?= URL ?>/assets/mainjs/validation.js"></script>
 
-    <?php if (in_array($main_content, array('category/category'))) { ?>
+    <?php if (in_array($main_content, array('category/category')) || in_array($main_content, array('product/product'))) { ?>
         <script type="text/javascript" src="<?=URL?>/assets/mainjs/<?= $main_content?>.js<?= version ?>"></script>
     <?php } ?>

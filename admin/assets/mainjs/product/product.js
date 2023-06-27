@@ -1,7 +1,9 @@
 $(document).ready(function(){
-	categoryList();
-	
-	var table = $('#category').DataTable({
+	productList();
+
+	checkValidation('.category-modal');
+
+	var table = $('#product').DataTable({
 		responsive: true,
 		// buttons: [
 		// 	{ extend: 'print', className: 'btn btn-default btn-sm' },
@@ -17,7 +19,7 @@ $(document).ready(function(){
 		"ordering"   :false,
         "processing": true,
         "ajax":{
-	     	"url": base +"/category/categoryList",
+	     	"url": base +"/category/productList",
 	     	"dataType": "json",
 	     	"type": "POST",
 	    },
@@ -25,6 +27,7 @@ $(document).ready(function(){
 	        { "data": "sr" },
 	        { "data": "title" },
 	        { "data": "code" },
+	        { "data": "category" },
 	        { "data": "desc" },
 	        { "data": "status" },
 	        { "data": "Action" },
@@ -32,12 +35,14 @@ $(document).ready(function(){
     	"columnDefs": [
         	{ targets: 0, width: '150px' },
         	{ targets: 1, width: '200px' },
-        	{ targets: 0, width: '200px' },
+        	{ targets: 2, width: '200px' },
         	{ targets: 3, width: '200px' },
         	{ targets: 4, width: '200px' },
+        	{ targets: 5, width: '200px' },
+        	{ targets: 6, width: '200px' },
         ]
     });
-	function categoryList(){
+	function productList(){
 	}
 
 	$(document).on('click', '.add-category', function(){

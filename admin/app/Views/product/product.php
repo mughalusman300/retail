@@ -7,8 +7,8 @@
 	</ul>
 	
 	<h1 class="page-header d-flex justify-content-between">
-		Categories 
-		<button type="button" class="btn btn-outline-theme me-2 add-category">Add Category</button>
+		Products 
+		<button type="button" class="btn btn-outline-theme me-2 add-product">Add Product</button>
 		<!-- Categories <small>page header description goes here...</small> -->
 	</h1>
 
@@ -18,12 +18,13 @@
 		<!-- <h4>Categories</h4> -->
 		<div class="card">
 			<div class="card-body">
-				<table id="category" class="table text-nowrap w-100">
+				<table id="product" class="table text-nowrap w-100">
 					<thead>
 						<tr>
 							<th>#</th>
 							<th>Title</th>
 							<th>Code</th>
+							<th>Category</th>
 							<th>Description</th>
 							<th>Status</th>
 							<th>Action</th>
@@ -42,4 +43,4 @@
 	<!-- END #datatable -->
 </div>
 <!-- END #content -->
-<?php include(APPPATH . 'views/modals/category-modal.php') ?>
+<!-- <?php include(APPPATH . 'views/modals/category-modal.php') ?> -->
