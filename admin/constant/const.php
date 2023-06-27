@@ -2,7 +2,7 @@
 define('URL','http://localhost/retail/admin');
 define("AAURL","http://localhost/");
 define('SERVER','localhost');
-define('DBNAME','retail');
+define('DBNAME','test');
 define('DBUSER','root');
 define('DBPASS','');
 define('AJAXURL', 'http://localhost/retail/admin');

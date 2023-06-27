@@ -129,6 +129,7 @@ nb-configuration.xml
 admin/system
 admin/raw_assets
 admin/writable
+admin/constant
 
 admin-old
  

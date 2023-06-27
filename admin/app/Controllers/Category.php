@@ -15,7 +15,6 @@ class Category extends BaseController
 	    $session = \Config\Services::session();
     }
     public function index(){
-
         $data['title'] = 'Category List';
         // $data['inventory'] ="nav-expanded nav-active";
         // $data['category'] ="nav-active";
