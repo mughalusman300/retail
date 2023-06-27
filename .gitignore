@@ -103,7 +103,7 @@ _modules/*
 nbproject/
 build/
 nbbuild/
-dist/
+# dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
@@ -132,7 +132,6 @@ admin/writable
 
 admin-old
  
-C:\Users\mugha\Downloads\test.sql
 
 
 
