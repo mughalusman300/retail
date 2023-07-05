@@ -22,7 +22,7 @@ class Category extends BaseController
         $categories = $this->Commonmodel->getAllRecords('saimtech_category');
         $data['categories'] = $categories;
         $data['main_content'] = 'category/category';
-        return view('layouts/page',$data);;
+        return view('layouts/page',$data);
     }
 
     public function categoryList(){

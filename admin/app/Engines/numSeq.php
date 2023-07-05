@@ -52,18 +52,18 @@ class numSeq
         {
             $v_prefix                   = order_prefix;
             $v_code                     = $v_query_result['order_code'] + 1;
-            $v_arr_data['order_code']         = $v_code;
+            $v_arr_data['order_code']   = $v_code;
             
         }
         else if ($p_module=="Item")
         {
             $v_prefix                   = item_prefix;
             $v_code                     = $v_query_result['item_code'] + 1;
-            $v_arr_data['item_code']         = $v_code;
+            $v_arr_data['item_code']    = $v_code;
         } 
         
         
-        $Commonmodel->Update_record($v_tablename, $v_columnname, $v_conditionvalue, $v_arr_data);
+        $Commonmodel->Update_single_record($v_tablename, $v_columnname, $v_conditionvalue, $v_arr_data);
         
 
         return self::getCode($v_prefix,$v_code);         
