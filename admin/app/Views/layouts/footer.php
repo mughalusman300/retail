@@ -49,4 +49,26 @@
     <!-- ================== BEGIN page-js ================== -->
     <script src="<?= URL ?>/assets/plugins/apexcharts/dist/apexcharts.min.js"></script>
     <script src="<?= URL ?>/assets/js/demo/dashboard.demo.js"></script>
+
+    <script src="<?= URL ?>/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/bootstrap-table/dist/bootstrap-table.min.js"></script>
+
+    <script src="<?= URL ?>/assets/plugins/sweetalert2/dist/sweetalert2.js"></script>
+
+    <script src="<?= URL ?>/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
+    <script src="<?= URL ?>/assets/js/demo/highlightjs.demo.js"></script>
     <!-- ================== END page-js ================== -->
+    <script src="<?= URL ?>/assets/mainjs/validation.js"></script>
+
+    <?php if (in_array($main_content, array('category/category')) || in_array($main_content, array('product/product'))) { ?>
+        <script type="text/javascript" src="<?=URL?>/assets/mainjs/<?= $main_content?>.js<?= version ?>"></script>
+    <?php } ?>

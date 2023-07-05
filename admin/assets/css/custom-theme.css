@@ -1,0 +1,11 @@
+
+input {
+	cursor: pointer;
+}
+.color-red {
+	color: red;
+}
+
+tr.child li {
+	display: flex;
+}
