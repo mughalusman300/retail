@@ -1,15 +1,12 @@
 <?php
 
+
 use App\Models\Commonmodel;
 use CodeIgniter\HTTP\IncomingRequest;
 
 
-class numSeq
+class numSeq 
 {
-    function __construct() 
-    {
-        $this->Commonmodel = new Commonmodel();            
-    }
     
     /**
      * --------------------------------------------------------------------------
@@ -29,7 +26,9 @@ class numSeq
      */
     public static function num() 
     {
-        $v_tablename            = "saimtech_numSeq";
+        $Commonmodel = new Commonmodel();   
+
+        $v_tablename            = "saimtech_numseq";
         $v_columnname           = "recid";
         $v_conditionvalue       = 1;
         $v_arr_data             = array();
@@ -38,63 +37,66 @@ class numSeq
         $v_code                 = "";
         ;
 
-        $v_query_result         = $this->Commonmodel->Get_first_record($v_tablename);
+        $v_query_result         = $Commonmodel->Get_first_record($v_tablename);
 
+        
         if ($_SESSION['module']=="Shop")
         {
 
             $v_prefix                   = shop_prefix;
-            $v_code                     = $v_query_result['shop_code'] + 1;
-            $v_arr_data['shop_code']    = $v_code;
+            $v_code                     = $v_query_result[0]['shop_code'] + 1;
+            $v_arr_data['shop_code']         = $v_code;
 
         }
         else if ($p_module=="Order")
         {
             $v_prefix                   = order_prefix;
             $v_code                     = $v_query_result['order_code'] + 1;
-            $v_arr_data['shop_code']    = $v_code;
+            $v_arr_data['order_code']         = $v_code;
             
         }
         else if ($p_module=="Item")
         {
             $v_prefix                   = item_prefix;
             $v_code                     = $v_query_result['item_code'] + 1;
-            $v_arr_data['shop_code']    = $v_code;
+            $v_arr_data['item_code']         = $v_code;
         } 
-
-        $this->Commonmodel->Update_record($v_tablename, $v_columnname, $v_conditionvalue, $v_arr_data);
         
-        return $this->getCode($v_prefix,$v_code);         
+        
+        $Commonmodel->Update_record($v_tablename, $v_columnname, $v_conditionvalue, $v_arr_data);
+        
+
+        return self::getCode($v_prefix,$v_code);         
     }
     
-    private function getCode($p_prefix,$p_code){
+    public function getCode($p_prefix,$p_code){
         
         $precode="";
 
 
-        if(strlen($code)==1)
+        if(strlen($p_code)==1)
         { 
-            $precode=$prefix."00000".$code;
+            $precode=$p_prefix."00000".$p_code;
         } 
-        else if(strlen($code)==2)
+        else if(strlen($p_code)==2)
         { 
-            $precode=$prefix."0000".$code;
+            $precode=$p_prefix."0000".$p_code;
         } 
-        else if(strlen($code)==3)
+        else if(strlen($p_code)==3)
         { 
-            $precode=$prefix."000".$code;
+            $precode=$p_prefix."000".$p_code;
         } 
-        else if(strlen($code)==4)
+        else if(strlen($p_code)==4)
         { 
-            $precode=$prefix."00".$code;
+            $precode=$p_prefix."00".$p_code;
         } 
-        else if(strlen($code)==5)
+        else if(strlen($p_code)==5)
         { 
-            $precode=$prefix."0".$code;
+            $precode=$p_prefix."0".$p_code;
         }
-        else if(strlen($code)==6)
+        else if(strlen($p_code)==6)
         { 
-            $precode=$prefix.$code;
+            $precode=$p_prefix.$p_code;
         } 
         
         return $precode;

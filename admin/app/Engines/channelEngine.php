@@ -2,14 +2,19 @@
 
 use App\Models\Commonmodel;
 use CodeIgniter\HTTP\IncomingRequest;
-use numSeq;
 
 
 class channelEngine
 {
     function __construct() 
     {
-        $this->Commonmodel = new Commonmodel();            
+        $this->Commonmodel = new Commonmodel(); 
+        $_SESSION['module']="Shop";           
+    }
+
+    public function test(){
+        
+        echo("saim");
     }
     
     /**

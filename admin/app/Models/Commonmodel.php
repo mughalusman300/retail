@@ -260,7 +260,7 @@ class Commonmodel extends Model {
     
     public function Get_first_record($tablename)
     {
-        $query = $this->db->table()->get()->getResultArray();
+        $query = $this->db->table($tablename)->get()->getResultArray();
         return $query;
     }
     
