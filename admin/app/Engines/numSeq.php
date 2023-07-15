@@ -24,7 +24,7 @@ class numSeq
      * Author: Muhammad Saim.
      * Date  : June-19-2023.
      */
-    public static function num() 
+    public function num() 
     {
         $Commonmodel = new Commonmodel();   
 

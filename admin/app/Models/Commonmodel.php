@@ -317,78 +317,7 @@ class Commonmodel extends Model {
         //
     }
    
-    //======================================================================
-    //START--------------Server Side Data Table Model-----------------------
-    //======================================================================
-    public function all_count($v_tablename){  
-        if (isset($v_tablename))
-        {
-            $builder = $this->db->table($v_tablename);
-            $query = $builder->get(); 
-            return $query->getNumRows();  
-        }
-    }
-
-    public function all_list_data($v_tablename,$v_limit,$v_start){
-        if (isset($v_tablename) && isset($v_limit) && isset($v_start))
-        {  
-            $builder = $this->db->table($v_tablename); 
-
-            if ($v_limit == -1){$v_limit = 12546464646464646;}
-
-            $builder->limit($v_limit,$v_start);
-            $query = $builder->get();  
-            
-            $result = ($query->getNumRows() > 0) ? $query->getResult() : FALSE;
-            return $result; 
-        }
-    }
-
-    public function search_count($p_tablename,$p_colarray,$p_search){
-
-        if (isset($p_tablename) && isset($p_colarray) && isset($p_search))
-        {
-            $builder = $this->db->table($p_tablename);
-            if (!empty($p_colarray))
-            {  
-                $v_i=0;
-                foreach($p_colarray as $v_rows)
-                {
-                    $v_i=$v_i + 1;
-                    if($v_i==1)
-                    {
-                        $builder->like($v_rows, $p_search);
-                    } 
-                    else
-                    {
-                        $builder->orLike('code', $search);
-                    }
     
-                }
-                $query = $builder->get();
-    
-                return $query->getNumRows();
-            }
-        }
-    }
-
-    public function categories_search($limit,$start,$search){
-        if ($limit == -1) {
-            $limit = 12546464646464646;
-        }
-
-        $builder = $this->db->table('saimtech_category');
-        $builder->like('title', $search);
-        $builder->orLike('code', $search);
-        $builder->orLike('desc', $search);
-
-        $builder->limit($limit,$start);
-        // $builder->order_by('category_id',"asc")
-       $query = $builder->get();
-    
-        $result = ($query->getNumRows() > 0) ? $query->getResult() : FALSE;
-        return $result; 
-    }
 
 
 }

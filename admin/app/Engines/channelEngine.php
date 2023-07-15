@@ -12,11 +12,6 @@ class channelEngine
         $_SESSION['module']="Shop";           
     }
 
-    public function test(){
-        
-        echo("saim");
-    }
-    
     /**
      * --------------------------------------------------------------------------
      * Create Channel Mehtod 
