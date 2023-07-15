@@ -69,6 +69,24 @@
     <!-- ================== END page-js ================== -->
     <script src="<?= URL ?>/assets/mainjs/validation.js"></script>
 
+    <script src="<?= URL ?>/assets/plugins/summernote/dist/summernote-lite.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-tmpl/js/tmpl.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-load-image/js/load-image.all.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-canvas-to-blob/js/canvas-to-blob.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload-process.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload-image.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload-audio.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
+    <script src="<?= URL ?>/assets/plugins/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
+    <script src="<?= URL ?>/assets/plugins/jquery-migrate/dist/jquery-migrate.min.js"></script>
+    <script src="<?= URL ?>/assets/plugins/tag-it/js/tag-it.min.js"></script>
+    <script src="<?= URL ?>/assets/js/demo/page-product-details.demo.js"></script>
+
     <?php if (in_array($main_content, array('category/category')) || in_array($main_content, array('product/product'))) { ?>
         <script type="text/javascript" src="<?=URL?>/assets/mainjs/<?= $main_content?>.js<?= version ?>"></script>
     <?php } ?>

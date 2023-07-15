@@ -1,50 +1,178 @@
 $(document).ready(function(){
 	productList();
 
-	checkValidation('.category-modal');
-
-	var table = $('#product').DataTable({
-		responsive: true,
-		// buttons: [
-		// 	{ extend: 'print', className: 'btn btn-default btn-sm' },
-		// 	{ extend: 'csv', className: 'btn btn-default btn-sm' }
-		// ],
-    	"serverSide": true,
-		//"stateSave": true,
-		"paging": true,
-    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-    	"order": [[ 0, "desc" ]],
-		// "dom": "<'row mb-3'<'col-md-4 mb-3 mb-md-0'l><'col-md-8 text-right'<'d-flex justify-content-end'f<'ms-2'B>>>>t<'row align-items-center'<'mr-auto col-md-6 mb-3 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-		"pageLength": 25,	
-		"ordering"   :false,
-        "processing": true,
-        "ajax":{
-	     	"url": base +"/category/productList",
-	     	"dataType": "json",
-	     	"type": "POST",
-	    },
-    	"columns": [
-	        { "data": "sr" },
-	        { "data": "title" },
-	        { "data": "code" },
-	        { "data": "category" },
-	        { "data": "desc" },
-	        { "data": "status" },
-	        { "data": "Action" },
-	    ],
-    	"columnDefs": [
-        	{ targets: 0, width: '150px' },
-        	{ targets: 1, width: '200px' },
-        	{ targets: 2, width: '200px' },
-        	{ targets: 3, width: '200px' },
-        	{ targets: 4, width: '200px' },
-        	{ targets: 5, width: '200px' },
-        	{ targets: 6, width: '200px' },
-        ]
-    });
-	function productList(){
+	function productList(search =''){
+		var table = $('#product').DataTable({
+			"rowCallback": function( row, data ) {
+				$('td:eq(0)', row).addClass('align-middle');
+				$('td:eq(2)', row).addClass('align-middle');
+				$('td:eq(2)', row).addClass('align-middle');
+				$('td:eq(3)', row).addClass('align-middle');
+				$('td:eq(4)', row).addClass('align-middle');
+				$('td:eq(5)', row).addClass('align-middle');
+			},
+			responsive: false,
+			// buttons: [
+			// 	{ extend: 'print', className: 'btn btn-default btn-sm' },
+			// 	{ extend: 'csv', className: 'btn btn-default btn-sm' }
+			// ],
+			"searching": false,
+	    	"serverSide": true,
+			//"stateSave": true,
+			"paging": true,
+			"lengthChange": false,
+	    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	    	"order": [[ 0, "desc" ]],
+			"pageLength": 25,	
+			"ordering"   :false,
+	        "processing": true,
+	        "ajax":{
+		     	"url": base +"/product/productList",
+		     	"dataType": "json",
+		        "data":{ search: search, is_active: '' },
+		     	"type": "POST",
+		    },
+	    	"columns": [
+		        { "data": "check" },
+		        { "data": "product" },
+		        { "data": "product_code" },
+		        { "data": "category_title" },
+		        { "data": "status" },
+		        { "data": "Action" },
+		    ],
+	    	"columnDefs": [
+	        	{ targets: 0, width: '10px' },
+	        	{ targets: 1, width: '400px' },
+	        	{ targets: 2, width: '200px' },
+	        	{ targets: 3, width: '200px' },
+	        	{ targets: 4, width: '200px' },
+	        	{ targets: 5, width: '200px' },
+	        ]
+	    });
 	}
 
+	activeProductList();
+	function activeProductList(search =''){
+		var table = $('#active_product').DataTable({
+			"rowCallback": function( row, data ) {
+				$('td:eq(0)', row).addClass('align-middle');
+				$('td:eq(2)', row).addClass('align-middle');
+				$('td:eq(2)', row).addClass('align-middle');
+				$('td:eq(3)', row).addClass('align-middle');
+				$('td:eq(4)', row).addClass('align-middle');
+				$('td:eq(5)', row).addClass('align-middle');
+			},
+			responsive: false,
+			// buttons: [
+			// 	{ extend: 'print', className: 'btn btn-default btn-sm' },
+			// 	{ extend: 'csv', className: 'btn btn-default btn-sm' }
+			// ],
+			"searching": false,
+	    	"serverSide": true,
+			//"stateSave": true,
+			"paging": true,
+			"lengthChange": false,
+	    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	    	"order": [[ 0, "desc" ]],
+			"pageLength": 25,	
+			"ordering"   :false,
+	        "processing": true,
+	        "ajax":{
+		     	"url": base +"/product/productList",
+		     	"dataType": "json",
+		        "data":{ search: search, is_active: 1 },
+		     	"type": "POST",
+		    },
+	    	"columns": [
+		        { "data": "check" },
+		        { "data": "product" },
+		        { "data": "product_code" },
+		        { "data": "category_title" },
+		        // { "data": "status" },
+		        { "data": "Action" },
+		    ],
+	    	"columnDefs": [
+	        	{ targets: 0, width: '10px' },
+	        	{ targets: 1, width: '400px' },
+	        	{ targets: 2, width: '200px' },
+	        	{ targets: 3, width: '200px' },
+	        	{ targets: 4, width: '200px' },
+	        	// { targets: 5, width: '200px' },
+	        ]
+	    });
+	}
+
+	deactiveProductList();
+	function deactiveProductList(search =''){
+		var table = $('#deactive_product').DataTable({
+			"rowCallback": function( row, data ) {
+				$('td:eq(0)', row).addClass('align-middle');
+				$('td:eq(2)', row).addClass('align-middle');
+				$('td:eq(2)', row).addClass('align-middle');
+				$('td:eq(3)', row).addClass('align-middle');
+				$('td:eq(4)', row).addClass('align-middle');
+				$('td:eq(5)', row).addClass('align-middle');
+			},
+			responsive: false,
+			"searching": false,
+	    	"serverSide": true,
+			//"stateSave": true,
+			"paging": true,
+			"lengthChange": false,
+	    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	    	"order": [[ 0, "desc" ]],
+			"pageLength": 25,	
+			"ordering"   :false,
+	        "processing": true,
+	        "ajax":{
+		     	"url": base +"/product/productList",
+		     	"dataType": "json",
+		        "data":{ search: search, is_active: 0 },
+		     	"type": "POST",
+		    },
+	    	"columns": [
+		        { "data": "check" },
+		        { "data": "product" },
+		        { "data": "product_code" },
+		        { "data": "category_title" },
+		        // { "data": "status" },
+		        { "data": "Action" },
+		    ],
+	    	"columnDefs": [
+	        	{ targets: 0, width: '10px' },
+	        	{ targets: 1, width: '400px' },
+	        	{ targets: 2, width: '200px' },
+	        	{ targets: 3, width: '200px' },
+	        	{ targets: 4, width: '200px' },
+	        	// { targets: 5, width: '200px' },
+	        ]
+	    });
+	}
+
+	$(document).on('keyup','.search',function(){
+			var table = $('#product').dataTable();
+			table.fnDestroy();
+			// $('#product').find('tbody').empty();
+			var search = $(".search").val();
+			productList(search);	
+			// $('#category_id').val(cat).trigger('change.select2');
+			// $('#mat_category').val(mat_cat).trigger('change.select2');
+	});
+
+	$(document).on('keyup','.active_search',function(){
+			var table = $('#active_product').dataTable();
+			table.fnDestroy();
+			var search = $(".active_search").val();
+			activeProductList(search);	
+	});
+
+	$(document).on('keyup','.deactive_search',function(){
+			var table = $('#deactive_product').dataTable();
+			table.fnDestroy();
+			var search = $(".deactive_search").val();
+			deactiveProductList(search);	
+	});
+	
 	$(document).on('click', '.add-category', function(){
 		$('.category-modal').modal('show');
 		$('.save').data('type', 'add');
@@ -110,7 +238,7 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '#is_active', function(){
-		var category_id = $(this).data('category_id');
+		var product_id = $(this).data('product_id');
 		if ($(this).is(":checked")) {
 			var is_active = 1;
 			$(this).closest('.form-switch').find('label').text('Active');
@@ -119,9 +247,9 @@ $(document).ready(function(){
 			$(this).closest('.form-switch').find('label').text('Deactive');
 		}
 
-		var mydata = {category_id: category_id, is_active: is_active};
+		var mydata = {product_id: product_id, is_active: is_active};
 		$.ajax({
-			url: base + "/category/statusUpdate",
+			url: base + "/product/statusUpdate",
 			type: "POST",
 			data: mydata,        
 			success: function(data) {

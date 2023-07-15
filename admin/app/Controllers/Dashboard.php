@@ -13,6 +13,7 @@ class Dashboard extends BaseController
 	    $session = \Config\Services::session();
     }
     public function index(){
+        $data['title'] = 'Dashboard';    
         $data['error'] = '';    
     	$data['main_content'] = 'dashboard';	
         return view('layouts/page',$data);

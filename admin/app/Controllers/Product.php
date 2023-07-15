@@ -23,22 +23,20 @@ class Product extends BaseController
     }
 
     public function productList(){
+        // dd($_POST);
         $limit = $this->request->getVar('length');
         $start = $this->request->getVar('start');
-
-        $totalData = $this->Productmodel->all_product_count();
-
+        $search = $this->request->getVar('search');
+        $is_active = $this->request->getVar('is_active');
+        // dd($search);
+        $totalData = $this->Productmodel->all_product_count($is_active);
         $totalFiltered = $totalData;
 
-        if (empty($this->request->getVar('search')['value'])) {
-
-            $products = $this->Productmodel->all_product($limit,$start);
-
+        if (empty($search)) {
+            $products = $this->Productmodel->all_product($limit, $start, $is_active);
         } else {
-
-            $search = trim($this->request->getVar('search')['value']); 
-            $products =  $this->Productmodel->product_search($limit,$start,$search);
-            $totalFiltered = $this->Productmodel->product_search_count($search);
+            $products =  $this->Productmodel->product_search($limit,$start,$search, $is_active);
+            $totalFiltered = $this->Productmodel->product_search_count($search, $is_active);
 
         }
         // echo '<pre>'; print_r($products); die;
@@ -47,18 +45,32 @@ class Product extends BaseController
 
             $i = 1;
             foreach ($products as $row) {
+                $nestedData['check'] = '<div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="checkbox"
+                                                data-product_id="'.$row->product_id.'"
+                                                data-product_code="'.$row->product_code.'" 
+                                                data-product_desc="'.$row->product_desc.'"
+                                                >
+                                                <label class="form-check-label" for="checkbox"></label>
+                                            </div>';
                 $action = '<button class="btn btn-outline-theme edit-product"
                     data-product_id="'.$row->product_id.'"
-                    data-title="'.$row->title.'"
-                    data-code="'.$row->code.'" 
-                    data-desc="'.$row->desc.'"
+                    data-product_code="'.$row->product_code.'" 
+                    data-product_desc="'.$row->product_desc.'"
                     >Edit</button>
                 ';
 
-                $nestedData['sr'] = $i;
-                $nestedData['title'] = $row->title;
-                $nestedData['code'] = $row->code;
-                $nestedData['desc'] = $row->desc;
+                $img = IMGURL.$row->product_img;
+                $nestedData['product'] = '<div class="d-flex align-items-center">
+                                                <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+                                                    <img alt="" class="mw-100 mh-100" src="'. $img .'">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a href="page_product_details.html">'. $row->product_name. '</a>
+                                                </div>
+                                            </div>';
+                $nestedData['product_code'] = $row->product_code;
+                $nestedData['category_title'] = $row->title;
 
                 $status = ($row->is_active) ? 'Active' : 'Deactive';
                 $checked = ($row->is_active) ? 'checked' : '';
@@ -76,6 +88,8 @@ class Product extends BaseController
 
         }
 
+        
+
         $json_data = array(
             "draw"            => intval($this->request->getVar('draw')),
             "recordsTotal"    => intval($totalData),
@@ -87,46 +101,11 @@ class Product extends BaseController
     }
 
     public function add(){
-        $result = array('success' =>  false);
-
-        $type = $this->request->getVar('type');
-        $title = $this->request->getVar('title');
-        $code = $this->request->getVar('code');
-        $desc = $this->request->getVar('desc');
-
-        $data = array(
-            'title' => $title,
-            'code' => $code,
-            'desc' => $desc,
-        );
-
-        if ($type == 'add') {
-            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), 'saimtech_product');
-
-            if (!$code_exist) {
-                $this->Commonmodel->insert_record($data, 'saimtech_product');
-                $result = array('success' =>  true);
-            } else {
-                $msg = 'This Product code '. $code . ' already exist. Please try diffrent code';
-                $result = array('success' =>  false, 'msg' => $msg);
-            }
-        } else {
-            $product_id = $this->request->getVar('product_id');
-            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), 'saimtech_product', array('product_id' => $product_id));
-
-            if (!$code_exist) {
-                $product_id = $this->request->getVar('product_id');
-                $this->Commonmodel->update_record($data,array('product_id' => $product_id), 'saimtech_product');
-                $result = array('success' =>  true);
-            } else {
-                $msg = 'This Product code '. $code . 'already exist. Please try diffrent code';
-                $result = array('success' =>  false, 'msg' => $msg);
-            }
-        }
-
-        // echo json_encode($result);
-        // $this->output->set_content_type('application/json')->set_output(json_encode($result));
-        return $this->response->setJSON($result);
+        $data['title'] = 'Product';
+        // $data['inventory'] ="nav-expanded nav-active";
+        // $data['category'] ="nav-active";
+        $data['main_content'] = 'product/add';
+        return view('layouts/page',$data);;
     }
 
     public function statusUpdate(){
