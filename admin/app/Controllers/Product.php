@@ -104,7 +104,7 @@ class Product extends BaseController
         $data['title'] = 'Product';
         // $data['inventory'] ="nav-expanded nav-active";
         // $data['category'] ="nav-active";
-        $data['main_content'] = 'product/add';
+        $data['main_content'] = 'product/addProduct';
         return view('layouts/page',$data);;
     }
 

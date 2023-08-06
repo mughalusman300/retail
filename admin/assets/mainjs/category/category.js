@@ -49,7 +49,7 @@ $(document).ready(function(){
 	$(document).on('click', '.edit-category', function(){
 		$('.category-modal').find('.modal-title').text('Update Category');
 		$('.category-modal').modal('show');
-		$('.save').data('type', 'update');
+		$('.save').attr('data-type', 'update');
 		$('.save').text('Update');
 
 		$('.category_id').val($(this).data('category_id'));
