@@ -56,5 +56,17 @@ class Categorymodel extends Model {
         return $result; 
     }
 
+    public function get_active_categories(){  
+        $builder = $this->db->table('saimtech_category'); 
+
+        // $this->db->order_by('category_id',"asc");
+        $builder->where('is_active', 1);
+        $query = $builder->get(); 
+         
+        $result = ($query->getNumRows() > 0) ? $query->getResult() : FALSE;
+        return $result; 
+        
+    }
+
 
 }

@@ -205,6 +205,11 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<label class="form-label">Category</label>
+							<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<?php foreach($categories as $row) :?>
+									<option value="<?= $row->category_id ?>"><?= $row->title ?></option>
+								<?php endforeach; ?>
+							</select>
 							<div class="input-group">
 								<input type="text" class="form-control" placeholder="Product type">
 								<button class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -225,6 +230,10 @@
 						</ul>
 						<div class="small"><a href="#">View all tags</a></div>
 					</div>
+				</div>
+
+				<div class="text-end">
+					<button href="#" class="btn btn-theme mr-auto w-100 save">Save</button>
 				</div>
 			</div>
 		</div>

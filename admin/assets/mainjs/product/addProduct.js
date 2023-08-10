@@ -17,8 +17,10 @@ $(document).ready(function() {
 			counter++;
 		});
 		$('.option_values').val(values);
+		console.log(values);
 	}
-	$(document).on('all', '.ui-autocomplete-input', function(){
+	
+	$(document).on('click', '.save', function(){
 		option_values();
 	})
 })

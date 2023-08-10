@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\Commonmodel;
 use App\Models\Productmodel;
+use App\Models\Categorymodel;
 use CodeIgniter\API\ResponseTrait;
 
 class Product extends BaseController
@@ -11,7 +12,8 @@ class Product extends BaseController
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger){
 	    parent::initController($request, $response, $logger);
         $this->Commonmodel = new Commonmodel();
-	    $this->Productmodel = new Productmodel();
+        $this->Productmodel = new Productmodel();
+	    $this->Categorymodel = new Categorymodel();
 	    $session = \Config\Services::session();
     }
     public function index(){
@@ -104,6 +106,8 @@ class Product extends BaseController
         $data['title'] = 'Product';
         // $data['inventory'] ="nav-expanded nav-active";
         // $data['category'] ="nav-active";
+
+        $data['categories'] = $this->Categorymodel->get_active_categories();
         $data['main_content'] = 'product/addProduct';
         return view('layouts/page',$data);;
     }
