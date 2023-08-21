@@ -98,7 +98,6 @@
 								<input type="hidden" id='myList' class="form-control option_values" name="option_values">
 								<ul id="tag-size" class="tagit form-control option-values-ul">
 									<li>XL</li>
-									<li>S</li>
 								</ul>
 							</div>
 							<div class="col-1">
@@ -126,8 +125,8 @@
 									</td>
 									<td class="align-middle">
 										<span class="text-theme">XL</span>
-										<span class="text-muted mx-1"> • </span>
-										<span class="text-body">Black</span>
+										<!-- <span class="text-muted mx-1"> • </span>
+										<span class="text-body">Black</span> -->
 									</td>
 									<td><input type="text" class="form-control dashspecialvalidation" value="" placeholder="#SKU000001"></td>
 									<td><input type="text" class="form-control twodecimel" value="" placeholder="0.00"></td>
