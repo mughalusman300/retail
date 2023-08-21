@@ -93,10 +93,10 @@
 							<div class="col-8">Option values</div>
 						</div>
 						<div class="row mb-3 gx-3">
-							<div class="col-4"><input type="text" class="form-control" name="variant[0][name]" placeholder="e.g Size" value="Size"></div>
+							<div class="col-4"><input type="text" class="form-control" name="option_name" placeholder="e.g Size" value="Size"></div>
 							<div class="col-7">
-								<input type="text" id='myList' class="form-control option_values" name="option_values">
-								<ul id="tag-size" class="tagit form-control option-values">
+								<input type="hidden" id='myList' class="form-control option_values" name="option_values">
+								<ul id="tag-size" class="tagit form-control option-values-ul">
 									<li>XL</li>
 									<li>S</li>
 								</ul>
@@ -116,7 +116,7 @@
 									<th class="w-50px">Quantity</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="variant-tbody">
 								<tr>
 									<td class="align-middle">
 										<div class="form-check">
@@ -129,22 +129,11 @@
 										<span class="text-muted mx-1"> • </span>
 										<span class="text-body">Black</span>
 									</td>
-									<td><input type="text" class="form-control" value="" placeholder="#SKU000001"></td>
-									<td><input type="text" class="form-control" value="" placeholder="0.00"></td>
-									<td><input type="text" class="form-control" value="" placeholder="0"></td>
+									<td><input type="text" class="form-control dashspecialvalidation" value="" placeholder="#SKU000001"></td>
+									<td><input type="text" class="form-control twodecimel" value="" placeholder="0.00"></td>
+									<td><input type="text" class="form-control number" value="" placeholder="0"></td>
 								</tr>
 							</tbody>
-							<tfoot>
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td colspan="2">
-										<div class="text-end">
-											<button href="#" class="btn btn-theme mr-auto">Add more</button>
-										</div>
-									</td>
-							</tfoot>
 						</table>
 					</div>
 				</div>
@@ -210,25 +199,19 @@
 									<option value="<?= $row->category_id ?>"><?= $row->title ?></option>
 								<?php endforeach; ?>
 							</select>
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Product type">
-								<button class="btn btn-default"><i class="fa fa-search"></i></button>
-							</div>
 						</div>
 					</div>
 				</div>
 				<div class="card mb-4">
 					<div class="card-header bg-none fw-bold d-flex align-items-center">
 						<div class="flex-1">
-							<div>Tags</div>
+							<div>Keywords</div>
 						</div>
 					</div>
 					<div class="card-body">
-						<ul id="tags" class="tagit form-control mb-3">
-							<li>Laptop</li>
-							<li>Apple</li>
-						</ul>
-						<div class="small"><a href="#">View all tags</a></div>
+						<input type="text" id='keywords' class="form-control keywords" name="keywords">
+						<ul id="tags" class="tagit form-control mb-3 keywords-ul"> </ul>
+						<!-- <div class="small"><a href="#">View all tags</a></div> -->
 					</div>
 				</div>
 
