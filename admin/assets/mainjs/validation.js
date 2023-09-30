@@ -125,7 +125,7 @@ $(document).on('select2:open','select', function() {
 });
 
 //Capitlaize first letter
-$(document).on("change", ".uppercaseeach", function (e) {
+$(document).on("change", ".capital", function (e) {
     var value = $(this).val();
     if(value!=""){
         const finalSentence = value.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
