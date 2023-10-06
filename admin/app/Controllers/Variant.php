@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Models\Commonmodel;
 use App\Models\Varientmodel;
 use CodeIgniter\API\ResponseTrait;
-
+ 
 class Variant extends BaseController
 {
     use ResponseTrait;    
