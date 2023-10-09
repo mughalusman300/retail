@@ -27,7 +27,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card mb-4 d-none">
+				<div class="card mb-4">
 					<div class="card-header d-flex align-items-center bg-none fw-bold">
 						Media
 					</div>
@@ -85,76 +85,55 @@
 						Variants
 					</div>
 					<div class="card-body">
+						<div class="alert alert-success py-2">
+							Add variants if this product comes in multiple versions, like different sizes.
+						</div>
 						<div class="row mb-2">
-							<div class="col-4">
-								<label class="form-label">Variant 1</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
-									<option value="">Select</option>
-									<?php foreach($variants as $row) :?>
-										<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
-									<?php endforeach; ?>
-								</select>
+							<div class="col-4">Option name</div>
+							<div class="col-8">Option values</div>
+						</div>
+						<div class="row mb-3 gx-3">
+							<div class="col-4"><input type="text" class="form-control" name="option_name" placeholder="e.g Size" value="Size"></div>
+							<div class="col-7">
+								<input type="hidden" id='myList' class="form-control option_values" name="option_values">
+								<ul id="tag-size" class="tagit form-control option-values-ul">
+									<li>XL</li>
+								</ul>
 							</div>
-
-							<div class="col-4">
-								<label class="form-label">Variant 2</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
-									<option value="">Select</option>
-									<?php foreach($variants as $row) :?>
-										<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-
-							<div class="col-4">
-								<label class="form-label">Variant 3</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
-									<option value="">Select</option>
-									<?php foreach($variants as $row) :?>
-										<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
-									<?php endforeach; ?>
-								</select>
+							<div class="col-1">
+								<a href="#" class="btn btn-default d-block"><i class="fa fa-times"></i></a>
 							</div>
 						</div>
-					</div>
-				</div>
-
-				<div class="card mb-4">
-					<div class="card-header d-flex align-items-center bg-none fw-bold">
-						Units
-					</div>
-					<div class="card-body">
-						<div class="row mb-2">
-							<div class="col-4">
-								<label class="form-label">Inventory Unit</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
-									<option value="">Select</option>
-									<?php foreach($uom as $row) :?>
-										<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-
-							<div class="col-4">
-								<label class="form-label">Purchasing Unit</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
-									<option value="">Select</option>
-									<?php foreach($uom as $row) :?>
-										<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-
-							<div class="col-4">
-								<label class="form-label">Sale Unit</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
-									<option value="">Select</option>
-									<?php foreach($uom as $row) :?>
-										<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						</div>
+						<p>Modify the variants to be created:</p>
+						<table class="table">
+							<thead>
+								<tr>
+									<th class="w-10px"></th>
+									<th>Variant</th>
+									<th class="w-150px">SKU</th>
+									<th class="w-150px">Price</th>
+									<th class="w-50px">Quantity</th>
+								</tr>
+							</thead>
+							<tbody class="variant-tbody">
+								<tr>
+									<td class="align-middle">
+										<div class="form-check">
+											<input type="checkbox" name="variant[0][enabled]" id="variant_0_enabled" value="1" checked class="form-check-input">
+											<label class="form-check-label">&nbsp;</label>
+										</div>
+									</td>
+									<td class="align-middle">
+										<span class="text-theme">XL</span>
+										<!-- <span class="text-muted mx-1"> • </span>
+										<span class="text-body">Black</span> -->
+									</td>
+									<td><input type="text" class="form-control dashspecialvalidation" value="" placeholder="#SKU000001"></td>
+									<td><input type="text" class="form-control twodecimel" value="" placeholder="0.00"></td>
+									<td><input type="text" class="form-control number" value="" placeholder="0"></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -212,27 +191,15 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<div class="mb-1">
-							<label class="form-label">Group</label>
-							<select name="category_id" id="category_id" class="form-control select2 category_id">
-								<option value="">Select</option>
-								<?php foreach($groups as $row) :?>
-									<option value="<?= $row->group_name ?>"><?= $row->group_name ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-
 						<div class="mb-3">
 							<label class="form-label">Category</label>
 							<select name="category_id" id="category_id" class="form-control select2 category_id">
-								<option value="">Select</option>
 								<?php foreach($categories as $row) :?>
 									<option value="<?= $row->category_id ?>"><?= $row->title ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
 					</div>
-
 				</div>
 				<div class="card mb-4">
 					<div class="card-header bg-none fw-bold d-flex align-items-center">

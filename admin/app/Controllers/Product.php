@@ -106,8 +106,12 @@ class Product extends BaseController
         $data['title'] = 'Product';
         // $data['inventory'] ="nav-expanded nav-active";
         // $data['category'] ="nav-active";
-
-        $data['categories'] = $this->Categorymodel->get_active_categories();
+        // $data['categories'] = $this->Categorymodel->get_active_categories();
+        $data['uom'] = $this->Commonmodel->getAllRecords('saimtech_uom');
+        $data['categories'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_category');
+        $data['variants'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_variant');
+        $data['groups'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_group');
+        // dd($data['groups']);
         $data['main_content'] = 'product/addProduct';
         return view('layouts/page',$data);;
     }
