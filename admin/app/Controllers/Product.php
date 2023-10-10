@@ -127,4 +127,8 @@ class Product extends BaseController
 
         return $this->response->setJSON($result);
     }
+
+    public function create(){ 
+        dd($_POST);
+    }
 }

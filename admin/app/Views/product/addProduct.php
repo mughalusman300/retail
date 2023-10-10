@@ -10,16 +10,23 @@
 			</div>
 		</div>
 		
-		<div class="row gx-4">
+		<div class="row gx-4 add-product">
 			<div class="col-xl-8">
 				<div class="card mb-4">
 					<div class="card-header bg-none fw-bold">
 						Product Information
 					</div>
 					<div class="card-body">
-						<div class="mb-3">
-							<label class="form-label">Product Name <span class="text-danger">*</span></label>
-							<input type="text" class="form-control validate-input product_name" name="product name" placeholder="Product name">
+						<div class="row mb-3">
+							<div class="col-6">
+								<label class="form-label">Product Name <span class="text-danger">*</span></label>
+								<input type="text" class="form-control validate-input product_name" name="product_name" placeholder="Product name">
+							</div>
+
+							<div class="col-6">
+								<label class="form-label">Product Code <span class="text-danger">*</span></label>
+								<input type="text" class="form-control validate-input product_code uppercase" name="product_code" placeholder="Product code">
+							</div>
 						</div>
 						<div class="">
 							<label class="form-label">Description <span class="text-danger">*</span></label>
@@ -27,7 +34,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card mb-4 d-none">
+				<!--- <div class="card mb-4 d-none">
 					<div class="card-header d-flex align-items-center bg-none fw-bold">
 						Media
 					</div>
@@ -79,7 +86,7 @@
 							</tbody>
 						</table>
 					</form>
-				</div>
+				</div> --->
 				<div class="card mb-4">
 					<div class="card-header d-flex align-items-center bg-none fw-bold">
 						Variants
@@ -88,7 +95,7 @@
 						<div class="row mb-2">
 							<div class="col-4">
 								<label class="form-label">Variant 1</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<select name="v1" id="v1" class="form-control select2 v1">
 									<option value="">Select</option>
 									<?php foreach($variants as $row) :?>
 										<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
@@ -98,7 +105,7 @@
 
 							<div class="col-4">
 								<label class="form-label">Variant 2</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<select name="v2" id="v2" class="form-control select2 v2">
 									<option value="">Select</option>
 									<?php foreach($variants as $row) :?>
 										<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
@@ -108,7 +115,7 @@
 
 							<div class="col-4">
 								<label class="form-label">Variant 3</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<select name="v3" id="v3" class="form-control select2 v3">
 									<option value="">Select</option>
 									<?php foreach($variants as $row) :?>
 										<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
@@ -127,7 +134,7 @@
 						<div class="row mb-2">
 							<div class="col-4">
 								<label class="form-label">Inventory Unit</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<select name="inv_unit" id="inv_unit" class="form-control inv_unit validate-input select">
 									<option value="">Select</option>
 									<?php foreach($uom as $row) :?>
 										<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
@@ -137,7 +144,7 @@
 
 							<div class="col-4">
 								<label class="form-label">Purchasing Unit</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<select name="purch_unit" id="purch_unit" class="form-control select2 purch_unit validate-input select">
 									<option value="">Select</option>
 									<?php foreach($uom as $row) :?>
 										<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
@@ -147,7 +154,7 @@
 
 							<div class="col-4">
 								<label class="form-label">Sale Unit</label>
-								<select name="category_id" id="category_id" class="form-control select2 category_id">
+								<select name="sale_unit" id="sale_unit" class="form-control select2 sale_unit validate-input select ">
 									<option value="">Select</option>
 									<?php foreach($uom as $row) :?>
 										<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
@@ -214,17 +221,17 @@
 					<div class="card-body">
 						<div class="mb-1">
 							<label class="form-label">Group</label>
-							<select name="category_id" id="category_id" class="form-control select2 category_id">
+							<select name="group_id" id="group_id" class="form-control select2 group_id validate-input select ">
 								<option value="">Select</option>
 								<?php foreach($groups as $row) :?>
-									<option value="<?= $row->group_name ?>"><?= $row->group_name ?></option>
+									<option value="<?= $row->group_id ?>"><?= $row->group_name ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
 
 						<div class="mb-3">
 							<label class="form-label">Category</label>
-							<select name="category_id" id="category_id" class="form-control select2 category_id">
+							<select name="category_id" id="category_id" class="form-control select2 category_id validate-input select ">
 								<option value="">Select</option>
 								<?php foreach($categories as $row) :?>
 									<option value="<?= $row->category_id ?>"><?= $row->title ?></option>
@@ -241,14 +248,14 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<input type="text" id='keywords' class="form-control keywords" name="keywords">
+						<input type="hidden" id='keywords' class="form-control keywords" name="keywords">
 						<ul id="tags" class="tagit form-control mb-3 keywords-ul"> </ul>
 						<!-- <div class="small"><a href="#">View all tags</a></div> -->
 					</div>
 				</div>
 
 				<div class="text-end">
-					<button href="#" class="btn btn-theme mr-auto w-100 save">Save</button>
+					<button type="button" class="btn btn-theme mr-auto w-100 save">Save</button>
 				</div>
 			</div>
 		</div>

@@ -124,6 +124,10 @@ $(document).on('select2:open','select', function() {
      $(this).siblings(".select2-container").find("span .select2-selection").css('border-color','#ccc');
 });
 
+$(document).on('focusin','select', function() {
+    $(this).removeClass('is-invalid');
+});
+
 //Capitlaize first letter
 $(document).on("change", ".capital", function (e) {
     var value = $(this).val();

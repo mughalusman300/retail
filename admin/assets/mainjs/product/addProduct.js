@@ -85,8 +85,11 @@ $(document).ready(function() {
 		},100);
 	}
 	
-	$(document).on('click', '.save', function(){
+	$(document).on('click', '.save', function(){	
+		console.log('ttdd');
 		keywords();
+		console.log('dd');
+		var validate = checkValidation('.add-product');
 	})
 
 })
