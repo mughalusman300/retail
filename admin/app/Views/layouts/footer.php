@@ -87,6 +87,8 @@
     <script src="<?= URL ?>/assets/plugins/tag-it/js/tag-it.min.js"></script>
     <script src="<?= URL ?>/assets/js/demo/page-product-details.demo.js"></script>
 
+    <script type="text/javascript" src="<?=URL?>/assets/mainjs/fileUpload.js<?= version ?>"></script>
+
     <?php if (in_array($main_content, array('category/category')) || in_array($main_content, array('product/product')) || in_array($main_content, array('product/addProduct')) || in_array($main_content, array('uom')) || in_array($main_content, array('variant/variant')) || in_array($main_content, array('variant/detail')) || in_array($main_content, array('group/group')) ) { ?>
         <script type="text/javascript" src="<?=URL?>/assets/mainjs/<?= $main_content?>.js<?= version ?>"></script>
     <?php } ?>

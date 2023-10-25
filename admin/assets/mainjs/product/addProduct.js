@@ -90,6 +90,51 @@ $(document).ready(function() {
 		keywords();
 		console.log('dd');
 		var validate = checkValidation('.add-product');
-	})
+	});
+
+	$(document).on('click', '.add-more-image', function(){
+		var html = `<div class="row mb-3">
+							<div class="col-2 text-center">
+								<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+							</div>
+
+							<div class="col-10 upload-row">
+								<div style="width: 92%" class="img-col">
+									<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
+								</div>
+								<input type="file" name="pro_image_a" id="pro_image_a" placeholder=" Attachments" class="form-control attachment-file " accept="gif, .jpg, .png," style="display: none">
+
+								<button type="button" class=" btn btn-default btn-browse form-control ">
+				                    <i class="fa fa-cloud-upload"></i>
+				                    Uploade Image             
+				                </button>
+							</div>
+						</div>`;
+
+		$('.image-parent-div').append(html);
+	});
+
+	$(document).on('click',".img-preview",function (e) {
+		var selector = $(this);
+
+
+
+		Swal.fire({
+		  title: 'Are you sure?',
+		  text: "You won't be able to revert this!",
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  	if (result.isConfirmed) {
+       			selector.parents('.upload-row').find('.attachment-file').val('');
+       			selector.parents('.upload-row').find('.btn-browse ').show();
+	            selector.hide();
+		  	}
+		})
+
+	});
 
 })

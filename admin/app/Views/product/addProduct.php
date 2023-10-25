@@ -167,6 +167,41 @@
 			</div>
 			<div class="col-xl-4">
 				<div class="card mb-4">
+					<div class="card-header d-flex align-items-center bg-none fw-bold">
+						Product Images
+					</div>
+
+					<div class="card-body">
+						<div class="image-parent-div">
+							<div class="row mb-2">
+								<div> Default: </div> 
+							</div>
+							<div class="row mb-3">
+								<div class="col-2 text-center">
+									<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+								</div>
+
+								<div class="col-10 upload-row">
+									<div style="width: 92%" class="img-col">
+										<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
+									</div>
+									<input type="file" name="pro_image_a" id="pro_image_a" placeholder=" Attachments" class="form-control attachment-file " accept="gif, .jpg, .png," style="display: none">
+
+									<button type="button" class=" btn btn-default btn-browse form-control ">
+					                    <i class="fa fa-cloud-upload"></i>
+					                    Uploade Image           
+					                </button>
+								</div>
+							</div>
+						</div>
+
+						<div class="mt-3 mb-2 text-end">
+							<button type="button" class="btn btn-default add-more-image">Add More</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-4">
 					<div class="card-header bg-none fw-bold d-flex align-items-center">
 						<div class="flex-1">
 							<div>Sales channels (2/3)</div>
@@ -212,6 +247,8 @@
 						</div>
 					</div>
 				</div>
+
+
 				<div class="card mb-4">
 					<div class="card-header bg-none fw-bold d-flex align-items-center">
 						<div class="flex-1">
