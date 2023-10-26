@@ -1,4 +1,15 @@
 	<!-- BEGIN #content -->
+<?php 
+	$saved_tags = array();
+	if ($product->keywords != '') {
+		$saved_tags = explode(',', $product->keywords);
+	}
+	// dd($saved_tags);
+?>	
+<script type="text/javascript">
+	var saved_tags = <?php echo json_encode($saved_tags) ?>;
+</script>	
+
 	<div id="content" class="app-content">
 		<div class="d-flex align-items-center mb-3">
 			<div>
@@ -10,7 +21,7 @@
 			</div>
 		</div>
 		
-		<form action="<?=URL?>/Product/create" method="POST" enctype="multipart/form-data" class="product-form">
+		<form action="<?=URL?>/Product/update" method="POST" enctype="multipart/form-data" class="product-form">
 			<div class="row gx-4 add-product">
 					<div class="col-xl-8">
 						<div class="card mb-4">
@@ -20,74 +31,23 @@
 							<div class="card-body">
 								<div class="row mb-3">
 									<div class="col-6">
+										<input type="hidden" name="product_id" value="<?= $product->product_id; ?>">
 										<label class="form-label">Product Name <span class="text-danger">*</span></label>
-										<input type="text" class="form-control validate-input product_name" name="product_name" placeholder="Product name">
+										<input type="text" class="form-control validate-input product_name" name="product_name" placeholder="Product name" value="<?= $product->product_name ?>">
 									</div>
 
 									<div class="col-6">
 										<label class="form-label">Product Code <span class="text-danger">*</span></label>
-										<input type="text" class="form-control validate-input product_code uppercase" name="product_code" placeholder="Product code">
+										<input type="text" class="form-control validate-input product_code uppercase" name="product_code" placeholder="Product code" value="<?= $product->product_code ?>">
 									</div>
 								</div>
 								<div class="">
 									<label class="form-label">Description <span class="text-danger">*</span></label>
-									<textarea class="summernote validate-input product_desc" name="product_desc" rows="10"></textarea>
+									<textarea class="summernote validate-input product_desc" name="product_desc" rows="10"><?= $product->product_desc ?></textarea>
 								</div>
 							</div>
 						</div>
-						<!--- <div class="card mb-4 d-none">
-							<div class="card-header d-flex align-items-center bg-none fw-bold">
-								Media
-							</div>
-							<form id="fileupload" action="//jquery-file-upload.appspot.com/" name="file_upload_form" method="POST" enctype="multipart/form-data">
-								<div class="card-body pb-2">
-									<div class="fileupload-buttonbar mb-2">
-										<div class="d-block d-lg-flex align-items-center">
-											<span class="btn btn-theme fs-13px fw-semibold fileinput-button me-2 mb-1">
-												<i class="fa fa-fw fa-plus"></i>
-												<span>Add files...</span>
-												<input type="file" name="files[]" multiple>
-											</span>
-											<button type="submit" class="btn btn-default fs-13px fw-semibold me-2 mb-1 start">
-												<i class="fa fa-fw fa-upload"></i>
-												<span>Start upload</span>
-											</button>
-											<button type="reset" class="btn btn-default fs-13px fw-semibold me-2 mb-1 cancel">
-												<i class="fa fa-fw fa-ban"></i>
-												<span>Cancel upload</span>
-											</button>
-											<button type="button" class="btn btn-default fs-13px fw-semibold me-2 mb-1 delete">
-												<i class="fa fa-fw fa-trash"></i>
-												<span>Delete</span>
-											</button>
-											<div class="form-check ms-2 mb-1">
-												<input type="checkbox" id="toggle-delete" class="form-check-input toggle">
-												<label for="toggle-delete" class="form-check-label">Select Files</label>
-											</div>
-										</div>
-									</div>
-									<div id="error-msg"></div>
-								</div>
-								<table class="table table-card mb-0 fs-13px">
-									<thead>
-										<tr class="fs-12px">
-											<th class="pt-2 pb-2 w-25">Preview</th>
-											<th class="pt-2 pb-2 w-25">Filename</th>
-											<th class="pt-2 pb-2 w-25">Size</th>
-											<th class="pt-2 pb-2 w-25">Action</th>
-										</tr>
-									</thead>
-									<tbody class="files">
-										<tr class="empty-row">
-											<td colspan="4" class="text-center p-3">
-												<div class="text-body text-opacity-25 my-3"><i class="fa fa-file-archive fa-3x"></i></div> 
-												No file uploaded
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</form>
-						</div> --->
+
 						<div class="card mb-4">
 							<div class="card-header d-flex align-items-center bg-none fw-bold">
 								Variants
@@ -99,7 +59,11 @@
 										<select name="v1" id="v1" class="form-control select2 v1">
 											<option value="">Select</option>
 											<?php foreach($variants as $row) :?>
-												<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
+												<option value="<?= $row->variant_name ?>" 
+													<?= ($row->variant_name == $product->v1) ? 'selected' :'' ?>
+												>
+													<?= $row->variant_name ?>	
+												</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -109,7 +73,11 @@
 										<select name="v2" id="v2" class="form-control select2 v2">
 											<option value="">Select</option>
 											<?php foreach($variants as $row) :?>
-												<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
+												<option value="<?= $row->variant_name ?>" 
+													<?= ($row->variant_name == $product->v2) ? 'selected' :'' ?>
+												>
+													<?= $row->variant_name ?>
+												</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -119,7 +87,11 @@
 										<select name="v3" id="v3" class="form-control select2 v3">
 											<option value="">Select</option>
 											<?php foreach($variants as $row) :?>
-												<option value="<?= $row->variant_name ?>"><?= $row->variant_name ?></option>
+												<option value="<?= $row->variant_name ?>" 
+													<?= ($row->variant_name == $product->v3) ? 'selected' :'' ?>
+												>
+													<?= $row->variant_name ?>
+												</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -138,7 +110,12 @@
 										<select name="inv_unit" id="inv_unit" class="form-control inv_unit validate-input select">
 											<option value="">Select</option>
 											<?php foreach($uom as $row) :?>
-												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
+												<option value="<?= $row->uom_code ?>"
+													<?= ($row->uom_code == $product->inv_unit) ? 'selected' : '' ?>
+												>
+													<?= $row->uom_code ?>
+														
+												</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -148,7 +125,11 @@
 										<select name="purch_unit" id="purch_unit" class="form-control select2 purch_unit validate-input select">
 											<option value="">Select</option>
 											<?php foreach($uom as $row) :?>
-												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
+												<option value="<?= $row->uom_code ?>"
+													<?= ($row->uom_code == $product->purch_unit) ? 'selected' : '' ?>
+												>
+													<?= $row->uom_code ?>	
+												</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -158,7 +139,11 @@
 										<select name="sale_unit" id="sale_unit" class="form-control select2 sale_unit validate-input select ">
 											<option value="">Select</option>
 											<?php foreach($uom as $row) :?>
-												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
+												<option value="<?= $row->uom_code ?>"
+													<?= ($row->uom_code == $product->sale_unit) ? 'selected' : '' ?>
+												>
+													<?= $row->uom_code ?>
+												</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -263,7 +248,11 @@
 									<select name="group_id" id="group_id" class="form-control select2 group_id validate-input select ">
 										<option value="">Select</option>
 										<?php foreach($groups as $row) :?>
-											<option value="<?= $row->group_id ?>"><?= $row->group_name ?></option>
+											<option value="<?= $row->group_id ?>"
+												<?= ($row->group_id == $product->group_id) ? 'selected' : '' ?>
+											>
+												<?= $row->group_name ?>
+											</option>
 										<?php endforeach; ?>
 									</select>
 								</div>
@@ -273,7 +262,11 @@
 									<select name="category_id" id="category_id" class="form-control select2 category_id validate-input select ">
 										<option value="">Select</option>
 										<?php foreach($categories as $row) :?>
-											<option value="<?= $row->category_id ?>"><?= $row->title ?></option>
+											<option value="<?= $row->category_id ?>"
+												<?= ($row->category_id == $product->category_id) ? 'selected' : '' ?>
+											>
+												<?= $row->title ?>
+											</option>
 										<?php endforeach; ?>
 									</select>
 								</div>
@@ -287,7 +280,7 @@
 								</div>
 							</div>
 							<div class="card-body">
-								<input type="hidden" id='keywords' class="form-control keywords" name="keywords">
+								<input type="text" id='keywords' class="form-control keywords" name="keywords" value="<?= $product->keywords ?>">
 								<ul id="tags" class="tagit form-control mb-3 keywords-ul"> </ul>
 								<!-- <div class="small"><a href="#">View all tags</a></div> -->
 							</div>

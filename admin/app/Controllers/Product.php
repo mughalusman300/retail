@@ -55,11 +55,13 @@ class Product extends BaseController
                                                 >
                                                 <label class="form-check-label" for="checkbox"></label>
                                             </div>';
-                $action = '<button class="btn btn-outline-theme edit-product"
+                $edit_url = URL. '/product/edit/'. $row->product_id;
+                                            
+                $action = '<a  href="'. $edit_url .'" class="btn btn-outline-theme edit-product"
                     data-product_id="'.$row->product_id.'"
                     data-product_code="'.$row->product_code.'" 
                     data-product_desc="'.$row->product_desc.'"
-                    >Edit</button>
+                    >Edit</a>
                 ';
 
                 $img = IMGURL.$row->product_img;
@@ -129,6 +131,121 @@ class Product extends BaseController
     }
 
     public function create(){ 
-        dd($_POST);
+        $product_name = $this->request->getVar('product_name');
+        $product_code = $this->request->getVar('product_code');
+        $product_desc = $this->request->getVar('product_desc');
+        $v1 = $this->request->getVar('v1');
+        $v2 = $this->request->getVar('v2');
+        $v3 = $this->request->getVar('v3');
+        $inv_unit = $this->request->getVar('inv_unit');
+        $purch_unit = $this->request->getVar('purch_unit');
+        $sale_unit = $this->request->getVar('sale_unit');
+        $group_id = $this->request->getVar('group_id');
+        $category_id = $this->request->getVar('category_id');
+        $keywords = $this->request->getVar('keywords');
+        $product_code_exist = $this->Commonmodel->Duplicate_check(array('product_code' => $product_code), 'saimtech_product');
+         // dd($_POST);
+        if (!$product_code_exist) {
+            $data = array( 
+                'product_name' =>  $product_name,
+                'product_code' =>  $product_code,
+                'product_desc' =>  $product_desc,
+                'v1' =>  $v1,
+                'v2' =>  $v2,
+                'v3' =>  $v3,
+                'inv_unit' =>  $inv_unit,
+                'purch_unit' =>  $purch_unit,
+                'sale_unit' =>  $sale_unit,
+                'group_id' =>  $group_id,
+                'category_id' =>  $category_id,
+                'keywords' =>  $keywords,
+            );
+
+            $product_id = $this->Commonmodel->insert_record($data, 'saimtech_product');
+
+
+            foreach($_POST['default_image'] as $key => $value){
+                $default_image = $this->request->getVar("default_image")[$key];
+                if ($default_image == 1) {
+                    $img = $this->request->getFileMultiple("product_img")[$key];
+
+                    if ($img != ""){ 
+                        $path     = 'assets/img/product';
+                        $img_name = $img->getRandomName();
+                        $full_db_path = $path."".$img_name;
+                        $img->move($path, $img_name);
+
+                        $imag_data = [
+                           'product_img' =>  'product/'. $img_name,
+                        ];
+
+                        $this->Commonmodel->update_record($imag_data, array('product_id' => $product_id), 'saimtech_product');
+
+                    }
+                    
+                }
+            }
+        }
+
+        return redirect()->to('/product/');
+    }
+
+    public function edit($product_id){
+        $data['title'] = 'Update Product';
+        // $data['inventory'] ="nav-expanded nav-active";
+        // $data['category'] ="nav-active";
+        // $data['categories'] = $this->Categorymodel->get_active_categories();
+        $data['uom'] = $this->Commonmodel->getAllRecords('saimtech_uom');
+        $data['categories'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_category');
+        $data['variants'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_variant');
+        $data['groups'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_group');
+        $data['product'] = $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_product');
+        if ($product) {
+            $data['main_content'] = 'product/updateProduct';
+            return view('layouts/page',$data);;
+        } else {
+            echo '404 page not found';
+        }
+        // dd($data['groups']);
+    }
+
+    public function update(){ 
+
+        $product_id = $this->request->getVar('product_id');
+        $product_name = $this->request->getVar('product_name');
+        $product_code = $this->request->getVar('product_code');
+        $product_desc = $this->request->getVar('product_desc');
+        $v1 = $this->request->getVar('v1');
+        $v2 = $this->request->getVar('v2');
+        $v3 = $this->request->getVar('v3');
+        $inv_unit = $this->request->getVar('inv_unit');
+        $purch_unit = $this->request->getVar('purch_unit');
+        $sale_unit = $this->request->getVar('sale_unit');
+        $group_id = $this->request->getVar('group_id');
+        $category_id = $this->request->getVar('category_id');
+        $keywords = $this->request->getVar('keywords');
+        $product_code_exist = $this->Commonmodel->Duplicate_check(array('product_code' => $product_code), 'saimtech_product' , array('product_id' => $product_id));
+        if(!$product_code_exist) {
+            
+            $update_data = array( 
+                'product_name' =>  $product_name,
+                'product_code' =>  $product_code,
+                'product_desc' =>  $product_desc,
+                'v1' =>  $v1,
+                'v2' =>  $v2,
+                'v3' =>  $v3,
+                'inv_unit' =>  $inv_unit,
+                'purch_unit' =>  $purch_unit,
+                'sale_unit' =>  $sale_unit,
+                'group_id' =>  $group_id,
+                'category_id' =>  $category_id,
+                'keywords' =>  $keywords,
+            );
+            // dd($update_data);
+
+            $this->Commonmodel->update_record($update_data, array('product_id' => $product_id), 'saimtech_product');
+        }
+
+        return redirect()->to('/product/');
     }
 }
