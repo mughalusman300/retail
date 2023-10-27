@@ -145,4 +145,42 @@ class Location extends BaseController
 
         return $this->response->setJSON($result);
     }
+
+    function get_excerpt_array($cities_array, $countryList, $maxPerCountry = 0) {
+        $cities_array = array (
+          'city' => 'Lahore',
+          'region' => '04',
+          'country' => 'PK',
+          'latitude' => '31.54972',
+          'longitude' => '74.34361',
+        );
+        $countryList ='PK';
+        $resultArrayToPrint = [];
+
+        if ($maxPerCountry == 0) {
+            foreach ($cities_array as $city) {
+                if (in_array($city['country'], $countryList)) {
+                    $resultArrayToPrint[] = $city;
+                }
+            }
+        } else {
+            $countryCount = [];
+            foreach ($countryList as $country) {
+                $countryCount[$country] = 1;
+            }
+            foreach ($cities_array as $city) {
+                if (in_array($city['country'], $countryList)) {
+                    if ($countryCount[$city['country']] == $maxPerCountry) {
+                        $key = array_search($city['country'], $countryList);
+                        unset($countryList[$key]);
+                    }
+                    $countryCount[$city['country']] +=1;
+                    $resultArrayToPrint[] = $city;
+                }
+            }
+        }
+
+        dd($resultArrayToPrint);
+        var_export($resultArrayToPrint);
+    }
 }
