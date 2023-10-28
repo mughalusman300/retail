@@ -95,6 +95,51 @@ $(document).ready(function() {
 		}
 	});
 
+	$(document).on('click', '.v1', function(){	
+		var v1 = $('.v1').val();
+		var v2 = $('.v2').val();
+		var v3 = $('.v3').val();
+
+		if (v1 != ''){
+			if (v1 == v2 || v1 == v3){
+				$(this).addClass('is-invalid');
+
+				Swal.fire('Already Selected', v1+' is already selected please try with different variant', 'error');
+				$(this).val('');
+			}
+		}
+	});
+
+	$(document).on('click', '.v2', function(){	
+		var v1 = $('.v1').val();
+		var v2 = $('.v2').val();
+		var v3 = $('.v3').val();
+
+		if (v2 != ''){
+			if (v2 == v1 || v2 == v3){
+				$(this).addClass('is-invalid');
+
+				Swal.fire('Already Selected', v2+' is already selected please try with different variant', 'error');
+				$(this).val('');
+			}
+		}
+	});
+
+	$(document).on('click', '.v3', function(){	
+		var v1 = $('.v1').val();
+		var v2 = $('.v2').val();
+		var v3 = $('.v3').val();
+
+		if (v3 != ''){
+			if (v3 == v1 || v3 == v2){
+				$(this).addClass('is-invalid');
+
+				Swal.fire('Already Selected', v3+' is already selected please try with different variant', 'error');
+				$(this).val('');
+			}
+		}
+	});
+
 	$(document).on('click', '.add-more-image', function(){
 		var html = `<div class="row mb-3">
 						<div class="col-2 text-center">
