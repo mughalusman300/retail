@@ -80,5 +80,21 @@ class Productmodel extends Model {
         return $result; 
     }
 
+    public function check_conversion_apply($product_id){  
+        $response = false;
+        $builder = $this->db->table('saimtech_product');
+        $builder->where('saimtech_product.product_id', $product_id);
+        $query = $builder->get(); 
+        $result = ($query->getNumRows() > 0) ? $query->getRow() : FALSE;
+        
+        if ($result) {
+            if (($result->purch_unit != $result->inv_unit) || $result->inv_unit != $result->sale_unit) {
+                $response = true;
+            }
+        }
+
+        return $response;
+    }
+
 
 }

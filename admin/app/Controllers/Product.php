@@ -64,6 +64,17 @@ class Product extends BaseController
                     >Edit</a>
                 ';
 
+                $check = $this->Productmodel->check_conversion_apply($row->product_id);
+
+                if ($check) {
+                    $action .= '<a  href="'. $edit_url .'" class="btn btn-outline-theme edit-product"
+                        data-product_id="'.$row->product_id.'"
+                        data-product_code="'.$row->product_code.'" 
+                        data-product_desc="'.$row->product_desc.'"
+                        >Conversion</a>
+                    ';
+                }
+
                 $img = IMGURL.$row->product_img;
                 $nestedData['product'] = '<div class="d-flex align-items-center">
                                                 <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
