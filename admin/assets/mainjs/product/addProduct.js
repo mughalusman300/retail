@@ -143,8 +143,10 @@ $(document).ready(function() {
 	$(document).on('click', '.add-more-image', function(){
 		var html = `<div class="row mb-3">
 						<div class="col-2 text-center">
-							<input type="checkbox" class="default" name="default" value="1">
-							<input type="hidden" class="default_image" name="default_image[]" value="">
+							<div class="form-check form-switch mt-1">
+                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
+								<input type="hidden" class="default_image" name="default_image[]" value="">
+                        	</div>
 						</div>
 
 						<div class="col-10 upload-row">

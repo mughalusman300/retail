@@ -14,16 +14,19 @@ function readURL(input) {
         if (ext == 'docx' || ext == 'doc') {
             $(parent).find('.img-preview').attr('src', base + 'assets/images/doc.png');
             $(parent).find('.img-preview').show();
+            $(parent).find('.remove-img').show();
 
             $(parent).find('.btn-browse').hide();
         } else if (ext == 'pdf') {
             $(parent).find('.img-preview').attr('src', base + 'assets/images/pdf.png');
             $(parent).find('.img-preview').show();
+            $(parent).find('.remove-img').show();
 
             $(parent).find('.btn-browse').hide();
         } else if (ext == 'xlsx') {
             $(parent).find('.img-preview').attr('src', base + 'assets/images/xlsx.jpg');
             $(parent).find('.img-preview').show();
+            $(parent).find('.remove-img').show();
 
             $(parent).find('.btn-browse').hide();
         } else if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
@@ -31,6 +34,7 @@ function readURL(input) {
             reader.onload = function (e) {
                 $(parent).find('.img-preview').attr('src', e.target.result);
                 $(parent).find('.img-preview').show();
+                $(parent).find('.remove-img').show();
 
                 $(parent).find('.btn-browse').hide();
             }
@@ -39,6 +43,7 @@ function readURL(input) {
         } else {
             $(parent).find('.img-preview').attr('src', base + 'assets/images/no-image.png');
             $(parent).find('.img-preview').show();
+            $(parent).find('.remove-img').show();
 
             $(parent).find('.btn-browse').hide();
         }

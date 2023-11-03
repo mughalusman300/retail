@@ -41,14 +41,24 @@ $(document).ready(function() {
 	$(document).on('click', '.add-more-image', function(){
 		var html = `<div class="row mb-3">
 						<div class="col-2 text-center">
-							<input type="checkbox" class="default" name="default" value="1">
-							<input type="hidden" class="default_image" name="default_image[]" value="">
+							<div class="form-check form-switch mt-1">
+                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
+								<input type="hidden" class="default_image" name="default_image[]" value="">
+                        	</div>
 						</div>
 
-						<div class="col-10 upload-row">
-							<div style="width: 92%" class="img-col">
+						<div class="col-10 upload-row text-end">
+							<div class="img-col">
 								<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
 							</div>
+							<button
+								style="display: none;" 
+								type="button" 
+								class="btn btn-sm btn-danger remove-img mt-1"
+								data-attachment_id=""
+							>
+								Delete
+							</button>
 							<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
 
 							<button type="button" class=" btn btn-default btn-browse form-control ">
@@ -74,7 +84,50 @@ $(document).ready(function() {
 	$(document).on('click',".img-preview",function (e) {
 		var selector = $(this);
 
+		Swal.fire({
+		  title: 'Are you sure?',
+		  text: "You won't be able to revert this!",
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  	if (result.isConfirmed) {
+       			selector.parents('.upload-row').find('.attachment-file').val('');
+       			selector.parents('.upload-row').find('.btn-browse ').show();
+	            selector.hide();
+		  	}
+		})
 
+	});
+
+	$(document).on('click',".remove-img",function (e) {
+		var selector = $(this);
+		var attachment_id = selector.data('attachment_id');
+
+		if (attachment_id != '') {
+			Swal.fire({
+			  title: 'Are you sure?',
+			  text: "Image will be delete Permanently",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+			  	if (result.isConfirmed) {
+	       			
+			  	}
+			})
+		} else {
+			selector.find('.main-row').remove();
+		}
+
+	});
+
+	$(document).on('click',".img-preview",function (e) {
+		var selector = $(this);
 
 		Swal.fire({
 		  title: 'Are you sure?',

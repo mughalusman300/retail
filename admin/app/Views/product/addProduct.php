@@ -133,6 +133,17 @@
 							</div>
 							<div class="card-body">
 								<div class="row mb-2">
+
+									<div class="col-4">
+										<label class="form-label">Purchasing Unit</label>
+										<select name="purch_unit" id="purch_unit" class="form-control select2 purch_unit validate-input select">
+											<option value="">Select</option>
+											<?php foreach($uom as $row) :?>
+												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
+											<?php endforeach; ?>
+										</select>
+									</div>
+
 									<div class="col-4">
 										<label class="form-label">Inventory Unit</label>
 										<select name="inv_unit" id="inv_unit" class="form-control inv_unit validate-input select">
@@ -144,8 +155,25 @@
 									</div>
 
 									<div class="col-4">
-										<label class="form-label">Purchasing Unit</label>
-										<select name="purch_unit" id="purch_unit" class="form-control select2 purch_unit validate-input select">
+										<label class="form-label">Sale Unit</label>
+										<select name="sale_unit" id="sale_unit" class="form-control select2 sale_unit validate-input select ">
+											<option value="">Select</option>
+											<?php foreach($uom as $row) :?>
+												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
+											<?php endforeach; ?>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-2">
+
+									<div class="col-4">
+										<label class="form-label">Purch Unit</label>
+										<input type="text" readonly="" value="1 Bundale =">
+									</div>
+
+									<div class="col-4">
+										<label class="form-label">Inventory Unit</label>
+										<select name="inv_unit" id="inv_unit" class="form-control inv_unit validate-input select">
 											<option value="">Select</option>
 											<?php foreach($uom as $row) :?>
 												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
@@ -179,8 +207,10 @@
 									</div>
 									<div class="row mb-3">
 										<div class="col-2 text-center">
-											<input type="checkbox" class="default" name="default" value="1">
-											<input type="hidden" class="default_image" name="default_image[]" value="">
+											<div class="form-check form-switch mt-1">
+				                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
+												<input type="hidden" class="default_image" name="default_image[]" value="">
+				                        	</div>
 										</div>
 
 										<div class="col-10 upload-row">
@@ -191,7 +221,7 @@
 
 											<button type="button" class=" btn btn-default btn-browse form-control ">
 							                    <i class="fa fa-cloud-upload"></i>
-							                    Uploade Image           
+							                    Upload Image           
 							                </button>
 										</div>
 									</div>
@@ -202,54 +232,6 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="card mb-4">
-							<div class="card-header bg-none fw-bold d-flex align-items-center">
-								<div class="flex-1">
-									<div>Sales channels (2/3)</div>
-								</div>
-								<div><a href="#" class="text-decoration-none fw-normal link-secondary">Manage</a></div>
-							</div>
-							<div class="card-body">
-								<div class="d-flex">
-									<div class="flex-1 d-flex">
-										<div class="me-3"><i class="fa fa-store fa-lg fa-fw text-body text-opacity-25"></i></div>
-										<div>Online Store</div>
-										<span class="badge bg-theme-subtle text-theme fw-bold fs-12px ms-auto me-2 d-flex align-items-center">2022-01-05</span>
-									</div>
-									<div class="w-50px text-center"><a href="#" class="text-decoration-none link-secondary"><i class="fa fa-calendar fa-lg"></i></a></div>
-								</div>
-								<hr class="my-3 opacity-1">
-								<div class="d-flex">
-									<div class="flex-1 d-flex">
-										<div class="me-3"><i class="fab fa-shopify fa-lg fa-fw text-body text-opacity-25"></i></div>
-										<div>Shopify</div>
-										<span class="badge bg-theme-subtle text-theme fw-bold fs-12px ms-auto me-2 d-flex align-items-center">2022-01-05</span>
-									</div>
-									<div class="w-50px text-center"><a href="#" class="text-decoration-none link-secondary"><i class="fa fa-calendar fa-lg"></i></a></div>
-								</div>
-								<hr class="my-3 opacity-1">
-								<div class="d-flex">
-									<div class="flex-1 d-flex">
-										<div class="me-3"><i class="fab fa-amazon fa-lg fa-fw text-body text-opacity-25"></i></div>
-										<div>
-											<div>Amazon</div>
-											<div class="d-flex mt-1 text-body text-opacity-50 small">
-												<div><i class="fa fa-circle text-warning fs-6px d-block mt-2"></i></div>
-												<div class="flex-1 ps-2">
-													<div class="mb-2">
-														Amazon is disconnected. Connect your Amazon Seller Central account to continue using this sales channel.
-													</div>
-													<a href="#">Learn more</a>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="w-50px text-center"><a href="#" class="text-decoration-none link-secondary"><i class="fa fa-circle-xmark fa-lg fa-fw"></i></a></div>
-								</div>
-							</div>
-						</div>
-
 
 						<div class="card mb-4">
 							<div class="card-header bg-none fw-bold d-flex align-items-center">

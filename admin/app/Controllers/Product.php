@@ -144,7 +144,7 @@ class Product extends BaseController
         $category_id = $this->request->getVar('category_id');
         $keywords = $this->request->getVar('keywords');
         $product_code_exist = $this->Commonmodel->Duplicate_check(array('product_code' => $product_code), 'saimtech_product');
-         // dd($_POST);
+         // dd($_FILES);
         if (!$product_code_exist) {
             $data = array( 
                 'product_name' =>  $product_name,
@@ -166,23 +166,31 @@ class Product extends BaseController
 
             foreach($_POST['default_image'] as $key => $value){
                 $default_image = $this->request->getVar("default_image")[$key];
-                if ($default_image == 1) {
-                    $img = $this->request->getFileMultiple("product_img")[$key];
+                $img = $this->request->getFileMultiple("product_img")[$key];
 
-                    if ($img != ""){ 
-                        $path     = 'assets/img/product';
-                        $img_name = $img->getRandomName();
-                        $full_db_path = $path."".$img_name;
-                        $img->move($path, $img_name);
+                if ($img != ""){ 
+                    $path     = 'assets/img/product';
+                    $img_name = $img->getRandomName();
+                    $full_db_path = $path."".$img_name;
+                    $img->move($path, $img_name);
 
-                        $imag_data = [
-                           'product_img' =>  'product/'. $img_name,
-                        ];
+                    $imag_data = [
+                       'product_img' =>  'product/'. $img_name,
+                    ];
 
-                        $this->Commonmodel->update_record($imag_data, array('product_id' => $product_id), 'saimtech_product');
 
-                    }
+                }
+                if ($img != "") {
+                    $img_arr = [
+                        'table_name' => 'saimtech_product',
+                        'rec_id' => $product_id,
+                        'file' =>  'product/'. $img_name,
+                    ];
+                    $this->Commonmodel->insert_record($img_arr, 'saimtech_attachments');
+                }
+                if ($default_image == 1 && $img != "") {
                     
+                    $this->Commonmodel->update_record($imag_data, array('product_id' => $product_id), 'saimtech_product');
                 }
             }
         }
@@ -199,6 +207,10 @@ class Product extends BaseController
         $data['categories'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_category');
         $data['variants'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_variant');
         $data['groups'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_group');
+        $data['attahements'] = $this->Commonmodel->getRows(array('conditions' => array('rec_id' => $product_id)), 'saimtech_attachments');
+
+        // dd($data['attahements']);
+        
         $data['product'] = $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_product');
         if ($product) {
             $data['main_content'] = 'product/updateProduct';
