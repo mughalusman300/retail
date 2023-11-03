@@ -67,11 +67,12 @@ class Product extends BaseController
                 $check = $this->Productmodel->check_conversion_apply($row->product_id);
 
                 if ($check) {
-                    $action .= '<a  href="'. $edit_url .'" class="btn btn-outline-theme edit-product"
+                    $action .= '<button type="button" class="btn btn-outline-theme conversion"
                         data-product_id="'.$row->product_id.'"
-                        data-product_code="'.$row->product_code.'" 
-                        data-product_desc="'.$row->product_desc.'"
-                        >Conversion</a>
+                        data-purch_unit="'.$row->purch_unit.'"
+                        data-inv_unit="'.$row->inv_unit.'" 
+                        data-sale_unit="'.$row->sale_unit.'" 
+                        >Conversion</button>
                     ';
                 }
 
@@ -255,6 +256,47 @@ class Product extends BaseController
             // dd($update_data);
 
             $this->Commonmodel->update_record($update_data, array('product_id' => $product_id), 'saimtech_product');
+        }
+
+        return redirect()->to('/product/');
+    }
+
+    public function add_conversion() {
+        // dd($_POST);
+        $product_id = $this->request->getVar('product_id');
+        $purch_unit = $this->request->getVar('purch_unit');
+        $inv_unit = $this->request->getVar('inv_unit');
+        $sale_unit = $this->request->getVar('sale_unit');
+
+        //Purchase to Inventory Conversion
+        $big_unit = $this->request->getVar('big_unit');
+        $small_unit_qty = $this->request->getVar('small_unit_qty');
+        $small_unit = $this->request->getVar('small_unit');
+
+        if ($big_unit != '' && $small_unit_qty != '' && $small_unit != '') {
+            $data = array(
+                'big_unit' => $big_unit,
+                'small_unit_qty' => $small_unit_qty,
+                'small_unit' => $small_unit,
+                'created_by' => $_SESSION['user_id']
+            );
+            $this->Commonmodel->insert_record($data, 'saimtech_purch_to_inv_conversion');
+        }
+
+        //Inventory To Sale Conversion
+        $big_unit_2 = $this->request->getVar('big_unit_2');
+        $small_unit_qty_2 = $this->request->getVar('small_unit_qty_2');
+        $small_unit_2 = $this->request->getVar('small_unit_2');
+
+        if ($big_unit_2 != '' && $small_unit_qty_2 != '' && $small_unit_2 != '') {
+            $data = array(
+                'big_unit' => $big_unit_2,
+                'small_unit_qty' => $small_unit_qty_2,
+                'small_unit' => $small_unit_2,
+                'created_by' => $_SESSION['user_id']
+            );
+
+            $this->Commonmodel->insert_record($data, 'saimtech_inv_to_sale_conversion');
         }
 
         return redirect()->to('/product/');
