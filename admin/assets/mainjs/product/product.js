@@ -172,70 +172,7 @@ $(document).ready(function(){
 			var search = $(".deactive_search").val();
 			deactiveProductList(search);	
 	});
-	
-	$(document).on('click', '.add-category', function(){
-		$('.category-modal').modal('show');
-		$('.save').data('type', 'add');
-		$('.save').text('Save');
-	});
 
-	$(document).on('click', '.edit-category', function(){
-		$('.category-modal').find('.modal-title').text('Update Category');
-		$('.category-modal').modal('show');
-		$('.save').data('type', 'update');
-		$('.save').text('Update');
-
-		$('.category_id').val($(this).data('category_id'));
-		$('.cat_title').val($(this).data('title'));
-		$('.code').val($(this).data('code'));
-		$('.desc').val($(this).data('desc'));
-	});
-
-	$(document).on('click', '.save', function(){
-		var validate = checkValidation('.category-modal');
-		if (validate) {
-			var type = $(this).data('type');
-			var category_id = $('.category_id').val();
-			var title = $('.cat_title').val();
-			var code = $('.code').val();
-			var desc = $('.desc').val();
-
-			if (type == 'add') {
-				var mydata = {type: type, title: title, code: code, desc: desc };
-				var notify_title = 'Category Add';
-				var notify_text = 'Category Add successfully!';
-			} else {
-				var mydata = {category_id: category_id, type: type, title: title, code: code, desc: desc };
-				var notify_title = 'Category Update';
-				var notify_text = 'Category Update successfully!';
-			}
-
-			$.ajax({
-				url: base + "/category/add",
-				type: "POST",
-				data: mydata,        
-				success: function(data) {
-				    if (data.success) {
-					    $(".category-modal").modal('hide');	
-					    Swal.fire(notify_title, notify_text, 'success');
-					    table.ajax.reload();
-					} else {
-						Swal.fire('', data.msg, 'error');
-						$('.code').addClass('is-invalid');
-					}
-				}
-			});		
-		}
-
-	});
-
-	$('.category-modal').on('hidden.bs.modal', function (e) {
-		$('.category-modal').find('.modal-title').text('Add Category');
-	    $('.category_id').val('');
-	    $('.cat_title').val('');
-	    $('.code').val('');
-	    $('.desc').val('');
-	});
 
 	$(document).on('click', '#is_active', function(){
 		var product_id = $(this).data('product_id');
@@ -258,6 +195,125 @@ $(document).ready(function(){
 				}
 			}
 		});	
+	});
+
+	$('.conversion-modal').on('hidden.bs.modal', function (e) {
+		$('.conversion-modal').find('input').val('');
+		$('.conversion-modal').find('.select').val('');
+		$('.conversion-modal').find('.input').removeClass('is-invalid');
+		$('.conversion-modal').find('.select').removeClass('is-invalid'); 
+	});
+
+
+	$(document).on('click', '.conversion', function(){
+		var conversion = $(this).data('conversion');
+		var product_id = $(this).data('product_id');
+		var purch_unit = $(this).data('purch_unit');
+		var inv_unit = $(this).data('inv_unit');
+		var sale_unit = $(this).data('sale_unit');
+
+		$('.product_id').val(product_id);
+		$('.purch_unit').val(purch_unit);
+		$('.inv_unit').val(inv_unit);
+		$('.sale_unit').val(sale_unit);
+		$('.type').val('add');
+
+		if (purch_unit != inv_unit) {
+			var selector = $('.big_unit');
+			var html = `
+						<option value="">Select</option>
+						<option value="${purch_unit}">${purch_unit} (Purchase Unit)</option>
+						<option value="${inv_unit}">${inv_unit} (Inventory Unit)</option>
+						`;
+			selector.html(html);
+			$('.purch-inv-conversion').removeClass('d-none');
+		}
+
+		if (inv_unit != sale_unit) {
+			var selector = $('.big_unit_2');
+			var html = `
+						<option value="">Select</option>
+						<option value="${inv_unit}">${inv_unit} (Inventory Unit)</option>
+						<option value="${sale_unit}">${sale_unit} (Sale Unit)</option>
+						`;
+			selector.html(html);
+			$('.inv-sale-conversion').removeClass('d-none');
+		}
+
+
+		$('.conversion-modal').find('.modal-title').text('Add Conversion');
+		$('.conversion-modal').find('.save').attr('data-type', 'add');
+		$('.conversion-modal').find('.save').text('Add');
+
+		if (conversion) {
+			var purch_inv_conv = $(this).data('purch_inv_conv');
+			if (purch_inv_conv) {
+				$('.big_unit').val(purch_inv_conv.big_unit);
+				$('.small_unit_qty').val(purch_inv_conv.small_unit_qty);
+				$('.small_unit').val(purch_inv_conv.small_unit);
+			}
+			var inv_sale_conv = $(this).data('inv_sale_conv');
+			if (inv_sale_conv) {
+				console.log(inv_sale_conv.big_unit);
+
+				$('.big_unit_2').val(inv_sale_conv.big_unit);
+				$('.small_unit_qty_2').val(inv_sale_conv.small_unit_qty);
+				$('.small_unit_2').val(inv_sale_conv.small_unit);
+			}
+
+			$('.conversion-modal').find('.modal-title').text('Update Conversion');
+			$('.conversion-modal').find('.save').attr('data-type', 'update');
+			$('.conversion-modal').find('.save').text('Update');
+			$('.type').val('update');
+		}
+		$('.conversion-modal').modal('show');
+	});
+
+	//Purchase to Inventory Conversion
+	$(document).on('change', '.big_unit', function() {
+		var big_unit = $(this).val();
+
+		if (big_unit != '') {
+			var purch_unit = $('.purch_unit').val();
+			var inv_unit = $('.inv_unit').val();
+
+			if (big_unit == purch_unit) {
+				$('.small_unit').val(inv_unit);
+			} else {
+				$('.small_unit').val(purch_unit);
+			}
+
+		} else {
+			$('.small_unit').val('');
+		}
+	});
+
+	//Inventory To Sale Conversion
+	$(document).on('change', '.big_unit_2', function() {
+		var big_unit_2 = $(this).val();
+
+		if (big_unit_2 != '') {
+			var inv_unit = $('.inv_unit').val();
+			var sale_unit = $('.sale_unit').val();
+
+			if (big_unit_2 == sale_unit) {
+				$('.small_unit_2').val(inv_unit);
+			} else {
+				$('.small_unit_2').val(sale_unit);
+			}
+
+		} else {
+			$('.small_unit_2').val('');
+		}
+	});
+
+	$(document).on('click', '.save', function(){	
+		var validate = checkValidation('.conversion-modal');
+		if (!validate) {
+			return false;
+		} else {
+			$('form').submit()
+		}
 	});
 
 });
