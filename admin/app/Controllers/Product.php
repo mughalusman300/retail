@@ -66,14 +66,31 @@ class Product extends BaseController
 
                 $check = $this->Productmodel->check_conversion_apply($row->product_id);
 
+                $conversion = 0;
+                $purch_inv_conv = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $row->product_id, 'active' => 1)), 'saimtech_purch_to_inv_conversion');
+                $inv_sale_conv = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $row->product_id, 'active' => 1)), 'saimtech_inv_to_sale_conversion');
+
+                if ($purch_inv_conv) {
+                    $conversion = 1;
+                }
+
+                if ($inv_sale_conv) {
+                    $conversion = 1;
+                }
+
+                $purch_inv_conv = json_encode($purch_inv_conv);
+                $inv_sale_conv = json_encode($inv_sale_conv);
                 if ($check) {
-                    $action .= '<button type="button" class="btn btn-outline-theme conversion"
-                        data-product_id="'.$row->product_id.'"
-                        data-purch_unit="'.$row->purch_unit.'"
-                        data-inv_unit="'.$row->inv_unit.'" 
-                        data-sale_unit="'.$row->sale_unit.'" 
+                    $action .= "<button type='button' class='btn btn-outline-theme conversion'
+                        data-conversion='".$conversion."'
+                        data-purch_inv_conv='".$purch_inv_conv."'
+                        data-inv_sale_conv='".$inv_sale_conv."'
+                        data-product_id='".$row->product_id."'
+                        data-purch_unit='".$row->purch_unit."'
+                        data-inv_unit='".$row->inv_unit."' 
+                        data-sale_unit='".$row->sale_unit."' 
                         >Conversion</button>
-                    ';
+                    ";
                 }
 
                 $img = IMGURL.$row->product_img;
@@ -262,7 +279,7 @@ class Product extends BaseController
     }
 
     public function add_conversion() {
-        // dd($_POST);
+        dd(date('Y-m-d H:i:s'));
         $product_id = $this->request->getVar('product_id');
         $purch_unit = $this->request->getVar('purch_unit');
         $inv_unit = $this->request->getVar('inv_unit');
@@ -272,9 +289,15 @@ class Product extends BaseController
         $big_unit = $this->request->getVar('big_unit');
         $small_unit_qty = $this->request->getVar('small_unit_qty');
         $small_unit = $this->request->getVar('small_unit');
-
+        $type = $this->request->getVar('type');
+        if($type == 'update') {
+            $data = array('active' => 0, 'deactivated_by' => $_SESSION['user_id'], 'deactivated_at' => date('Y-m-d H:i:s'));
+            $this->Commonmodel->update_record($data, array('product_id' => $product_id, 'active' => 1), 'saimtech_purch_to_inv_conversion');
+            $this->Commonmodel->update_record($data, array('product_id' => $product_id, 'active' => 1), 'saimtech_inv_to_sale_conversion');
+        }
         if ($big_unit != '' && $small_unit_qty != '' && $small_unit != '') {
             $data = array(
+                'product_id' => $product_id,
                 'big_unit' => $big_unit,
                 'small_unit_qty' => $small_unit_qty,
                 'small_unit' => $small_unit,
@@ -290,6 +313,7 @@ class Product extends BaseController
 
         if ($big_unit_2 != '' && $small_unit_qty_2 != '' && $small_unit_2 != '') {
             $data = array(
+                'product_id' => $product_id,
                 'big_unit' => $big_unit_2,
                 'small_unit_qty' => $small_unit_qty_2,
                 'small_unit' => $small_unit_2,

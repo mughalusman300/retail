@@ -198,7 +198,7 @@ $(document).ready(function(){
 	});
 
 	$('.conversion-modal').on('hidden.bs.modal', function (e) {
-		$('.conversion-modal').find('.input').val('');
+		$('.conversion-modal').find('input').val('');
 		$('.conversion-modal').find('.select').val('');
 		$('.conversion-modal').find('.input').removeClass('is-invalid');
 		$('.conversion-modal').find('.select').removeClass('is-invalid'); 
@@ -206,6 +206,7 @@ $(document).ready(function(){
 
 
 	$(document).on('click', '.conversion', function(){
+		var conversion = $(this).data('conversion');
 		var product_id = $(this).data('product_id');
 		var purch_unit = $(this).data('purch_unit');
 		var inv_unit = $(this).data('inv_unit');
@@ -215,29 +216,56 @@ $(document).ready(function(){
 		$('.purch_unit').val(purch_unit);
 		$('.inv_unit').val(inv_unit);
 		$('.sale_unit').val(sale_unit);
+		$('.type').val('add');
 
 		if (purch_unit != inv_unit) {
 			var selector = $('.big_unit');
 			var html = `
 						<option value="">Select</option>
-						<option value="${purch_unit}">${purch_unit}</option>
-						<option value="${inv_unit}">${inv_unit}</option>
+						<option value="${purch_unit}">${purch_unit} (Purchase Unit)</option>
+						<option value="${inv_unit}">${inv_unit} (Inventory Unit)</option>
 						`;
 			selector.html(html);
-			// $('.purch-inv-conversion').removeClass('d-none');
+			$('.purch-inv-conversion').removeClass('d-none');
 		}
 
 		if (inv_unit != sale_unit) {
 			var selector = $('.big_unit_2');
 			var html = `
 						<option value="">Select</option>
-						<option value="${inv_unit}">${inv_unit}</option>
-						<option value="${sale_unit}">${sale_unit}</option>
+						<option value="${inv_unit}">${inv_unit} (Inventory Unit)</option>
+						<option value="${sale_unit}">${sale_unit} (Sale Unit)</option>
 						`;
 			selector.html(html);
 			$('.inv-sale-conversion').removeClass('d-none');
 		}
 
+
+		$('.conversion-modal').find('.modal-title').text('Add Conversion');
+		$('.conversion-modal').find('.save').attr('data-type', 'add');
+		$('.conversion-modal').find('.save').text('Add');
+
+		if (conversion) {
+			var purch_inv_conv = $(this).data('purch_inv_conv');
+			if (purch_inv_conv) {
+				$('.big_unit').val(purch_inv_conv.big_unit);
+				$('.small_unit_qty').val(purch_inv_conv.small_unit_qty);
+				$('.small_unit').val(purch_inv_conv.small_unit);
+			}
+			var inv_sale_conv = $(this).data('inv_sale_conv');
+			if (inv_sale_conv) {
+				console.log(inv_sale_conv.big_unit);
+
+				$('.big_unit_2').val(inv_sale_conv.big_unit);
+				$('.small_unit_qty_2').val(inv_sale_conv.small_unit_qty);
+				$('.small_unit_2').val(inv_sale_conv.small_unit);
+			}
+
+			$('.conversion-modal').find('.modal-title').text('Update Conversion');
+			$('.conversion-modal').find('.save').attr('data-type', 'update');
+			$('.conversion-modal').find('.save').text('Update');
+			$('.type').val('update');
+		}
 		$('.conversion-modal').modal('show');
 	});
 

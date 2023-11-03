@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2023 at 08:57 AM
+-- Generation Time: Nov 03, 2023 at 01:04 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -28,21 +28,37 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `saimtech_inv_to_sale_conversion` (
-  `id` int(11) NOT NULL DEFAULT 0,
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `big_unit` varchar(30) NOT NULL,
   `small_unit_qty` int(11) NOT NULL,
   `small_unit` varchar(30) NOT NULL,
   `created_by` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `deactivated_by` int(11) NOT NULL DEFAULT 0,
+  `deactivated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `saimtech_inv_to_sale_conversion`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `saimtech_inv_to_sale_conversion` (`id`, `big_unit`, `small_unit_qty`, `small_unit`, `created_by`, `created_at`, `updated_at`) VALUES
-(0, 'KG', 16, 'LM', 1, '2023-11-03 12:56:59', '2023-11-03 07:56:59');
+--
+-- Indexes for table `saimtech_inv_to_sale_conversion`
+--
+ALTER TABLE `saimtech_inv_to_sale_conversion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `saimtech_inv_to_sale_conversion`
+--
+ALTER TABLE `saimtech_inv_to_sale_conversion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

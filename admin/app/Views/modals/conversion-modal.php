@@ -13,6 +13,7 @@
 							<input type="hidden" name="purch_unit" class="purch_unit">
 							<input type="hidden" name="inv_unit" class="inv_unit">
 							<input type="hidden" name="sale_unit" class="sale_unit">
+							<input type="hidden" name="type" class="type">
 
 							<div class="card purch-inv-conversion d-none">
 							  	<div class="card-header">
