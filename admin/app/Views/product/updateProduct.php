@@ -175,7 +175,7 @@
 
 												<div class="col-10 upload-row text-end">
 													<div class="img-col">
-														<img  src="<?=URL?>/assets/img/<?= $row->file.img_version ?>" alt="no file" class="img-preview product-img-preview saved-img"/>			
+														<img  src="<?=IMGURL?>/<?= $row->file.img_version ?>" alt="no file" class="img-preview product-img-preview saved-img"/>			
 													</div>
 													<button 
 														type="button" 

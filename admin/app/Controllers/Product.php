@@ -198,7 +198,7 @@ class Product extends BaseController
                 $img = $this->request->getFileMultiple("product_img")[$key];
 
                 if ($img != ""){ 
-                    $path     = 'assets/img/product';
+                    $path     = 'assets/uploads/img/product';
                     $img_name = $img->getRandomName();
                     $full_db_path = $path."".$img_name;
                     $img->move($path, $img_name);
@@ -343,7 +343,7 @@ class Product extends BaseController
         $attachment = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('attachment_id' => $attachment_id)), 'saimtech_attachments');
 
         $this->Commonmodel->Delete_record('saimtech_attachments', 'attachment_id', $attachment_id);
-        unlink("assets/img/" . $attachment->file);
+        unlink("assets/uploads/img/" . $attachment->file);
 
         $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $attachment->rec_id)), 'saimtech_product');
 
@@ -363,7 +363,7 @@ class Product extends BaseController
         $img = $this->request->getFile("file");
 
         if ($img != ""){ 
-            $path     = 'assets/img/product';
+            $path     = 'assets/uploads/img/product';
             $img_name = $img->getRandomName();
             $full_db_path = $path."".$img_name;
             $img->move($path, $img_name);

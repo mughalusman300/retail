@@ -1,6 +1,6 @@
 <?php
 define('URL','http://localhost/retail/admin');
-define('IMGURL','http://localhost/retail/admin/assets/img/');
+define('IMGURL','http://localhost/retail/admin/assets/uploads/img/');
 define("AAURL","http://localhost/");
 define('SERVER','localhost');
 define('DBNAME','retail');
