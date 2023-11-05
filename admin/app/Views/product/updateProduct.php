@@ -31,7 +31,7 @@
 							<div class="card-body">
 								<div class="row mb-3">
 									<div class="col-6">
-										<input type="hidden" name="product_id" value="<?= $product->product_id; ?>">
+										<input type="hidden" name="product_id" class="product_id" value="<?= $product->product_id; ?>">
 										<label class="form-label">Product Name <span class="text-danger">*</span></label>
 										<input type="text" class="form-control validate-input product_name" name="product_name" placeholder="Product name" value="<?= $product->product_name ?>">
 									</div>
@@ -168,7 +168,8 @@
 												<div class="col-2 text-center">
 													<div class="form-check form-switch mt-1">
 						                            	<input type="checkbox" class="form-check-input default" name="default" value="1" <?= ($product->product_img == $row->file) ? 'checked' : '' ?>>
-														<input type="hidden" class="default_image" name="default_image[]" value="">
+														<input type="hidden" class="default_image" name="default_image" value="">
+														<input type="hidden" class="attachment_id" name="attachment_id" value="<?= $row->attachment_id ?>">
 						                        	</div>
 												</div>
 
@@ -187,18 +188,27 @@
 											</div>
 										<?php endforeach;?>
 									<?php else: ?>
-										<div class="row mb-3">
+										<div class="row mb-3 main-row">
 											<div class="col-2 text-center">
 												<div class="form-check form-switch mt-1">
 					                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
-													<input type="hidden" class="default_image" name="default_image[]" value="">
+													<input type="hidden" class="default_image" name="default_image" value="">
+													<input type="hidden" class="attachment_id" name="attachment_id" value="">
 					                        	</div>
 											</div>
 
-											<div class="col-10 upload-row">
+											<div class="col-10 upload-row text-end">
 												<div style="width: 92%" class="img-col">
 													<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
 												</div>
+												<button
+													style="display: none;" 
+													type="button" 
+													class="btn btn-sm btn-danger remove-img mt-1"
+													data-attachment_id=""
+												>
+													Delete
+												</button>
 												<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
 
 												<button type="button" class=" btn btn-default btn-browse form-control ">
@@ -215,54 +225,6 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="card mb-4">
-							<div class="card-header bg-none fw-bold d-flex align-items-center">
-								<div class="flex-1">
-									<div>Sales channels (2/3)</div>
-								</div>
-								<div><a href="#" class="text-decoration-none fw-normal link-secondary">Manage</a></div>
-							</div>
-							<div class="card-body">
-								<div class="d-flex">
-									<div class="flex-1 d-flex">
-										<div class="me-3"><i class="fa fa-store fa-lg fa-fw text-body text-opacity-25"></i></div>
-										<div>Online Store</div>
-										<span class="badge bg-theme-subtle text-theme fw-bold fs-12px ms-auto me-2 d-flex align-items-center">2022-01-05</span>
-									</div>
-									<div class="w-50px text-center"><a href="#" class="text-decoration-none link-secondary"><i class="fa fa-calendar fa-lg"></i></a></div>
-								</div>
-								<hr class="my-3 opacity-1">
-								<div class="d-flex">
-									<div class="flex-1 d-flex">
-										<div class="me-3"><i class="fab fa-shopify fa-lg fa-fw text-body text-opacity-25"></i></div>
-										<div>Shopify</div>
-										<span class="badge bg-theme-subtle text-theme fw-bold fs-12px ms-auto me-2 d-flex align-items-center">2022-01-05</span>
-									</div>
-									<div class="w-50px text-center"><a href="#" class="text-decoration-none link-secondary"><i class="fa fa-calendar fa-lg"></i></a></div>
-								</div>
-								<hr class="my-3 opacity-1">
-								<div class="d-flex">
-									<div class="flex-1 d-flex">
-										<div class="me-3"><i class="fab fa-amazon fa-lg fa-fw text-body text-opacity-25"></i></div>
-										<div>
-											<div>Amazon</div>
-											<div class="d-flex mt-1 text-body text-opacity-50 small">
-												<div><i class="fa fa-circle text-warning fs-6px d-block mt-2"></i></div>
-												<div class="flex-1 ps-2">
-													<div class="mb-2">
-														Amazon is disconnected. Connect your Amazon Seller Central account to continue using this sales channel.
-													</div>
-													<a href="#">Learn more</a>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="w-50px text-center"><a href="#" class="text-decoration-none link-secondary"><i class="fa fa-circle-xmark fa-lg fa-fw"></i></a></div>
-								</div>
-							</div>
-						</div>
-
 
 						<div class="card mb-4">
 							<div class="card-header bg-none fw-bold d-flex align-items-center">
@@ -308,7 +270,7 @@
 								</div>
 							</div>
 							<div class="card-body">
-								<input type="text" id='keywords' class="form-control keywords" name="keywords" value="<?= $product->keywords ?>">
+								<input type="hidden" id='keywords' class="form-control keywords" name="keywords" value="<?= $product->keywords ?>">
 								<ul id="tags" class="tagit form-control mb-3 keywords-ul"> </ul>
 								<!-- <div class="small"><a href="#">View all tags</a></div> -->
 							</div>

@@ -39,11 +39,12 @@ $(document).ready(function() {
 	});
 
 	$(document).on('click', '.add-more-image', function(){
-		var html = `<div class="row mb-3">
+		var html = `<div class="row mb-3 main-row">
 						<div class="col-2 text-center">
 							<div class="form-check form-switch mt-1">
                             	<input type="checkbox" class="form-check-input default" name="default" value="1">
-								<input type="hidden" class="default_image" name="default_image[]" value="">
+								<input type="hidden" class="default_image" name="default_image" value="">
+								<input type="hidden" class="attachment_id" name="attachment_id" value="">
                         	</div>
 						</div>
 
@@ -76,6 +77,21 @@ $(document).ready(function() {
 
 		if ($(this).prop("checked", true)) {
 			$(this).closest('div').find('.default_image').val(1);
+			var attachment_id = $(this).closest('div').find('.attachment_id').val();
+			var product_id = $('.product_id').val();
+			if (attachment_id != '') {
+				$.ajax({
+					url: base + "/product/default_image",
+					type : 'post',
+					'async': true,
+					data : {product_id: product_id, attachment_id: attachment_id},
+					success : function(data) {
+					    if (data.success) {
+					    	Swal.fire('Default Image!', 'Image set default successfully!', 'success');
+						}
+					}
+				});
+			}
 		}
 
 		$('.default').prop('checked', false);
@@ -117,13 +133,52 @@ $(document).ready(function() {
 			  confirmButtonText: 'Yes, delete it!'
 			}).then((result) => {
 			  	if (result.isConfirmed) {
-	       			
+			  		var mydata = {attachment_id: attachment_id};
+	       			$.ajax({
+	       				url: base + "/product/remove_image",
+	       				type: "POST",
+	       				data: mydata,        
+	       				success: function(data) {
+	       				    if (data.success) {
+	       					    Swal.fire('Delete Image!', 'Image Deleted Successfully!', 'success');
+	       					    selector.closest('.main-row').remove();
+	       					}
+	       				}
+	       			});	
 			  	}
 			})
 		} else {
-			selector.find('.main-row').remove();
+			selector.closest('.main-row').remove();
 		}
 
+	});
+	$(document).on("change", ".attachment-file", function (e) {
+		var fd = new FormData(); 
+        var files = $(this)[0].files[0]; 
+        var default_image = $(this).closest('.row').find('.default_image').val();
+        var attachment_id_selector = $(this).closest('.row').find('.attachment_id');
+        var remove_img_selector = $(this).closest('.row').find('.remove-img');
+        var product_id = $('.product_id').val();
+        fd.append('file', files); 
+        fd.append('default_image', default_image); 
+        fd.append('product_id', product_id); 
+
+			$.ajax({
+				url: base + "/product/add_image",
+				type : 'post',
+				'async': true,
+				data : fd,
+				cache:false,
+				'processData': false,  // tell jQuery not to process the data
+				'contentType': false,  // tell jQuery not to set contentType
+				success : function(data) {
+				    if (data.success) {
+					    Swal.fire('Add Image!', 'Image added successfully!', 'success');
+					    attachment_id_selector.val(data.attachment_id);
+					    remove_img_selector.attr('data-attachment_id', data.attachment_id)
+					}
+				}
+			});
 	});
 
 	$(document).on('click',".img-preview",function (e) {

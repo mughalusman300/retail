@@ -291,7 +291,7 @@ class Product extends BaseController
     }
 
     public function add_conversion() {
-        dd(date('Y-m-d H:i:s'));
+        // dd(date('Y-m-d H:i:s'));
         $product_id = $this->request->getVar('product_id');
         $purch_unit = $this->request->getVar('purch_unit');
         $inv_unit = $this->request->getVar('inv_unit');
@@ -337,4 +337,86 @@ class Product extends BaseController
 
         return redirect()->to('/product/');
     }
+
+    public function remove_image() {
+        $attachment_id = $this->request->getVar('attachment_id');
+        $attachment = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('attachment_id' => $attachment_id)), 'saimtech_attachments');
+
+        $this->Commonmodel->Delete_record('saimtech_attachments', 'attachment_id', $attachment_id);
+        unlink("assets/img/" . $attachment->file);
+
+        $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $attachment->rec_id)), 'saimtech_product');
+
+        if ($attachment->file == $product->product_img) {
+            // $attachments = $this->Commonmodel->getRows(array('conditions' => array('rec_id' => $product->product_id)), 'saimtech_attachments');
+            $this->Commonmodel->update_record(array('product_img' => ''), array('product_id' => $product->product_id), 'saimtech_product');
+        }
+
+        $result = array('success' =>  true);
+        return $this->response->setJSON($result);
+
+    }
+
+    public function add_image(){
+        $product_id = $this->request->getVar('product_id');
+        $default_image = $this->request->getVar('default_image');
+        $img = $this->request->getFile("file");
+
+        if ($img != ""){ 
+            $path     = 'assets/img/product';
+            $img_name = $img->getRandomName();
+            $full_db_path = $path."".$img_name;
+            $img->move($path, $img_name);
+
+            $imag_data = [
+               'product_img' =>  'product/'. $img_name,
+            ];
+
+
+        }
+        if ($img != "") {
+            $img_arr = [
+                'table_name' => 'saimtech_product',
+                'rec_id' => $product_id,
+                'file' =>  'product/'. $img_name,
+            ];
+            $attachment_id = $this->Commonmodel->insert_record($img_arr, 'saimtech_attachments');
+        }
+        if ($default_image == 1 && $img != "") {
+            
+            $this->Commonmodel->update_record($imag_data, array('product_id' => $product_id), 'saimtech_product');
+        }
+        $result = array('success' =>  true, 'attachment_id' => $attachment_id);
+        return $this->response->setJSON($result);
+    }
+
+    public function default_image(){
+        $product_id = $this->request->getVar('product_id');
+        $attachment_id = $this->request->getVar('attachment_id');
+        $attachment = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('attachment_id' => $attachment_id)), 'saimtech_attachments');
+
+        $imag_data = [
+            'product_img' =>  $attachment->file,
+        ];
+        $this->Commonmodel->update_record($imag_data, array('product_id' => $product_id), 'saimtech_product');
+        $result = array('success' =>  true);
+        return $this->response->setJSON($result);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
