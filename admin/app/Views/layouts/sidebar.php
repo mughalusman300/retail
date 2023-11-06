@@ -22,7 +22,7 @@
                     </a>
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="email_inbox.html" class="menu-link">
+                            <a href="<?= URL?>/inventory" class="menu-link">
                                 <span class="menu-text">Inventory In</span>
                             </a>
                         </div>
