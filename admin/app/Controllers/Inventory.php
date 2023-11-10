@@ -25,6 +25,26 @@ class Inventory extends BaseController
         return view('layouts/page',$data);
     }
 
+
+    public function checkVariants() {
+        $product_id = $this->request->getVar('product_id');
+        $data['product'] = $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_product');
+        $data['purchase_conversion'] = $purchase_conversion = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_purch_to_inv_conversion');
+        // dd($purchase_conversion);
+        if ($product->v1 != '' || $product->v2 != '' || $product->v3 != '') {
+
+            $html = view('inventory/variants_section', $data);
+            // $html = $parser->setData($data)->render('inventory/variants_section');
+            $result = array('success' =>  true, 'html' => $html);
+            return $this->response->setJSON($result);
+        } else if($purchase_conversion){
+
+        } else {
+            $result = array('success' =>  false, 'msg' => 'Not any variant exist');
+            return $this->response->setJSON($result);
+        }
+    }
+
     public function categoryList(){
         $limit = $this->request->getVar('length');
         $start = $this->request->getVar('start');

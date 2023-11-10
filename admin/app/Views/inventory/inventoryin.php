@@ -52,29 +52,16 @@
 								</div>
 							</div>
 
-
-
-							<div class="">
+							<!-- <div class="">
 								<label class="form-label">Description <span class="text-danger">*</span></label>
 								<textarea class="summernote validate-input product_desc" name="product_desc" rows="10"></textarea>
-							</div>
+							</div> -->
 						</div>
 					</div>
-					<div class="card mb-4">
-						<div class="card-header d-flex align-items-center bg-none fw-bold">
-							Variants
-						</div>
-						<div class="card-body">
-							<div class="row mb-2">
-								<div class="col-4">
-									<label class="form-label">Variant 1</label>
-									<select name="v1" id="v1" class="form-control select2 v1">
-										<option value="">Select</option>
-									</select>
-								</div>
-							</div>
-						</div>
-					</div>
+
+				</div>
+				<div class="col-xl-12 response">
+					
 				</div>
 			</div>
 		</form>

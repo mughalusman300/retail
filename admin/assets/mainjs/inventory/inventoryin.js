@@ -1,5 +1,29 @@
 $(document).ready(function(){
 	
+
+	$(document).on('change', '.product_id', function() {
+		var product_id = $('.product_id').val();
+		if (product_id != '') {
+			var mydata = {product_id: product_id};
+			$.ajax({
+				url: base + "/Inventory/checkVariants",
+				type: "POST",
+				data: mydata,        
+				success: function(data) {
+				    if (data.success) {
+				    	$('.response').html(data.html);
+					}
+				}
+			});	
+
+		} else {
+
+		}
+
+
+
+	});
+
 	$(document).on('click', '.add-category', function(){
 		$('.category-modal').modal('show');
 		$('.save').data('type', 'add');
