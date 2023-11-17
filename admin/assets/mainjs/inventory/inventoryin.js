@@ -12,6 +12,8 @@ $(document).ready(function(){
 				success: function(data) {
 				    if (data.success) {
 				    	$('.response').html(data.html);
+					} else {
+						$('.response').html('');
 					}
 				}
 			});	
@@ -88,6 +90,29 @@ $(document).ready(function(){
 	    $('.desc').val('');
 	});
 
+	$(document).on('change', '.purch_qty', function(){
+		var purch_qty = $(this).val();
+		var p_to_i = $('#p_to_i').val();
+		var small_unit_qty = $('#small_unit_qty').val();
+
+		if (p_to_i == '*') {
+			$('.inv_qty').val(purch_qty * small_unit_qty);
+		} else {
+			$('.inv_qty').val(purch_qty / small_unit_qty);
+		}
+
+		var inv_qty = $('.inv_qty').val();
+		var i_to_s = $('#i_to_s').val();
+		var inv_small_unit_qty = $('#inv_small_unit_qty').val();
+
+		if (i_to_s == '*') {
+			$('.sale_qty').val(inv_qty * inv_small_unit_qty);
+		} else {
+			$('.sale_qty').val(inv_qty / inv_small_unit_qty);
+		}
+
+
+	});
 	$(document).on('click', '#is_active', function(){
 		var category_id = $(this).data('category_id');
 		if ($(this).is(":checked")) {

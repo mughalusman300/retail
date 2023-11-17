@@ -7,7 +7,7 @@
 					<li class="breadcrumb-item"><a href="javascript:;">PAGES</a></li>
 					<li class="breadcrumb-item active">PRODUCT DETAILS</li>
 				</ol>
-				<h1 class="page-header mb-0">Product Details</h1>
+				<h1 class="page-header mb-0">Inventory In</h1>
 			</div>
 		</div>
 		

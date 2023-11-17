@@ -29,16 +29,16 @@ class Inventory extends BaseController
     public function checkVariants() {
         $product_id = $this->request->getVar('product_id');
         $data['product'] = $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_product');
+        // dd($product);
         $data['purchase_conversion'] = $purchase_conversion = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_purch_to_inv_conversion');
-        // dd($purchase_conversion);
-        if ($product->v1 != '' || $product->v2 != '' || $product->v3 != '') {
 
+        $data['inv_conversion'] = $inv_conversion = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_inv_to_sale_conversion');
+
+        if ($product->v1 != '' || $product->v2 != '' || $product->v3 != '' || $purchase_conversion || $inv_conversion) {
             $html = view('inventory/variants_section', $data);
             // $html = $parser->setData($data)->render('inventory/variants_section');
             $result = array('success' =>  true, 'html' => $html);
             return $this->response->setJSON($result);
-        } else if($purchase_conversion){
-
         } else {
             $result = array('success' =>  false, 'msg' => 'Not any variant exist');
             return $this->response->setJSON($result);
