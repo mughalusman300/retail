@@ -20,6 +20,8 @@
 <link href="<?= URL ?>/assets/plugins/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet">
 <link href="<?= URL ?>/assets/plugins/tag-it/css/jquery.tagit.css" rel="stylesheet">
 <!-- <link href="<?= URL ?>/assets/plugins/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet"> -->
+
+<!-- <link href="<?= URL ?>/assets/plugins/select2/css/select2.min.css" rel="stylesheet"> -->
 <!-- ================== END page-css ================== -->
 
 <script type="text/javascript">

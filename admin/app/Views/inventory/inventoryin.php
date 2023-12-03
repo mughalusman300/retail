@@ -20,7 +20,7 @@
 						</div>
 						<div class="card-body">
 							<div class="row mb-3">
-								<div class="col-3">
+								<div class="col-4">
 									<label class="form-label">Product <span class="text-danger">*</span></label>
 									<select name="product_id" id="product_id" class="form-control select2 product_id">
 										<option value="">Select Product</option>
@@ -30,14 +30,14 @@
 									</select>
 								</div>
 
-								<div class="col-3">
+								<div class="col-4">
 									<label class="form-label">Supplier<span class="text-danger">*</span></label>
 									<select name="product_id" id="product_id" class="form-control select2 product_id">
 										<option value="">Select Supplier</option>
 										<option value="1"> Intel Corporation.</option>
 									</select>
 								</div>
-								<div class="col-3">
+								<div class="col-4">
 									<label class="form-label">Location<span class="text-danger">*</span></label>
 									<select name="location_id" id="location_id" class="form-control select2 location_id">
 										<option value="">Select Product</option>
@@ -46,10 +46,13 @@
 										<?php endforeach; ?>
 									</select>
 								</div>
-								<div class="col-3">
+								<!-- <div class="col-3">
 									<label class="form-label">Date <span class="text-danger"></span></label>
 									<input type="text" readonly value="<?= date('Y-m-d')?>" class="form-control date" name="date">
-								</div>
+								</div> -->
+							</div>
+
+							<div class="response">
 							</div>
 
 							<!-- <div class="">
@@ -59,9 +62,6 @@
 						</div>
 					</div>
 
-				</div>
-				<div class="col-xl-12 response">
-					
 				</div>
 			</div>
 		</form>

@@ -1,6 +1,5 @@
 $(document).ready(function(){
-	
-
+		
 	$(document).on('change', '.product_id', function() {
 		var product_id = $('.product_id').val();
 		if (product_id != '') {

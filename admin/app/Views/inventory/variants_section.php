@@ -4,70 +4,61 @@ $this->Commonmodel = new Commonmodel();
 ?>
 	
 	<?php if ($product->v1 != '' || $product->v2 != '' || $product->v3 != ''):?>
-		<div class="card mb-4">
-			<div class="card-header bg-none fw-bold">
-				Variants
-			</div>
-			<div class="card-body">
-
-				<div class="row mb-3">
-					<?php if($product->v1 != '') {
-						$variant = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('variant_name' => $product->v1)), 'saimtech_variant');
-						$variant_detail = $this->Commonmodel->getRows(array('conditions' => array('variant_id' => $variant->variant_id)), 'saimtech_variant_detail');
-						// dd($variant);
-					?>
-						<div class="col-4">
-							<label class="form-label"><?= $product->v2 ?> <span class="text-danger">*</span></label><br>
-							<select name="v1" id="v1" class="form-control select2 v1">
-								<option value="">Select</option>
-								<?php if($variant_detail):?>
-									<?php foreach($variant_detail as $row):?>
-										<option value="<?= $row->variant_detail_name ?>"><?= $row->variant_detail_name ?></option>
-									<?php endforeach;?>
-								<?php endif;?>
-							</select>
-						</div>
-					<?php } ?>
-
-					<?php if($product->v2 != '') {
-						$variant = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('variant_name' => $product->v2)), 'saimtech_variant');
-						$variant_detail = $this->Commonmodel->getRows(array('conditions' => array('variant_id' => $variant->variant_id)), 'saimtech_variant_detail');
-						// dd($variant);
-					?>
-						<div class="col-4">
-							<label class="form-label"><?= $product->v3 ?> <span class="text-danger">*</span></label><br>
-							<select name="v2" id="v2" class="form-control select2 v2">
-								<option value="">Select</option>
-								<?php if($variant_detail):?>
-									<?php foreach($variant_detail as $row):?>
-										<option value="<?= $row->variant_detail_name ?>"><?= $row->variant_detail_name ?></option>
-									<?php endforeach;?>
-								<?php endif;?>
-							</select>
-						</div>
-					<?php } ?>
-
-					<?php if($product->v3 != '') {
-						$variant = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('variant_name' => $product->v3)), 'saimtech_variant');
-						$variant_detail = $this->Commonmodel->getRows(array('conditions' => array('variant_id' => $variant->variant_id)), 'saimtech_variant_detail');
-						// dd($variant);
-					?>
-						<div class="col-4">
-							<label class="form-label"><?= $product->v1 ?> <span class="text-danger">*</span></label><br>
-							<select name="v3" id="v3" class="form-control select2 v3">
-								<option value="">Select</option>
-								<?php if($variant_detail):?>
-									<?php foreach($variant_detail as $row):?>
-										<option value="<?= $row->variant_detail_name ?>"><?= $row->variant_detail_name ?></option>
-									<?php endforeach;?>
-								<?php endif;?>
-							</select>
-						</div>
-					<?php } ?>
-
+		<div class="row mb-3">
+			<?php if($product->v1 != '') {
+				$variant = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('variant_name' => $product->v1)), 'saimtech_variant');
+				$variant_detail = $this->Commonmodel->getRows(array('conditions' => array('variant_id' => $variant->variant_id)), 'saimtech_variant_detail');
+				// dd($variant);
+			?>
+				<div class="col-4">
+					<label class="form-label"><?= $product->v1 ?> <span class="text-danger">*</span></label><br>
+					<select name="v1" id="v1" class="form-control select2 v1">
+						<option value="">Select</option>
+						<?php if($variant_detail):?>
+							<?php foreach($variant_detail as $row):?>
+								<option value="<?= $row->variant_detail_name ?>"><?= $row->variant_detail_name ?></option>
+							<?php endforeach;?>
+						<?php endif;?>
+					</select>
 				</div>
+			<?php } ?>
 
-			</div>
+			<?php if($product->v2 != '') {
+				$variant = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('variant_name' => $product->v2)), 'saimtech_variant');
+				$variant_detail = $this->Commonmodel->getRows(array('conditions' => array('variant_id' => $variant->variant_id)), 'saimtech_variant_detail');
+				// dd($variant);
+			?>
+				<div class="col-4">
+					<label class="form-label"><?= $product->v2 ?> <span class="text-danger">*</span></label><br>
+					<select name="v2" id="v2" class="form-control select2 v2">
+						<option value="">Select</option>
+						<?php if($variant_detail):?>
+							<?php foreach($variant_detail as $row):?>
+								<option value="<?= $row->variant_detail_name ?>"><?= $row->variant_detail_name ?></option>
+							<?php endforeach;?>
+						<?php endif;?>
+					</select>
+				</div>
+			<?php } ?>
+
+			<?php if($product->v3 != '') {
+				$variant = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('variant_name' => $product->v3)), 'saimtech_variant');
+				$variant_detail = $this->Commonmodel->getRows(array('conditions' => array('variant_id' => $variant->variant_id)), 'saimtech_variant_detail');
+				// dd($variant);
+			?>
+				<div class="col-4">
+					<label class="form-label"><?= $product->v3 ?> <span class="text-danger">*</span></label><br>
+					<select name="v3" id="v3" class="form-control select2 v3">
+						<option value="">Select</option>
+						<?php if($variant_detail):?>
+							<?php foreach($variant_detail as $row):?>
+								<option value="<?= $row->variant_detail_name ?>"><?= $row->variant_detail_name ?></option>
+							<?php endforeach;?>
+						<?php endif;?>
+					</select>
+				</div>
+			<?php } ?>
+
 		</div>
 	<?php endif;?>
 
@@ -102,34 +93,55 @@ $this->Commonmodel = new Commonmodel();
 
 
 		?>
-		<div class="card mb-4">
-			<div class="card-header bg-none fw-bold">
-				Conversion
+		<div class="row mb-3">
+			<input type="hidden" id= 'p_to_i' value="<?= $p_to_i ?>">
+			<input type="hidden" id= 'small_unit_qty' value="<?= $small_unit_qty ?>">
+			<input type="hidden" id= 'i_to_s' value="<?= $i_to_s ?>">
+			<input type="hidden" id= 'inv_small_unit_qty' value="<?= $inv_small_unit_qty ?>">
+			
+			<div class="col-4">
+				<label class="form-label">Purchase Qty (<?= $product->purch_unit ?>) <span class="text-danger">*</span></label><br>
+				<input type="text" class="form-control validate-input number purch_qty" name="purch_qty" placeholder="Purchase Qty">
 			</div>
-			<div class="card-body">
-				<div class="row mb-3">
-					<input type="hidden" id= 'p_to_i' value="<?= $p_to_i ?>">
-					<input type="hidden" id= 'small_unit_qty' value="<?= $small_unit_qty ?>">
-					<input type="hidden" id= 'i_to_s' value="<?= $i_to_s ?>">
-					<input type="hidden" id= 'inv_small_unit_qty' value="<?= $inv_small_unit_qty ?>">
-					
-					<div class="col-4">
-						<label class="form-label">Purchase Qty (<?= $product->purch_unit ?>) <span class="text-danger">*</span></label><br>
-						<input type="text" class="form-control validate-input number purch_qty" name="purch_qty" placeholder="Purchase Qty">
-					</div>
 
-					<div class="col-4">
-						<label class="form-label">Inventory Qty (<?= $product->inv_unit ?>) <span class="text-danger">*</span></label><br>
-						<input type="text" class="form-control validate-input number inv_qty" name="inv_qty" placeholder="Inventory Qty">
-					</div>
-
-					<div class="col-4">
-						<label class="form-label">Sale Qty (<?= $product->sale_unit ?>) <span class="text-danger">*</span></label><br>
-						<input type="text" class="form-control validate-input number sale_qty" name="sale_qty" placeholder="Sale Qty">
-					</div>
-
-				</div>
-
+			<div class="col-4">
+				<label class="form-label">Inventory Qty (<?= $product->inv_unit ?>) <span class="text-danger">*</span></label><br>
+				<input type="text" class="form-control validate-input number inv_qty" name="inv_qty" placeholder="Inventory Qty">
 			</div>
+
+			<div class="col-4">
+				<label class="form-label">Sale Qty (<?= $product->sale_unit ?>) <span class="text-danger">*</span></label><br>
+				<input type="text" class="form-control validate-input number sale_qty" name="sale_qty" placeholder="Sale Qty">
+			</div>
+
 		</div>
 	<?php endif;?>
+
+	<div class="row mb-3">
+		
+		<div class="col-3">
+			<label class="form-label">Purchase Total Price<span class="text-danger">*</span></label><br>
+			<input type="text" class="form-control validate-input number purch_total_price" name="purch_total_price" placeholder="Purchase Total Price">
+		</div>
+
+		<div class="col-3">
+			<label class="form-label">Purchase Unit Price <span class="text-danger">*</span></label><br>
+			<input type="text" class="form-control validate-input number purch_unit_price" name="purch_unit_price" placeholder="Unit Price">
+		</div>
+
+		<div class="col-3">
+			<label class="form-label">Sale Unit Price <span class="text-danger">*</span></label><br>
+			<input type="text" class="form-control validate-input number purch_unit_price" name="purch_unit_price" placeholder="Unit Price">
+		</div>
+
+		<div class="col-3">
+			<label class="form-label">Sale Total Price <span class="text-danger">*</span></label><br>
+			<input type="text" class="form-control validate-input number purch_sale_price" name="purch_sale_price" placeholder="Sale Price">
+		</div>
+
+	</div>
+	<div class="row mb-3">
+		<div class="col-12 text-end">
+			<button class="btn btn-outline-theme save" style="width: 200px;">Save</button>
+		</div>
+	</div>

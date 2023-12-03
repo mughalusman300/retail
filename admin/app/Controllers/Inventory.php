@@ -19,7 +19,8 @@ class Inventory extends BaseController
         // $data['inventory'] ="nav-expanded nav-active";
         // $data['category'] ="nav-active";
 
-        $data['products'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1, 'is_deleted' => 0)), 'saimtech_product');
+        $data['products'] = $products = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1, 'is_deleted' => 0)), 'saimtech_product');
+        // dd($products);
         $data['locations'] = $this->Commonmodel->getRows(array('conditions' => array('is_active' => 1)), 'saimtech_location');
         $data['main_content'] = 'inventory/inventoryin';
         return view('layouts/page',$data);
@@ -34,6 +35,11 @@ class Inventory extends BaseController
 
         $data['inv_conversion'] = $inv_conversion = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_inv_to_sale_conversion');
 
+        $html = view('inventory/variants_section', $data);
+        // $html = $parser->setData($data)->render('inventory/variants_section');
+        $result = array('success' =>  true, 'html' => $html);
+        return $this->response->setJSON($result);
+        
         if ($product->v1 != '' || $product->v2 != '' || $product->v3 != '' || $purchase_conversion || $inv_conversion) {
             $html = view('inventory/variants_section', $data);
             // $html = $parser->setData($data)->render('inventory/variants_section');
