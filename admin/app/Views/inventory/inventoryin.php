@@ -20,9 +20,9 @@
 						</div>
 						<div class="card-body">
 							<div class="row mb-3">
-								<div class="col-4">
+								<div class="col-3">
 									<label class="form-label">Product <span class="text-danger">*</span></label>
-									<select name="product_id" id="product_id" class="form-control select2 product_id">
+									<select name="product_id" id="product_id" class="form-control validate-input select select2 product_id">
 										<option value="">Select Product</option>
 										<?php foreach($products as $row) :?>
 											<option value="<?= $row->product_id ?>"><?= $row->product_name ?></option>
@@ -30,26 +30,26 @@
 									</select>
 								</div>
 
-								<div class="col-4">
+								<div class="col-3">
 									<label class="form-label">Supplier<span class="text-danger">*</span></label>
-									<select name="product_id" id="product_id" class="form-control select2 product_id">
+									<select name="supplier_id" id="supplier_id" class="form-control validate-input select select2 supplier_id">
 										<option value="">Select Supplier</option>
 										<option value="1"> Intel Corporation.</option>
 									</select>
 								</div>
-								<div class="col-4">
+								<div class="col-3">
 									<label class="form-label">Location<span class="text-danger">*</span></label>
-									<select name="location_id" id="location_id" class="form-control select2 location_id">
+									<select name="location_id" id="location_id" class="form-control validate-input select select2 location_id">
 										<option value="">Select Product</option>
 										<?php foreach($locations as $row) :?>
 											<option value="<?= $row->location_id ?>"><?= $row->location_name ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
-								<!-- <div class="col-3">
+								<div class="col-3">
 									<label class="form-label">Date <span class="text-danger"></span></label>
 									<input type="text" readonly value="<?= date('Y-m-d')?>" class="form-control date" name="date">
-								</div> -->
+								</div>
 							</div>
 
 							<div class="response">

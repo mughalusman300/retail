@@ -5,7 +5,7 @@ $(document).ready(function(){
 		if (product_id != '') {
 			var mydata = {product_id: product_id};
 			$.ajax({
-				url: base + "/Inventory/checkVariants",
+				url: base + "/Inventory/inv_section",
 				type: "POST",
 				data: mydata,        
 				success: function(data) {
@@ -20,74 +20,76 @@ $(document).ready(function(){
 		} else {
 
 		}
-
-
-
 	});
 
-	$(document).on('click', '.add-category', function(){
-		$('.category-modal').modal('show');
-		$('.save').data('type', 'add');
-		$('.save').text('Save');
+	$(document).on('change', '.purch_total_price', function() {
+		var total_price = $(this).val();
+		if (total_price != '') {
+			total_price = parseInt(total_price);
+			var sale_qty = $('.sale_qty').val();
+			if (sale_qty !='') {
+				var sale_unit_cost = parseFloat((total_price/sale_qty).toFixed(2));
+				$('.sale_unit_cost').val(sale_unit_cost);
+			} else {
+				$('.purch_total_price').val('');
+				$('.sale_unit_cost').val('');
+				$('.sale_unit_price').val('');
+				Swal.fire('', 'Please add purchase qty first!', 'warning');
+			}
+		} else {
+			$('.sale_unit_cost').val('');
+			$('.sale_unit_price').val('');
+		}
 	});
 
-	$(document).on('click', '.edit-category', function(){
-		$('.category-modal').find('.modal-title').text('Update Category');
-		$('.category-modal').modal('show');
-		$('.save').attr('data-type', 'update');
-		$('.save').text('Update');
+	$(document).on('keyup', '.barcode', function(e){
+		var keyCode = e.which;
+		var barcode = $('.barcode').val();
+		console.log(barcode);
+		console.log(keyCode);
+		if (barcode !='' && keyCode == 13) {
 
-		$('.category_id').val($(this).data('category_id'));
-		$('.cat_title').val($(this).data('title'));
-		$('.code').val($(this).data('code'));
-		$('.desc').val($(this).data('desc'));
+			$.ajax({
+				url: base + "/inventory/validateBarcode",
+				type: "POST",
+				'async': false,
+				data: {barcode: barcode},        
+				success: function(data) {
+				    if (data.success) {
+					    // Swal.fire(notify_title, notify_text, 'success');
+					} else {
+						Swal.fire('', data.msg, 'error');
+					}
+				}
+			});	
+		}
 	});
 
 	$(document).on('click', '.save', function(){
-		var validate = checkValidation('.category-modal');
+		var validate = checkValidation('.inventory-form');
 		if (validate) {
-			var type = $(this).data('type');
-			var category_id = $('.category_id').val();
-			var title = $('.cat_title').val();
-			var code = $('.code').val();
-			var desc = $('.desc').val();
-
-			if (type == 'add') {
-				var mydata = {type: type, title: title, code: code, desc: desc };
-				var notify_title = 'Category Add';
-				var notify_text = 'Category Add successfully!';
-			} else {
-				var mydata = {category_id: category_id, type: type, title: title, code: code, desc: desc };
-				var notify_title = 'Category Update';
-				var notify_text = 'Category Update successfully!';
-			}
-
+			var formdata = new FormData( $("#add_supplier_form")[0] );
 			$.ajax({
-				url: base + "/category/add",
+				url: base + "/inventory/create",
 				type: "POST",
-				data: mydata,        
+				data: formdata,        
 				success: function(data) {
 				    if (data.success) {
-					    $(".category-modal").modal('hide');	
-					    Swal.fire(notify_title, notify_text, 'success');
-					    table.ajax.reload();
+				    	let insert_id = data.insert_id;
+				    	let url = base + "/inventory/product_barcode/"+ insert_id +""; 
+				    	var win = window.open(url, '_blank');
+					    // Swal.fire(notify_title, notify_text, 'success');
 					} else {
-						Swal.fire('', data.msg, 'error');
-						$('.code').addClass('is-invalid');
+						Swal.fire('', 'Somthing went wrong!', 'error');
 					}
 				}
 			});		
+		} else {
+			return false;
 		}
 
 	});
 
-	$('.category-modal').on('hidden.bs.modal', function (e) {
-		$('.category-modal').find('.modal-title').text('Add Category');
-	    $('.category_id').val('');
-	    $('.cat_title').val('');
-	    $('.code').val('');
-	    $('.desc').val('');
-	});
 
 	$(document).on('change', '.purch_qty', function(){
 		var purch_qty = $(this).val();
@@ -112,27 +114,4 @@ $(document).ready(function(){
 
 
 	});
-	$(document).on('click', '#is_active', function(){
-		var category_id = $(this).data('category_id');
-		if ($(this).is(":checked")) {
-			var is_active = 1;
-			$(this).closest('.form-switch').find('label').text('Active');
-		} else {
-			var is_active = 0;
-			$(this).closest('.form-switch').find('label').text('Deactive');
-		}
-
-		var mydata = {category_id: category_id, is_active: is_active};
-		$.ajax({
-			url: base + "/category/statusUpdate",
-			type: "POST",
-			data: mydata,        
-			success: function(data) {
-			    if (data.success) {
-				    Swal.fire('', data.msg, 'success');
-				}
-			}
-		});	
-	});
-
 });

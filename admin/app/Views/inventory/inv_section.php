@@ -12,7 +12,7 @@ $this->Commonmodel = new Commonmodel();
 			?>
 				<div class="col-4">
 					<label class="form-label"><?= $product->v1 ?> <span class="text-danger">*</span></label><br>
-					<select name="v1" id="v1" class="form-control select2 v1">
+					<select name="v1" id="v1" class="form-control validate-input select validate-input select select2 v1">
 						<option value="">Select</option>
 						<?php if($variant_detail):?>
 							<?php foreach($variant_detail as $row):?>
@@ -30,7 +30,7 @@ $this->Commonmodel = new Commonmodel();
 			?>
 				<div class="col-4">
 					<label class="form-label"><?= $product->v2 ?> <span class="text-danger">*</span></label><br>
-					<select name="v2" id="v2" class="form-control select2 v2">
+					<select name="v2" id="v2" class="form-control validate-input select select2 v2">
 						<option value="">Select</option>
 						<?php if($variant_detail):?>
 							<?php foreach($variant_detail as $row):?>
@@ -48,7 +48,7 @@ $this->Commonmodel = new Commonmodel();
 			?>
 				<div class="col-4">
 					<label class="form-label"><?= $product->v3 ?> <span class="text-danger">*</span></label><br>
-					<select name="v3" id="v3" class="form-control select2 v3">
+					<select name="v3" id="v3" class="form-control validate-input select select2 v3">
 						<option value="">Select</option>
 						<?php if($variant_detail):?>
 							<?php foreach($variant_detail as $row):?>
@@ -105,13 +105,13 @@ $this->Commonmodel = new Commonmodel();
 			</div>
 
 			<div class="col-4">
-				<label class="form-label">Inventory Qty (<?= $product->inv_unit ?>) <span class="text-danger">*</span></label><br>
-				<input type="text" class="form-control validate-input number inv_qty" name="inv_qty" placeholder="Inventory Qty">
+				<label class="form-label">Inventory Qty (<?= $product->inv_unit ?>) <span class="text-danger"></span></label><br>
+				<input type="text" readonly class="form-control number inv_qty" name="inv_qty" placeholder="Inventory Qty">
 			</div>
 
 			<div class="col-4">
-				<label class="form-label">Sale Qty (<?= $product->sale_unit ?>) <span class="text-danger">*</span></label><br>
-				<input type="text" class="form-control validate-input number sale_qty" name="sale_qty" placeholder="Sale Qty">
+				<label class="form-label">Sale Qty (<?= $product->sale_unit ?>) <span class="text-danger"></span></label><br>
+				<input type="text" readonly class="form-control number sale_qty" name="sale_qty" placeholder="Sale Qty">
 			</div>
 
 		</div>
@@ -119,24 +119,31 @@ $this->Commonmodel = new Commonmodel();
 
 	<div class="row mb-3">
 		
-		<div class="col-3">
+		<div class="col-4">
 			<label class="form-label">Purchase Total Price<span class="text-danger">*</span></label><br>
 			<input type="text" class="form-control validate-input number purch_total_price" name="purch_total_price" placeholder="Purchase Total Price">
 		</div>
 
-		<div class="col-3">
-			<label class="form-label">Purchase Unit Price <span class="text-danger">*</span></label><br>
-			<input type="text" class="form-control validate-input number purch_unit_price" name="purch_unit_price" placeholder="Unit Price">
+		<div class="col-4">
+			<label class="form-label">Unit Price cost (sale qty) <span class="text-danger">*</span></label><br>
+			<input type="text" readonly class="form-control number sale_unit_cost" name="sale_unit_cost" placeholder="Unit Price">
 		</div>
 
-		<div class="col-3">
+		<div class="col-4">
 			<label class="form-label">Sale Unit Price <span class="text-danger">*</span></label><br>
-			<input type="text" class="form-control validate-input number purch_unit_price" name="purch_unit_price" placeholder="Unit Price">
+			<input type="text" class="form-control validate-input number sale_unit_price" name="sale_unit_price" placeholder="Sale Unit Price">
 		</div>
 
-		<div class="col-3">
-			<label class="form-label">Sale Total Price <span class="text-danger">*</span></label><br>
-			<input type="text" class="form-control validate-input number purch_sale_price" name="purch_sale_price" placeholder="Sale Price">
+	</div>
+	<div class="row mb-3">
+		
+		<div class="col-4">
+			<label class="form-label">Barcode<span class="text-danger"></span></label><br>
+			<input type="text" class="form-control number barcode" name="barcode" placeholder="Scan barcode">
+		</div>
+		<div class="col-8">
+			<label class="form-label">Description <span class="text-danger"></span></label><br>
+			<textarea type="textarea" class="form-control desc"  name="desc" placeholder="Add Description"  rows="4"></textarea>
 		</div>
 
 	</div>

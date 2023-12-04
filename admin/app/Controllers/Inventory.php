@@ -27,7 +27,7 @@ class Inventory extends BaseController
     }
 
 
-    public function checkVariants() {
+    public function inv_section() {
         $product_id = $this->request->getVar('product_id');
         $data['product'] = $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_product');
         // dd($product);
@@ -35,14 +35,14 @@ class Inventory extends BaseController
 
         $data['inv_conversion'] = $inv_conversion = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id)), 'saimtech_inv_to_sale_conversion');
 
-        $html = view('inventory/variants_section', $data);
-        // $html = $parser->setData($data)->render('inventory/variants_section');
+        $html = view('inventory/inv_section', $data);
+        // $html = $parser->setData($data)->render('inventory/inv_section');
         $result = array('success' =>  true, 'html' => $html);
         return $this->response->setJSON($result);
         
         if ($product->v1 != '' || $product->v2 != '' || $product->v3 != '' || $purchase_conversion || $inv_conversion) {
-            $html = view('inventory/variants_section', $data);
-            // $html = $parser->setData($data)->render('inventory/variants_section');
+            $html = view('inventory/inv_section', $data);
+            // $html = $parser->setData($data)->render('inventory/inv_section');
             $result = array('success' =>  true, 'html' => $html);
             return $this->response->setJSON($result);
         } else {
@@ -168,5 +168,85 @@ class Inventory extends BaseController
         $result = array('success' =>  true, 'msg' => $msg);
 
         return $this->response->setJSON($result);
+    }
+
+    public function create(){
+        $result = array('success' =>  false);
+
+        $product_id = $this->request->getVar('product_id');
+        $supplier_id = $this->request->getVar('supplier_id');
+        $location_id = $this->request->getVar('location_id');
+        $date = $this->request->getVar('date');
+
+        $v1 = $v2 = $v3 = '';
+        if (isset($_POST['v1'])) {
+            $v1 = $this->request->getVar('v1');
+        }
+        if (isset($_POST['v2'])) {
+            $v2 = $this->request->getVar('v2');
+        }
+        if (isset($_POST['v3'])) {
+            $v3 = $this->request->getVar('v3');
+        }
+
+        $purch_qty = $this->request->getVar('purch_qty');
+        $inv_qty = $this->request->getVar('inv_qty');
+        $sale_qty = $this->request->getVar('sale_qty');
+
+        $purch_total_price = $this->request->getVar('purch_total_price');
+        $purch_unit_cost = $purch_total_price / $purch_qty;
+        $inv_unit_cost = $purch_total_price / $inv_qty;
+        $sale_unit_cost = $this->request->getVar('sale_unit_cost');
+
+        $sale_unit_price = $this->request->getVar('sale_unit_price');
+        $barcode = trim($this->request->getVar('barcode'));
+        $desc = trim($this->request->getVar('desc'));
+
+        $data = array(
+            'product_id' => $product_id, 
+            'supplier_id' => $supplier_id, 
+            'location_id' => $location_id, 
+            'v1' => $v1, 
+            'v2' => $v2, 
+            'v3' => $v3, 
+            'purch_qty' => $purch_qty, 
+            'inv_qty' => $inv_qty, 
+            'sale_qty' => $sale_qty, 
+            'purch_total_price' => $purch_total_price, 
+            'purch_unit_cost' => $purch_unit_cost, 
+            'inv_unit_cost' => $inv_unit_cost, 
+            'sale_unit_cost' => $sale_unit_cost, 
+            'sale_unit_price' => $sale_unit_price, 
+            'barcode' => $barcode, 
+            'desc' => $desc, 
+        );
+
+        dd($data);
+
+        $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in');
+        if ($insert_id) {
+            $result = array('success' =>  true, 'insert_id' => $insert_id);
+        }
+        return $this->response->setJSON($result);
+    }
+
+    public function validateBarcode(){
+        $result = array('success' =>  true);
+        $barcode = trim($this->request->getVar('barcode'));
+        $length = strlen($barcode);
+        if ($length < 12){
+            $result = array('success' =>  false, 'msg' => 'Barcode length should not be less than 12 digits');
+        } else {
+            // $barcode_exist = $this->Commonmodel->Duplicate_check(array('barcode' => $barcode), 'saimtech_inventory_in');
+            // if ($barcode_exist) {
+            //     $result = array('success' =>  false, 'msg' => 'Barcode already exist');
+            // }
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function product_barcode($inv_in_id){
+        echo $inv_in_id;
     }
 }
