@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 use CodeIgniter\Model;
+use App\Libraries\FpdfLib;
+use Zend\Barcode\Barcode;
 class Commonmodel extends Model {
 
     public function __construct() { 
@@ -317,7 +319,23 @@ class Commonmodel extends Model {
         //
     }
    
-    
+    public function generateBarcode($text, $type = 'code128') {
+        $barcodeOptions = ['text' => $text];
+
+        // No required options.
+        $rendererOptions = array();
+        $barcode = Barcode::factory(
+            'code128',
+            'image',
+            $barcodeOptions,
+            $rendererOptions
+        )->draw();
+        // $file = $barcode->draw();
+        imagepng($barcode, "pdf/{$text}.png");
+
+        return 'pdf/' . $text . '.png';
+        // dd($file);
+    }
 
 
 }

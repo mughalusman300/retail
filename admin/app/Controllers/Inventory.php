@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Models\Commonmodel;
 use App\Models\Inventorymodel;
 use CodeIgniter\API\ResponseTrait;
+use App\Libraries\FpdfLib;
+use Zend\Barcode\Barcode;
 
 class Inventory extends BaseController
 {
@@ -247,6 +249,10 @@ class Inventory extends BaseController
     }
 
     public function product_barcode($inv_in_id){
-        echo $inv_in_id;
+        // dd($_SESSION);
+        // $data['inv_in_id'] = $inv_in_id;
+
+        // dd($inv_in_id);
+        return view('product/print_barcode');
     }
 }
