@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		
-		<form action="<?=URL?>/Inventory/create" method="POST" enctype="multipart/form-data" class="inventory-form">
+		<form action="<?=URL?>/Inventory/create" method="POST" id="inventory-in-form" enctype="multipart/form-data" class="inventory-in-form">
 			<div class="row gx-4 add-inventory">
 				<div class="col-xl-12">
 					<div class="card mb-4">
@@ -54,7 +54,7 @@
 
 							<div class="response">
 							</div>
-
+							<div><button type="submit" class="btn btn-theme" style="display: none;">Submit </button></div>
 							<!-- <div class="">
 								<label class="form-label">Description <span class="text-danger">*</span></label>
 								<textarea class="summernote validate-input product_desc" name="product_desc" rows="10"></textarea>

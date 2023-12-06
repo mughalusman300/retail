@@ -27,7 +27,8 @@ $this->fpdf->SetTitle('Barcode Label');
 $this->fpdf->SetFont('Calibrib', '', 18);
 $this->fpdf->Cell(0,-5,'GLOSSTHERM-245',0,2,'C');
 
-$link = $this->Commonmodel->generateBarcode('7941GRN-100888');
+// $link = $this->Commonmodel->generateBarcode('7941GRN-100888');
+$link = $this->Commonmodel->generateBarcode($barcode);
 $this->fpdf->Image($link, 4, 12, 45);	
 
 $this->fpdf->Output();

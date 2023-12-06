@@ -23,11 +23,17 @@
                     <div class="menu-submenu">
                         <div class="menu-item">
                             <a href="<?= URL?>/inventory" class="menu-link">
+                                <span class="menu-text">Inventory List</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="<?= URL?>/inventory/in" class="menu-link">
                                 <span class="menu-text">Inventory In</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="email_compose.html" class="menu-link">
+                             <!-- <a href="<?= URL?>/inventory/out" class="menu-link"> -->
+                             <a href="#" class="menu-link">
                                 <span class="menu-text">Inventory Out</span>
                             </a>
                         </div>

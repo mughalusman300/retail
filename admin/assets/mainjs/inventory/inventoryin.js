@@ -65,25 +65,32 @@ $(document).ready(function(){
 		}
 	});
 
-	$(document).on('click', '.save', function(){
-		var validate = checkValidation('.inventory-form');
+	$(document).on('click', '.save', function(e){
+
+		var validate = checkValidation('.inventory-in-form');
 		if (validate) {
-			var formdata = new FormData( $("#add_supplier_form")[0] );
+			
+			var formdata = new FormData( $("#inventory-in-form")[0] );
 			$.ajax({
 				url: base + "/inventory/create",
-				type: "POST",
+				type : 'post',
+				'async': true,
+				'processData': false,  // tell jQuery not to process the data
+				'contentType': false,  // tell jQuery not to set contentType
 				data: formdata,        
 				success: function(data) {
 				    if (data.success) {
-				    	let insert_id = data.insert_id;
-				    	let url = base + "/inventory/product_barcode/"+ insert_id +""; 
-				    	var win = window.open(url, '_blank');
+				    	location.reload(true);
+				    	// let insert_id = data.insert_id;
+				    	// let url = base + "/inventory/product_barcode/"+ insert_id +""; 
+				    	// var win = window.open(url, '_blank');
 					    // Swal.fire(notify_title, notify_text, 'success');
 					} else {
 						Swal.fire('', 'Somthing went wrong!', 'error');
 					}
 				}
-			});		
+			});	
+
 		} else {
 			return false;
 		}

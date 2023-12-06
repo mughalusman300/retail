@@ -90,6 +90,6 @@
     
     <script type="text/javascript" src="<?=URL?>/assets/mainjs/fileUpload.js<?= version ?>"></script>
 
-    <?php if (in_array($main_content, array('category/category')) || in_array($main_content, array('product/product')) || in_array($main_content, array('product/addProduct')) || in_array($main_content, array('product/updateProduct')) || in_array($main_content, array('uom')) || in_array($main_content, array('variant/variant')) || in_array($main_content, array('variant/detail')) || in_array($main_content, array('group/group')) || in_array($main_content, array('location/location')) || in_array($main_content, array('inventory/inventoryin')) ) { ?>
+    <?php if (in_array($main_content, array('category/category')) || in_array($main_content, array('product/product')) || in_array($main_content, array('product/addProduct')) || in_array($main_content, array('product/updateProduct')) || in_array($main_content, array('uom')) || in_array($main_content, array('variant/variant')) || in_array($main_content, array('variant/detail')) || in_array($main_content, array('group/group')) || in_array($main_content, array('location/location')) || in_array($main_content, array('inventory/inventoryin')) || in_array($main_content, array('inventory/inventory')) ) { ?>
         <script type="text/javascript" src="<?=URL?>/assets/mainjs/<?= $main_content?>.js<?= version ?>"></script>
     <?php } ?>

@@ -62,7 +62,7 @@ $this->Commonmodel = new Commonmodel();
 		</div>
 	<?php endif;?>
 
-	<?php if ($purchase_conversion || $inv_conversion):?>
+	<?php if ($purchase_conversion || $inv_conversion || 1 == 1):?>
 		<?php  
 
 			if ($purchase_conversion) {
@@ -125,7 +125,7 @@ $this->Commonmodel = new Commonmodel();
 		</div>
 
 		<div class="col-4">
-			<label class="form-label">Unit Price cost (sale qty) <span class="text-danger">*</span></label><br>
+			<label class="form-label">Unit Price cost (sale qty) </label><br>
 			<input type="text" readonly class="form-control number sale_unit_cost" name="sale_unit_cost" placeholder="Unit Price">
 		</div>
 
@@ -139,16 +139,16 @@ $this->Commonmodel = new Commonmodel();
 		
 		<div class="col-4">
 			<label class="form-label">Barcode<span class="text-danger"></span></label><br>
-			<input type="text" class="form-control number barcode" name="barcode" placeholder="Scan barcode">
+			<input type="text" class="form-control dashspecialvalidation barcode" name="barcode" placeholder="Scan barcode">
 		</div>
 		<div class="col-8">
 			<label class="form-label">Description <span class="text-danger"></span></label><br>
-			<textarea type="textarea" class="form-control desc"  name="desc" placeholder="Add Description"  rows="4"></textarea>
+			<textarea type="textarea" class="form-control desc descriptionvalidation"  name="desc" placeholder="Add Description"  rows="4"></textarea>
 		</div>
 
 	</div>
 	<div class="row mb-3">
 		<div class="col-12 text-end">
-			<button class="btn btn-outline-theme save" style="width: 200px;">Save</button>
+			<button type="button" class="btn btn-outline-theme save" style="width: 200px;">Save</button>
 		</div>
 	</div>

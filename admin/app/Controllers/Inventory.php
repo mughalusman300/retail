@@ -17,6 +17,78 @@ class Inventory extends BaseController
 	    $session = \Config\Services::session();
     }
     public function index(){
+        $data['title'] = 'Inventory List';
+        $data['main_content'] = 'inventory/inventory';
+        return view('layouts/page',$data);
+    }
+
+    public function invntoryList(){
+        // dd($_POST);
+        $limit = $this->request->getVar('length');
+        $start = $this->request->getVar('start');
+        $search = $this->request->getVar('search');
+        // dd($search);
+        $totalData = $this->Inventorymodel->all_product_count();
+        $totalFiltered = $totalData;
+
+        if (empty($search)) {
+            $products = $this->Inventorymodel->all_product($limit, $start);
+        } else {
+            $products =  $this->Inventorymodel->product_search($limit,$start,$search);
+            $totalFiltered = $this->Inventorymodel->product_search_count($search);
+
+        }
+        // echo '<pre>'; print_r($products); die;
+        $data = array();
+        if (!empty($products)) {
+
+            $i = 1;
+            foreach ($products as $row) {
+                $barcode_url = URL. '/inventory/product_barcode/'. $row->barcode;
+                                            
+                $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme"
+                    data-product_id="'.$row->product_id.'"
+                    data-product_code="'.$row->product_code.'" 
+                    data-barcode="'.$row->barcode.'"
+                    >Barcode</a>
+                ';
+
+                $img = IMGURL.$row->product_img;
+                $nestedData['product'] = '<div class="d-flex align-items-center">
+                                                <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+                                                    <img alt="" class="mw-100 mh-100" src="'. $img .'">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a href="page_product_details.html">'. $row->product_name. '</a>
+                                                </div>
+                                            </div>';
+                $nestedData['product_code'] = $row->product_code;
+                $nestedData['category_title'] = $row->title;                
+                $nestedData['sale_qty'] =  str_replace('.00', '', $row->sale_qty);  
+                $nestedData['sale_unit_cost'] =  $row->sale_unit_cost;  
+                $nestedData['sale_unit_price'] =  $row->sale_unit_price;  
+                $nestedData['Action'] = $action;
+
+                $data[] = $nestedData;
+
+                $i++;
+            }
+
+        }
+
+        
+
+        $json_data = array(
+            "draw"            => intval($this->request->getVar('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+        );
+
+        echo json_encode($json_data);
+    }
+
+    public function in(){
         $data['title'] = 'Inventory In';
         // $data['inventory'] ="nav-expanded nav-active";
         // $data['category'] ="nav-active";
@@ -220,10 +292,9 @@ class Inventory extends BaseController
             'sale_unit_cost' => $sale_unit_cost, 
             'sale_unit_price' => $sale_unit_price, 
             'barcode' => $barcode, 
-            'desc' => $desc, 
+            'inv_in_desc' => $desc, 
+            'created_by' => $_SESSION['user_id'],
         );
-
-        dd($data);
 
         $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in');
         if ($insert_id) {
@@ -248,11 +319,12 @@ class Inventory extends BaseController
         return $this->response->setJSON($result);
     }
 
-    public function product_barcode($inv_in_id){
+    public function product_barcode($barcode){
         // dd($_SESSION);
         // $data['inv_in_id'] = $inv_in_id;
 
         // dd($inv_in_id);
-        return view('product/print_barcode');
+        $data['barcode'] = $barcode;
+        return view('product/print_barcode', $data);
     }
 }
