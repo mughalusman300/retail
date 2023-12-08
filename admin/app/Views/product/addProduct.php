@@ -201,28 +201,32 @@
 							</div>
 
 							<div class="card-body">
-								<div class="image-parent-div">
+								<div class="">
 									<div class="row mb-2">
 										<div> Default: </div> 
 									</div>
-									<div class="row mb-3">
-										<div class="col-2 text-center">
-											<div class="form-check form-switch mt-1">
-				                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
-												<input type="hidden" class="default_image" name="default_image[]" value="">
-				                        	</div>
-										</div>
+									<div class="row mb-3 image-parent-div">
+										<div class="main-row col-6 mb-2">
+											<div class="row">
+												<div class="col-1 text-center">
+													<div class="form-check form-switch mt-1">
+						                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
+														<input type="hidden" class="default_image" name="default_image[]" value="">
+						                        	</div>
+												</div>
 
-										<div class="col-10 upload-row">
-											<div style="width: 92%" class="img-col">
-												<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
+												<div class="col-11 upload-row text-end">
+													<div style="width: 92%" class="img-col">
+														<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
+													</div>
+													<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
+
+													<button type="button" class=" btn btn-default btn-browse form-control" style="width: auto;">
+									                    <i class="fa fa-cloud-upload"></i>
+									                    Upload Image           
+									                </button>
+												</div>
 											</div>
-											<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
-
-											<button type="button" class=" btn btn-default btn-browse form-control ">
-							                    <i class="fa fa-cloud-upload"></i>
-							                    Upload Image           
-							                </button>
 										</div>
 									</div>
 								</div>

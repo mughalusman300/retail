@@ -39,33 +39,35 @@ $(document).ready(function() {
 	});
 
 	$(document).on('click', '.add-more-image', function(){
-		var html = `<div class="row mb-3 main-row">
-						<div class="col-2 text-center">
-							<div class="form-check form-switch mt-1">
-                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
-								<input type="hidden" class="default_image" name="default_image" value="">
-								<input type="hidden" class="attachment_id" name="attachment_id" value="">
-                        	</div>
-						</div>
-
-						<div class="col-10 upload-row text-end">
-							<div class="img-col">
-								<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
+		var html = `<div class="main-row col-6 mb-2">
+						<div class="row">
+							<div class="col-1 text-center">
+								<div class="form-check form-switch mt-1">
+	                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
+									<input type="hidden" class="default_image" name="default_image" value="">
+									<input type="hidden" class="attachment_id" name="attachment_id" value="">
+	                        	</div>
 							</div>
-							<button
-								style="display: none;" 
-								type="button" 
-								class="btn btn-sm btn-danger remove-img mt-1"
-								data-attachment_id=""
-							>
-								Delete
-							</button>
-							<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
 
-							<button type="button" class=" btn btn-default btn-browse form-control ">
-			                    <i class="fa fa-cloud-upload"></i>
-			                    Uploade Image           
-			                </button>
+							<div class="col-11 upload-row text-end">
+								<div class="img-col">
+									<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
+								</div>
+								<button
+									style="display: none;" 
+									type="button" 
+									class="btn btn-sm btn-danger remove-img mt-1"
+									data-attachment_id=""
+								>
+									Delete
+								</button>
+								<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
+
+								<button type="button" class=" btn btn-default btn-browse form-control" style="width:auto">
+				                    <i class="fa fa-cloud-upload"></i>
+				                    Uploade Image           
+				                </button>
+							</div>
 						</div>
 					</div>`;
 
