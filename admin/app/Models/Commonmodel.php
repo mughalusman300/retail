@@ -320,6 +320,12 @@ class Commonmodel extends Model {
     }
    
     public function generateBarcode($text, $type = 'upca') {
+        $files = glob('pdf/*'); // get all file names
+        foreach($files as $file) { // iterate files
+            if (is_file($file)) {
+                unlink($file); // delete file
+            }
+        }
         $barcodeOptions = ['text' => $text];
 
         // No required options.

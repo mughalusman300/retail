@@ -54,7 +54,7 @@
 
 							<div class="response">
 							</div>
-							<div><button type="submit" class="btn btn-theme" style="display: none;">Submit </button></div>
+							<div><button type="button" class="btn btn-theme" style="display: none;">Submit </button></div>
 							<!-- <div class="">
 								<label class="form-label">Description <span class="text-danger">*</span></label>
 								<textarea class="summernote validate-input product_desc" name="product_desc" rows="10"></textarea>

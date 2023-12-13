@@ -245,7 +245,7 @@ class Inventory extends BaseController
     }
 
     public function create(){
-        $result = array('success' =>  false);
+        $result = array('success' =>  true);
 
         $product_id = $this->request->getVar('product_id');
         $supplier_id = $this->request->getVar('supplier_id');
@@ -296,9 +296,25 @@ class Inventory extends BaseController
             'created_by' => $_SESSION['user_id'],
         );
 
-        $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in');
+        $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in_detail');
         if ($insert_id) {
-            $result = array('success' =>  true, 'insert_id' => $insert_id);
+            if ($barcode != '') {
+                $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
+                if ($already_exits_barcode_detail) {
+                    $already_exits_product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $already_exits_barcode_detail->product_id)), 'saimtech_product');
+
+                        if ($product_id != $already_exits_barcode_detail->product_id) {
+                            $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with other product '.$already_exits_product->product_name.' please try with different one');
+                        } else if($product_id == $already_exits_barcode_detail->product_id && ($v1 != $already_exits_barcode_detail->v1 || $v2 != $already_exits_barcode_detail->v2 || $v3 != $already_exits_barcode_detail->v3)) {
+                                $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
+                        } else {
+                            
+                        }
+
+                } else {
+                    $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in');
+                }
+            }
         }
         return $this->response->setJSON($result);
     }
@@ -306,10 +322,29 @@ class Inventory extends BaseController
     public function validateBarcode(){
         $result = array('success' =>  true);
         $barcode = trim($this->request->getVar('barcode'));
+        $product_id = trim($this->request->getVar('product_id'));
+        $v1 = trim($this->request->getVar('v1'));
+        $v2 = trim($this->request->getVar('v2'));
+        $v3 = trim($this->request->getVar('v3'));
+
         $length = strlen($barcode);
         if ($length < 12){
             $result = array('success' =>  false, 'msg' => 'Barcode length should not be less than 12 digits');
+        } else if ($length > 13) {
+            $result = array('success' =>  false, 'msg' => 'Barcode length should not be greater than 13 digits');
         } else {
+            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
+            if ($already_exits_barcode_detail) {
+                $already_exits_product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $already_exits_barcode_detail->product_id)), 'saimtech_product');
+
+                if ($product_id != $already_exits_barcode_detail->product_id) {
+                    $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with other product '.$already_exits_product->product_name.' please try with different one');
+                } else if($product_id == $already_exits_barcode_detail->product_id) {
+                    if ($v1 != $already_exits_barcode_detail->v1 || $v2 != $already_exits_barcode_detail->v2 || $v3 != $already_exits_barcode_detail->v3) {
+                        $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
+                    }
+                }
+            }
             // $barcode_exist = $this->Commonmodel->Duplicate_check(array('barcode' => $barcode), 'saimtech_inventory_in');
             // if ($barcode_exist) {
             //     $result = array('success' =>  false, 'msg' => 'Barcode already exist');
@@ -324,6 +359,13 @@ class Inventory extends BaseController
         // $data['inv_in_id'] = $inv_in_id;
 
         // dd($inv_in_id);
+        $length = strlen($barcode);
+        if ($length == 13) {
+            $barcode = substr($barcode, 1);
+        } 
+        if($length == 13 || $length == 12) {
+            $barcode = substr($barcode, 0, -1);
+        }
         $data['barcode'] = $barcode;
         return view('product/print_barcode', $data);
     }

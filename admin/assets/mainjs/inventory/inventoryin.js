@@ -43,25 +43,43 @@ $(document).ready(function(){
 	});
 
 	$(document).on('keyup', '.barcode', function(e){
-		var keyCode = e.which;
-		var barcode = $('.barcode').val();
-		console.log(barcode);
-		console.log(keyCode);
-		if (barcode !='' && keyCode == 13) {
+		// var validate = checkValidation('.inventory-in-form');
+		validate = true; //remove temporary added
+		if (validate) {
+			var v1 = "", v2 = "", v3 = "";
+			var barcode = $('.barcode').val();
+			var product_id = $('.product_id').val();
+			if ($('.v1').is(':visible')) {
+				v1 = $('.v1').val();
+			}
+			if ($('.v2').is(':visible')) {
+				v2 = $('.v2').val();
+			}
+			if ($('.v3').is(':visible')) {
+				v3 = $('.v3').val();
+			}
+			var mydata = {barcode: barcode, product_id: product_id, v1: v1, v2: v2, v3: v3};
 
-			$.ajax({
-				url: base + "/inventory/validateBarcode",
-				type: "POST",
-				'async': false,
-				data: {barcode: barcode},        
-				success: function(data) {
-				    if (data.success) {
-					    // Swal.fire(notify_title, notify_text, 'success');
-					} else {
-						Swal.fire('', data.msg, 'error');
+			var keyCode = e.which;
+			if (barcode !='' && keyCode == 13) {
+				$.ajax({
+					url: base + "/inventory/validateBarcode",
+					type: "POST",
+					'async': false,
+					data: mydata,        
+					success: function(data) {
+					    if (data.success) {
+						    // Swal.fire(notify_title, notify_text, 'success');
+						} else {
+							Swal.fire('', data.msg, 'error');
+							$('.barcode').val('');
+						}
 					}
-				}
-			});	
+				});	
+			}
+		} else {
+			Swal.fire('', 'Fill all the required fields first!', 'error');
+			$('.barcode').val('');
 		}
 	});
 
@@ -86,7 +104,7 @@ $(document).ready(function(){
 				    	// var win = window.open(url, '_blank');
 					    // Swal.fire(notify_title, notify_text, 'success');
 					} else {
-						Swal.fire('', 'Somthing went wrong!', 'error');
+						Swal.fire('', data.msg, 'error');
 					}
 				}
 			});	
