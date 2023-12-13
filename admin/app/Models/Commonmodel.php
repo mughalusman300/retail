@@ -319,13 +319,13 @@ class Commonmodel extends Model {
         //
     }
    
-    public function generateBarcode($text, $type = 'code128') {
+    public function generateBarcode($text, $type = 'upca') {
         $barcodeOptions = ['text' => $text];
 
         // No required options.
         $rendererOptions = array();
         $barcode = Barcode::factory(
-            'code128',
+            'upca',
             'image',
             $barcodeOptions,
             $rendererOptions

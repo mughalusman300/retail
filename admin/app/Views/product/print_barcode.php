@@ -16,7 +16,7 @@ if (SITE == 'local') {
     define('WEBROOT', $_SERVER['DOCUMENT_ROOT'] . '/admin');
 }
 
-$this->fpdf->AddPage('L', [32, 53], 0);
+$this->fpdf->AddPage('L', [40, 53], 0);
 $margin = 1.5;
 // $this->fpdf->SetDrawColor(28, 167, 79);
 // $this->fpdf->DashedRect( $margin, $margin , 53 - $margin , 53 - $margin,0.3);
