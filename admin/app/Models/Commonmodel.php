@@ -319,7 +319,7 @@ class Commonmodel extends Model {
         //
     }
    
-    public function generateBarcode($text, $type = 'upca') {
+    public function generateProductBarcode($text, $type = 'upca') {
         $files = glob('pdf/*'); // get all file names
         foreach($files as $file) { // iterate files
             if (is_file($file)) {
@@ -341,6 +341,22 @@ class Commonmodel extends Model {
 
         return 'pdf/' . $text . '.png';
         // dd($file);
+    }
+
+    public function generateProductNewBarcode() {
+        do {
+            $barcode = $this->getBarcode(11);
+            $num_rows = $this->db->query("select barcode from saimtech_inventory_in where barcode = '".$barcode."'  ")->getNumRows();
+        } while ($num_rows > 0 );
+
+        return $barcode;
+    }
+    public function getBarcode($length) {
+        $result = "";
+        for($i = 0; $i < $length; $i++) {
+                $result .= mt_rand(0, 9);
+        }
+        return $result ;
     }
 
 

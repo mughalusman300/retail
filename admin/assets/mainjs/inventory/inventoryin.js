@@ -49,6 +49,7 @@ $(document).ready(function(){
 			var v1 = "", v2 = "", v3 = "";
 			var barcode = $('.barcode').val();
 			var product_id = $('.product_id').val();
+			var sale_unit_price = $('.sale_unit_price').val();
 			if ($('.v1').is(':visible')) {
 				v1 = $('.v1').val();
 			}
@@ -58,7 +59,7 @@ $(document).ready(function(){
 			if ($('.v3').is(':visible')) {
 				v3 = $('.v3').val();
 			}
-			var mydata = {barcode: barcode, product_id: product_id, v1: v1, v2: v2, v3: v3};
+			var mydata = {barcode: barcode, product_id: product_id, v1: v1, v2: v2, v3: v3, sale_unit_price: sale_unit_price};
 
 			var keyCode = e.which;
 			if (barcode !='' && keyCode == 13) {
@@ -69,7 +70,7 @@ $(document).ready(function(){
 					data: mydata,        
 					success: function(data) {
 					    if (data.success) {
-						    // Swal.fire(notify_title, notify_text, 'success');
+						    Swal.fire('', data.msg, 'info');
 						} else {
 							Swal.fire('', data.msg, 'error');
 							$('.barcode').val('');

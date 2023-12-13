@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2023 at 09:02 AM
+-- Generation Time: Dec 13, 2023 at 02:37 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -27,24 +27,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `saimtech_inventory_in`
 --
 
+DROP TABLE IF EXISTS `saimtech_inventory_in`;
 CREATE TABLE `saimtech_inventory_in` (
   `inv_in_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `supplier_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
   `v1` varchar(60) NOT NULL DEFAULT '',
   `v2` varchar(60) NOT NULL DEFAULT '',
   `v3` varchar(60) NOT NULL DEFAULT '',
-  `purch_qty` int(11) NOT NULL,
-  `inv_qty` decimal(12,2) NOT NULL,
   `sale_qty` decimal(12,2) NOT NULL,
-  `purch_total_price` decimal(10,2) NOT NULL,
-  `purch_unit_cost` decimal(10,2) NOT NULL,
-  `inv_unit_cost` decimal(10,2) NOT NULL,
-  `sale_unit_cost` decimal(10,2) NOT NULL,
   `sale_unit_price` decimal(10,2) NOT NULL,
   `barcode` varchar(100) NOT NULL,
-  `inv_in_desc` varchar(600) NOT NULL,
   `created_by` int(11) NOT NULL,
   `update_by` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -55,10 +47,10 @@ CREATE TABLE `saimtech_inventory_in` (
 -- Dumping data for table `saimtech_inventory_in`
 --
 
-INSERT INTO `saimtech_inventory_in` (`inv_in_id`, `product_id`, `supplier_id`, `location_id`, `v1`, `v2`, `v3`, `purch_qty`, `inv_qty`, `sale_qty`, `purch_total_price`, `purch_unit_cost`, `inv_unit_cost`, `sale_unit_cost`, `sale_unit_price`, `barcode`, `inv_in_desc`, `created_by`, `update_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 'S', 'Red', 'other variant', 5, '50.00', '750.00', '50000.00', '10000.00', '1000.00', '66.67', '100.00', 'sdf12313', 'sdf13', 1, 0, '2023-12-06 11:59:20', '2023-12-06 07:02:01'),
-(2, 2, 1, 1, '', '', '', 1000, '1000.00', '5000.00', '100000.00', '100.00', '100.00', '20.00', '50.00', 'asdf4646', 'fsafasfd', 1, 0, '2023-12-06 12:07:08', '2023-12-06 07:07:08'),
-(3, 30, 1, 1, 'S', 'Red', '', 1000, '1000.00', '1000.00', '50000.00', '50.00', '50.00', '50.00', '100.00', '123sdf464', 'sdfsdf', 1, 0, '2023-12-06 12:13:11', '2023-12-06 07:13:11');
+INSERT INTO `saimtech_inventory_in` (`inv_in_id`, `product_id`, `v1`, `v2`, `v3`, `sale_qty`, `sale_unit_price`, `barcode`, `created_by`, `update_by`, `created_at`, `updated_at`) VALUES
+(2, 2, '', '', '', '1500.00', '100.00', '653854123545', 1, 1, '2023-12-06 12:07:08', '2023-12-13 12:38:53'),
+(3, 30, 'S', 'Red', '', '1000.00', '100.00', '853854333545', 1, 0, '2023-12-06 12:13:11', '2023-12-13 08:00:21'),
+(4, 1, 'S', 'Red', 'other variant', '8000.00', '90.00', '253654123545', 1, 1, '2023-12-13 12:42:09', '2023-12-13 12:45:59');
 
 --
 -- Indexes for dumped tables
@@ -78,7 +70,7 @@ ALTER TABLE `saimtech_inventory_in`
 -- AUTO_INCREMENT for table `saimtech_inventory_in`
 --
 ALTER TABLE `saimtech_inventory_in`
-  MODIFY `inv_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `inv_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

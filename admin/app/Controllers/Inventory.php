@@ -28,14 +28,14 @@ class Inventory extends BaseController
         $start = $this->request->getVar('start');
         $search = $this->request->getVar('search');
         // dd($search);
-        $totalData = $this->Inventorymodel->all_product_count();
+        $totalData = $this->Inventorymodel->all_inv_count();
         $totalFiltered = $totalData;
 
         if (empty($search)) {
-            $products = $this->Inventorymodel->all_product($limit, $start);
+            $products = $this->Inventorymodel->all_inv($limit, $start);
         } else {
-            $products =  $this->Inventorymodel->product_search($limit,$start,$search);
-            $totalFiltered = $this->Inventorymodel->product_search_count($search);
+            $products =  $this->Inventorymodel->inv_search($limit,$start,$search);
+            $totalFiltered = $this->Inventorymodel->inv_search_count($search);
 
         }
         // echo '<pre>'; print_r($products); die;
@@ -45,27 +45,36 @@ class Inventory extends BaseController
             $i = 1;
             foreach ($products as $row) {
                 $barcode_url = URL. '/inventory/product_barcode/'. $row->barcode;
-                                            
-                $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme"
-                    data-product_id="'.$row->product_id.'"
-                    data-product_code="'.$row->product_code.'" 
-                    data-barcode="'.$row->barcode.'"
-                    >Barcode</a>
-                ';
+                $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
+                
+                if ($row->barcode != '') {
+                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">Print Barcode</a>
+                    ';
+                } else {
+                    $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:140px"
+                        data-inv_in_id="'.$row->inv_in_id.'"
+                        data-product_id="'.$row->product_id.'"
+                        data-product_code="'.$row->product_code.'" 
+                        >Generate Barcode</button>
+                    ';
+                }      
+
+                $action.= '<a  href="'. $detail_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">View Detail</a>
+                ';                  
 
                 $img = IMGURL.$row->product_img;
+                $proudct_detail = URL. '/product/edit/'. $row->product_id;
                 $nestedData['product'] = '<div class="d-flex align-items-center">
                                                 <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
                                                     <img alt="" class="mw-100 mh-100" src="'. $img .'">
                                                 </div>
                                                 <div class="ms-3">
-                                                    <a href="page_product_details.html">'. $row->product_name. '</a>
+                                                    <a href="'.$proudct_detail.'" target="_blank">'. $row->product_name. '</a>
                                                 </div>
                                             </div>';
                 $nestedData['product_code'] = $row->product_code;
                 $nestedData['category_title'] = $row->title;                
                 $nestedData['sale_qty'] =  str_replace('.00', '', $row->sale_qty);  
-                $nestedData['sale_unit_cost'] =  $row->sale_unit_cost;  
                 $nestedData['sale_unit_price'] =  $row->sale_unit_price;  
                 $nestedData['Action'] = $action;
 
@@ -125,125 +134,6 @@ class Inventory extends BaseController
         }
     }
 
-    public function categoryList(){
-        $limit = $this->request->getVar('length');
-        $start = $this->request->getVar('start');
-
-        $totalData = $this->Inventorymodel->all_categories_count();
-
-        $totalFiltered = $totalData;
-
-        if (empty($this->request->getVar('search')['value'])) {
-
-            $categories = $this->Inventorymodel->all_categories($limit,$start);
-
-        } else {
-
-            $search = trim($this->request->getVar('search')['value']); 
-            $categories =  $this->Inventorymodel->categories_search($limit,$start,$search);
-            $totalFiltered = $this->Inventorymodel->categories_search_count($search);
-
-        }
-        // echo '<pre>'; print_r($categories); die;
-        $data = array();
-        if (!empty($categories)) {
-
-            $i = 1;
-            foreach ($categories as $row) {
-                $action = '<button class="btn btn-outline-theme edit-category"
-                    data-category_id="'.$row->category_id.'"
-                    data-title="'.$row->title.'"
-                    data-code="'.$row->code.'" 
-                    data-desc="'.$row->desc.'"
-                    >Edit</button>
-                ';
-
-                $nestedData['sr'] = $i;
-                $nestedData['title'] = $row->title;
-                $nestedData['code'] = $row->code;
-                $nestedData['desc'] = $row->desc;
-
-                $status = ($row->is_active) ? 'Active' : 'Deactive';
-                $checked = ($row->is_active) ? 'checked' : '';
-                $status = '<div class="form-check form-switch">
-                            <input type="checkbox" data-category_id="'.$row->category_id.'" class="form-check-input" id="is_active" '. $checked .'>
-                            <label class="form-check-label" for="customSwitch2">'. $status. '</label>
-                        </div>'  ;                          
-                $nestedData['status'] = $status;
-                $nestedData['Action'] = $action;
-
-                $data[] = $nestedData;
-
-                $i++;
-            }
-
-        }
-
-        $json_data = array(
-            "draw"            => intval($this->request->getVar('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
-        );
-
-        echo json_encode($json_data);
-    }
-
-    public function add(){
-        $result = array('success' =>  false);
-
-        $type = $this->request->getVar('type');
-        $title = $this->request->getVar('title');
-        $code = $this->request->getVar('code');
-        $desc = $this->request->getVar('desc');
-
-        $data = array(
-            'title' => $title,
-            'code' => $code,
-            'desc' => $desc,
-        );
-
-        if ($type == 'add') {
-            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), 'saimtech_category');
-
-            if (!$code_exist) {
-                $this->Commonmodel->insert_record($data, 'saimtech_category');
-                $result = array('success' =>  true);
-            } else {
-                $msg = 'This Category code '. $code . ' already exist. Please try diffrent code';
-                $result = array('success' =>  false, 'msg' => $msg);
-            }
-        } else {
-            $category_id = $this->request->getVar('category_id');
-            $code_exist = $this->Commonmodel->Duplicate_check(array('code' => $code), 'saimtech_category', array('category_id' => $category_id));
-
-            if (!$code_exist) {
-                $category_id = $this->request->getVar('category_id');
-                $this->Commonmodel->update_record($data,array('category_id' => $category_id), 'saimtech_category');
-                $result = array('success' =>  true);
-            } else {
-                $msg = 'This Category code '. $code . 'already exist. Please try diffrent code';
-                $result = array('success' =>  false, 'msg' => $msg);
-            }
-        }
-
-        // echo json_encode($result);
-        // $this->output->set_content_type('application/json')->set_output(json_encode($result));
-        return $this->response->setJSON($result);
-    }
-
-    public function statusUpdate(){
-        $category_id = $this->request->getVar('category_id');
-        $is_active = $this->request->getVar('is_active');
-
-        $data = array('is_active' => $is_active);
-        $this->Commonmodel->update_record($data, array('category_id' => $category_id), 'saimtech_category');
-        $msg = ($is_active) ? 'Category activated successfully!' : 'Category deactivated successfully!'; 
-        $result = array('success' =>  true, 'msg' => $msg);
-
-        return $this->response->setJSON($result);
-    }
-
     public function create(){
         $result = array('success' =>  true);
 
@@ -276,53 +166,84 @@ class Inventory extends BaseController
         $barcode = trim($this->request->getVar('barcode'));
         $desc = trim($this->request->getVar('desc'));
 
-        $data = array(
+        $insert_data = array(
             'product_id' => $product_id, 
-            'supplier_id' => $supplier_id, 
-            'location_id' => $location_id, 
             'v1' => $v1, 
             'v2' => $v2, 
             'v3' => $v3, 
-            'purch_qty' => $purch_qty, 
-            'inv_qty' => $inv_qty, 
             'sale_qty' => $sale_qty, 
-            'purch_total_price' => $purch_total_price, 
-            'purch_unit_cost' => $purch_unit_cost, 
-            'inv_unit_cost' => $inv_unit_cost, 
-            'sale_unit_cost' => $sale_unit_cost, 
             'sale_unit_price' => $sale_unit_price, 
             'barcode' => $barcode, 
-            'inv_in_desc' => $desc, 
-            'created_by' => $_SESSION['user_id'],
+            // 'created_by' => $_SESSION['user_id'],
+            'created_by' => 1,
         );
 
-        $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in_detail');
-        if ($insert_id) {
-            if ($barcode != '') {
-                $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
-                if ($already_exits_barcode_detail) {
-                    $already_exits_product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $already_exits_barcode_detail->product_id)), 'saimtech_product');
+        
+        if ($barcode != '') {
 
-                        if ($product_id != $already_exits_barcode_detail->product_id) {
-                            $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with other product '.$already_exits_product->product_name.' please try with different one');
-                        } else if($product_id == $already_exits_barcode_detail->product_id && ($v1 != $already_exits_barcode_detail->v1 || $v2 != $already_exits_barcode_detail->v2 || $v3 != $already_exits_barcode_detail->v3)) {
-                                $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
-                        } else {
-                            
-                        }
+            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
+            if ($already_exits_barcode_detail) {
+                $already_exits_product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $already_exits_barcode_detail->product_id)), 'saimtech_product');
 
-                } else {
-                    $insert_id = $this->Commonmodel->insert_record($data, 'saimtech_inventory_in');
-                }
+                    if ($product_id != $already_exits_barcode_detail->product_id) {
+                        $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with other product '.$already_exits_product->product_name.' please try with different one');
+                    } else if($product_id == $already_exits_barcode_detail->product_id && ($v1 != $already_exits_barcode_detail->v1 || $v2 != $already_exits_barcode_detail->v2 || $v3 != $already_exits_barcode_detail->v3)) {
+                            $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
+                    } else {
+                        $updat_inv_in_data['sale_unit_price'] =  $sale_unit_price;
+                        $updat_inv_in_data['sale_qty'] =  $already_exits_barcode_detail->sale_qty + $sale_qty;
+                        $updat_inv_in_data['update_by'] =  1;
+                        $this->Commonmodel->update_record($updat_inv_in_data, array('inv_in_id' => $already_exits_barcode_detail->inv_in_id), 'saimtech_inventory_in');
+                        $inv_in_id = $already_exits_barcode_detail->inv_in_id;
+                    }
+
+            } else {
+                $inv_in_id = $this->Commonmodel->insert_record($insert_data, 'saimtech_inventory_in');
             }
+        } else {
+            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id, 'v1' => $v1, 'v2' => $v2, 'v3')), 'saimtech_inventory_in');
+            if ($already_exits_barcode_detail) {
+                $updat_inv_in_data['sale_unit_price'] =  $sale_unit_price;
+                $updat_inv_in_data['sale_qty'] =  $already_exits_barcode_detail->sale_qty + $sale_qty;
+                $updat_inv_in_data['update_by'] =  1;
+                $this->Commonmodel->update_record($updat_inv_in_data, array('inv_in_id' => $already_exits_barcode_detail->inv_in_id), 'saimtech_inventory_in');
+                $inv_in_id = $already_exits_barcode_detail->inv_in_id;
+            } else {
+                $inv_in_id = $this->Commonmodel->insert_record($insert_data, 'saimtech_inventory_in');
+            }
+        }
+        if ($inv_in_id) {
+            $data_detail = array(
+                'inv_in_id' => $inv_in_id,
+                'product_id' => $product_id, 
+                'supplier_id' => $supplier_id, 
+                'location_id' => $location_id, 
+                'v1' => $v1, 
+                'v2' => $v2, 
+                'v3' => $v3, 
+                'purch_qty' => $purch_qty, 
+                'inv_qty' => $inv_qty, 
+                'sale_qty' => $sale_qty, 
+                'purch_total_price' => $purch_total_price, 
+                'purch_unit_cost' => $purch_unit_cost, 
+                'inv_unit_cost' => $inv_unit_cost, 
+                'sale_unit_cost' => $sale_unit_cost, 
+                'sale_unit_price' => $sale_unit_price, 
+                'inv_in_desc' => $desc, 
+                // 'created_by' => $_SESSION['user_id'],
+                'created_by' => 1,
+            );
+            $this->Commonmodel->insert_record($data_detail, 'saimtech_inventory_in_detail');
         }
         return $this->response->setJSON($result);
     }
 
     public function validateBarcode(){
-        $result = array('success' =>  true);
+        // ALTER TABLE `saimtech_inventory_in` CHANGE `barcode` `barcode` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '';
+        $result = array('success' =>  true, 'msg' => '');
         $barcode = trim($this->request->getVar('barcode'));
         $product_id = trim($this->request->getVar('product_id'));
+        $sale_unit_price = trim($this->request->getVar('sale_unit_price'));
         $v1 = trim($this->request->getVar('v1'));
         $v2 = trim($this->request->getVar('v2'));
         $v3 = trim($this->request->getVar('v3'));
@@ -344,7 +265,20 @@ class Inventory extends BaseController
                         $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
                     }
                 }
+
+                if ($sale_unit_price != $already_exits_barcode_detail->sale_unit_price) {
+                    $msg = 'Sale unit price already exist for this product as '. $already_exits_barcode_detail->sale_unit_price. '. It will be updated to the latest sale unit price';
+                    $result = array('success' =>  true, 'msg' => $msg);
+                }
+            } else {
+                $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id, 'v1' => $v1, 'v2' => $v2, 'v3')), 'saimtech_inventory_in');
+                if ($already_exits_barcode_detail) {
+                    $result = array('success' =>  false, 'msg' => 'This product is linked with differnt barcode '.$already_exits_barcode_detail->barcode);
+                }
+
             }
+
+
             // $barcode_exist = $this->Commonmodel->Duplicate_check(array('barcode' => $barcode), 'saimtech_inventory_in');
             // if ($barcode_exist) {
             //     $result = array('success' =>  false, 'msg' => 'Barcode already exist');
@@ -355,10 +289,6 @@ class Inventory extends BaseController
     }
 
     public function product_barcode($barcode){
-        // dd($_SESSION);
-        // $data['inv_in_id'] = $inv_in_id;
-
-        // dd($inv_in_id);
         $length = strlen($barcode);
         if ($length == 13) {
             $barcode = substr($barcode, 1);
@@ -368,5 +298,114 @@ class Inventory extends BaseController
         }
         $data['barcode'] = $barcode;
         return view('product/print_barcode', $data);
+    }
+
+    public function generate_product_barcode(){
+        $inv_in_id = trim($this->request->getVar('inv_in_id'));
+        $product_id = trim($this->request->getVar('product_id'));
+
+        $new_barcode = $this->Commonmodel->generateProductNewBarcode();
+        $data = array('barcode' => $new_barcode);
+
+        $this->Commonmodel->update_record($data, array('inv_in_id' => $inv_in_id), 'saimtech_inventory_in');
+
+        $result = array('success' =>  true);
+        return $this->response->setJSON($result);
+    }
+
+    public function detail($inv_in_id){
+        $data['title'] = 'Inventory Detail';
+        $data['main_content'] = 'inventory/inv_detail';
+        $data['inv_in_id'] = $inv_in_id;
+
+        $detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('inv_in_id' => $inv_in_id)), 'saimtech_inventory_in_detail');
+        $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $detail->product_id)), 'saimtech_product');
+
+        $data['img'] = IMGURL.$product->product_img;
+        $data['proudct_detail'] = URL. '/product/edit/'. $product->product_id;
+        $data['product_name'] = $product->product_name;
+
+        return view('layouts/page',$data);
+    
+    }
+
+    public function detailList(){
+        // dd($_POST);
+        $limit = $this->request->getVar('length');
+        $start = $this->request->getVar('start');
+        $search = $this->request->getVar('search');
+        $inv_in_id = $this->request->getVar('inv_in_id');
+        // dd($search);
+        $totalData = $this->Inventorymodel->all_inv_detail_count($inv_in_id);
+        $totalFiltered = $totalData;
+
+        if (empty($search)) {
+            $products = $this->Inventorymodel->all_inv_detail($inv_in_id, $limit, $start);
+        } else {
+            $products =  $this->Inventorymodel->inv_detail_search($inv_in_id, $limit, $start, $search);
+            $totalFiltered = $this->Inventorymodel->inv_detail_search_count($inv_in_id, $search);
+
+        }
+        $data = array();
+        if (!empty($products)) {
+
+            $i = 1;
+            foreach ($products as $row) {
+                $barcode_url = URL. '/inventory/product_barcode/'. $row->inv_in_id;
+                $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
+                
+                if ($row->inv_in_id != '') {
+                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">Print Barcode</a>
+                    ';
+                } else {
+                    $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:140px"
+                        data-inv_in_id="'.$row->inv_in_id.'"
+                        data-product_id="'.$row->product_id.'"
+                        data-product_code="'.$row->product_code.'" 
+                        >Generate Barcode</button>
+                    ';
+                }      
+
+                $action.= '<a  href="'. $detail_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">View Detail</a>
+                ';                  
+
+                $img = IMGURL.$row->product_img;
+                $proudct_detail = URL. '/product/edit/'. $row->product_id;
+                $nestedData['product'] = '<div class="d-flex align-items-center">
+                                                <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+                                                    <img alt="" class="mw-100 mh-100" src="'. $img .'">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a href="'.$proudct_detail.'" target="_blank">'. $row->product_name. '</a>
+                                                </div>
+                                            </div>';
+                $nestedData['product_code'] = $row->product_code;
+                $nestedData['category_title'] = $row->title;                
+                $nestedData['sale_qty'] =  str_replace('.00', '', $row->sale_qty);  
+                $nestedData['sale_unit_cost'] =  $row->sale_unit_cost;  
+                $nestedData['sale_unit_price'] =  $row->sale_unit_price;  
+
+                $date = $row->created_at;
+                $date =  strtotime($date);
+                $nestedData['date'] =  date('Y-m-d h:i A',$date);  
+                $nestedData['Action'] = $action;
+
+                $data[] = $nestedData;
+
+                $i++;
+            }
+
+        }
+
+        
+
+        $json_data = array(
+            "draw"            => intval($this->request->getVar('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+        );
+
+        echo json_encode($json_data);
     }
 }

@@ -7,7 +7,7 @@
 	</ul>
 	
 	<h1 class="page-header d-flex justify-content-between">
-		Inventory List 
+		Inventory Detail 
 		<!-- <a type="button" href="<?= URL?>/product/add" class="btn btn-outline-theme me-2 add-product">Inventory List</a> -->
 		<!-- Categories <small>page header description goes here...</small> -->
 	</h1>
@@ -32,7 +32,18 @@
 	<div id="datatable" class="mb-5">
 		<div class="card">
 			<ul class="nav nav-tabs nav-tabs-v2 px-4">
-				<li class="nav-item me-3"><a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">All</a></li>
+				<li class="nav-item me-3">
+					<a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">
+						<div class="d-flex align-items-center">
+		                    <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+		                        <img alt="" class="mw-100 mh-100" src="<?= $img ?>">
+		                    </div>
+		                    <div class="ms-3">
+		                        <a href="<?= $proudct_detail ?>" target="_blank"><?= $product_name ?></a>
+		                    </div>
+		                </div>
+					</a>
+				</li>
 				<!-- <li class="nav-item me-3"><a href="#deletedTab" class="nav-link px-2" data-bs-toggle="tab">Deleted</a></li> -->
 			</ul>
 			<div class="tab-content p-4">
@@ -59,16 +70,18 @@
 					<!-- END input-group -->
 					
 					<!-- BEGIN table -->
+					<input type="hidden" class="inv_in_id" value="<?= $inv_in_id ?>">
 					<div class="table-responsive">
-						<table id="inventory" class="table text-nowrap w-100">
+						<table id="inv_detail" class="table text-nowrap w-100">
 							<thead class="w-100">
 								<tr>
 									<th>Product</th>
 									<th>Code</th>
 									<th>Category</th>
 									<th>Qty</th>
+									<th>Sale Unit Cost</th>
 									<th>Sale Unit Pice</th>
-									<th>Action</th>
+									<th>Date</th>
 								</tr>
 							</thead>
 							<tbody>
