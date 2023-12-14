@@ -48,18 +48,18 @@ class Inventory extends BaseController
                 $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
                 
                 if ($row->barcode != '') {
-                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">Print Barcode</a>
+                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></a>
                     ';
                 } else {
                     $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:140px"
                         data-inv_in_id="'.$row->inv_in_id.'"
                         data-product_id="'.$row->product_id.'"
                         data-product_code="'.$row->product_code.'" 
-                        >Generate Barcode</button>
+                        >Generate Barcode <i class="fa fa-barcode" aria-hidden="true"></i></button>
                     ';
                 }      
 
-                $action.= '<a  href="'. $detail_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">View Detail</a>
+                $action.= '<a  href="'. $detail_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">View Detail <i class="fa fa-eye" aria-hidden="true"></i></a>
                 ';                  
 
                 $img = IMGURL.$row->product_img;
@@ -72,6 +72,24 @@ class Inventory extends BaseController
                                                     <a href="'.$proudct_detail.'" target="_blank">'. $row->product_name. '</a>
                                                 </div>
                                             </div>';
+
+                $variation = 'N/A';
+                if ($row->v1 != '' || $row->v2 != '' || $row->v3 != '') {
+                    $variation_arr = array();
+                    $variants = $this->Inventorymodel->getProductVariants($row->product_id);
+                    if ($row->v1 != '') {
+                        $variation_arr[] = '<span class="text-primary" style="font-weight:700">'. $variants['v1'] .'</span>: '. $row->v1;
+                    }
+                    if ($row->v2 != '') {
+                        $variation_arr[] = '<span class="text-success" style="font-weight:700">'. $variants['v2'] .'</span>: '. $row->v2;
+                    }
+                    if ($row->v3 != '') {
+                        $variation_arr[] = '<span class="text-danger" style="font-weight:700">'. $variants['v3'] .'</span>: '. $row->v3;
+                    }
+                    $variation = implode('<br>', $variation_arr);
+                }
+
+                $nestedData['variation'] = $variation;                            
                 $nestedData['product_code'] = $row->product_code;
                 $nestedData['category_title'] = $row->title;                
                 $nestedData['sale_qty'] =  str_replace('.00', '', $row->sale_qty);  
@@ -249,8 +267,8 @@ class Inventory extends BaseController
         $v3 = trim($this->request->getVar('v3'));
 
         $length = strlen($barcode);
-        if ($length < 12){
-            $result = array('success' =>  false, 'msg' => 'Barcode length should not be less than 12 digits');
+        if ($length < 11){
+            $result = array('success' =>  false, 'msg' => 'Barcode length should not be less than 11 digits');
         } else if ($length > 13) {
             $result = array('success' =>  false, 'msg' => 'Barcode length should not be greater than 13 digits');
         } else {
@@ -290,14 +308,21 @@ class Inventory extends BaseController
 
     public function product_barcode($barcode){
         $length = strlen($barcode);
-        if ($length == 13) {
-            $barcode = substr($barcode, 1);
-        } 
-        if($length == 13 || $length == 12) {
-            $barcode = substr($barcode, 0, -1);
+        $inv_in_line = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
+        if ($inv_in_line) {
+            $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $inv_in_line->product_id)), 'saimtech_product');
+            $data['product'] = $product;
+            if ($length == 13) {
+                $barcode = substr($barcode, 1);
+            } 
+            if($length == 13 || $length == 12) {
+                $barcode = substr($barcode, 0, -1);
+            }
+            $data['barcode'] = $barcode;
+            return view('product/print_barcode', $data);
+        } else {
+            echo 'Product Barcode Not Found';
         }
-        $data['barcode'] = $barcode;
-        return view('product/print_barcode', $data);
     }
 
     public function generate_product_barcode(){
@@ -318,12 +343,44 @@ class Inventory extends BaseController
         $data['main_content'] = 'inventory/inv_detail';
         $data['inv_in_id'] = $inv_in_id;
 
-        $detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('inv_in_id' => $inv_in_id)), 'saimtech_inventory_in_detail');
-        $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $detail->product_id)), 'saimtech_product');
+        //Inventory in parent line
+        $row = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('inv_in_id' => $inv_in_id)), 'saimtech_inventory_in');
+        $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $row->product_id)), 'saimtech_product');
 
         $data['img'] = IMGURL.$product->product_img;
         $data['proudct_detail'] = URL. '/product/edit/'. $product->product_id;
         $data['product_name'] = $product->product_name;
+        $data['product'] = $product;
+
+        $barcode = $row->barcode;
+        $length = strlen($barcode);
+        if ($length == 13) {
+            $barcode = substr($barcode, 1);
+        } 
+        if ($length == 13 || $length == 12) {
+            $barcode = substr($barcode, 0, -1);
+        }
+        
+        $data['barcode'] = $barcode;
+        $this->Commonmodel->generateProductBarcode($barcode);
+
+        $variation = '';
+        if ($row->v1 != '' || $row->v2 != '' || $row->v3 != '') {
+            $variation_arr = array();
+            $variants = $this->Inventorymodel->getProductVariants($row->product_id);
+            if ($row->v1 != '') {
+                $variation_arr[] = '<div class="me-3">Variantion =></div> <div class="me-4"><span class="text-primary" style="font-weight:700">'. $variants['v1'] .'</span> : '. $row->v1 .'</div>';
+            }
+            if ($row->v2 != '') {
+                $variation_arr[] = '<div class="me-4"> <span class="text-success" style="font-weight:700">'. $variants['v2'] .'</span> : '. $row->v2 .'</div>';
+            }
+            if ($row->v3 != '') {
+                $variation_arr[] = '<div class="me-4"> <span class="text-danger" style="font-weight:700">'. $variants['v3'] .'</span> : '. $row->v3 .'</div>';
+            }
+            $variation = implode(' ', $variation_arr);
+        }
+
+        $data['variation'] = $variation;
 
         return view('layouts/page',$data);
     
@@ -350,37 +407,11 @@ class Inventory extends BaseController
         if (!empty($products)) {
 
             $i = 1;
-            foreach ($products as $row) {
-                $barcode_url = URL. '/inventory/product_barcode/'. $row->inv_in_id;
-                $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
-                
-                if ($row->inv_in_id != '') {
-                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">Print Barcode</a>
-                    ';
-                } else {
-                    $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:140px"
-                        data-inv_in_id="'.$row->inv_in_id.'"
-                        data-product_id="'.$row->product_id.'"
-                        data-product_code="'.$row->product_code.'" 
-                        >Generate Barcode</button>
-                    ';
-                }      
+            foreach ($products as $row) {   
 
-                $action.= '<a  href="'. $detail_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">View Detail</a>
-                ';                  
-
-                $img = IMGURL.$row->product_img;
-                $proudct_detail = URL. '/product/edit/'. $row->product_id;
-                $nestedData['product'] = '<div class="d-flex align-items-center">
-                                                <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
-                                                    <img alt="" class="mw-100 mh-100" src="'. $img .'">
-                                                </div>
-                                                <div class="ms-3">
-                                                    <a href="'.$proudct_detail.'" target="_blank">'. $row->product_name. '</a>
-                                                </div>
-                                            </div>';
-                $nestedData['product_code'] = $row->product_code;
+                $nestedData['location'] = $row->location_name;
                 $nestedData['category_title'] = $row->title;                
+                $nestedData['purch_total_price'] = $row->purch_total_price;                
                 $nestedData['sale_qty'] =  str_replace('.00', '', $row->sale_qty);  
                 $nestedData['sale_unit_cost'] =  $row->sale_unit_cost;  
                 $nestedData['sale_unit_price'] =  $row->sale_unit_price;  
@@ -388,7 +419,6 @@ class Inventory extends BaseController
                 $date = $row->created_at;
                 $date =  strtotime($date);
                 $nestedData['date'] =  date('Y-m-d h:i A',$date);  
-                $nestedData['Action'] = $action;
 
                 $data[] = $nestedData;
 

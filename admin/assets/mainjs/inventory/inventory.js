@@ -10,6 +10,7 @@ $(document).ready(function(){
 				$('td:eq(3)', row).addClass('align-middle');
 				$('td:eq(4)', row).addClass('align-middle');
 				$('td:eq(5)', row).addClass('align-middle');
+				$('td:eq(6)', row).addClass('align-middle');
 			},
 			responsive: false,
 			// buttons: [
@@ -34,6 +35,7 @@ $(document).ready(function(){
 		    },
 	    	"columns": [
 		        { "data": "product" },
+		        { "data": "variation" },
 		        { "data": "product_code" },
 		        { "data": "category_title" },
 		        { "data": "sale_qty" },
@@ -46,7 +48,8 @@ $(document).ready(function(){
 	        	{ targets: 2, width: '200px' },
 	        	{ targets: 3, width: '200px' },
 	        	{ targets: 4, width: '200px' },
-	        	{ targets: 5, width: '400px' },
+	        	{ targets: 5, width: '200px' },
+	        	{ targets: 6, width: '400px' },
 	        ]
 	    });
 	}

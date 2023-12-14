@@ -6,11 +6,31 @@
 		<li class="breadcrumb-item active">STARTER PAGE</li>
 	</ul>
 	
-	<h1 class="page-header d-flex justify-content-between">
-		Inventory Detail 
+	<div class="page-header d-flex justify-content-between">
+		<div class="d-flex align-items-center">
+	        <div class="w-70px h-70px bg-gray-100">
+	            <img alt="" class="mw-100 mh-100" src="<?= $img ?>">
+	        </div>
+	        <div class="ms-3">
+	            <a href="<?= $proudct_detail ?>" target="_blank"><?= $product_name ?></a>
+	        </div>
+
+	        <?php if($barcode != ''):?>
+		        <div class="bar-code-view ms-4 d-flex justify-content-between">
+		            <img src="<?= URL?>/pdf/<?= $barcode?>.png" alt="barcode">
+		            <a href="<?= URL?>/inventory/product_barcode/<?= $barcode ?>" target="_blank" class="printimg">
+		                <img src="<?= URL?>/assets/img/icon/printer.svg" alt="print">
+		            </a>
+		        </div>
+		    <?php endif;?>
+
+	    </div>
+	    <div class="fs-5 d-flex align-items-end">
+	    	<?= $variation ?>
+	    </div>
 		<!-- <a type="button" href="<?= URL?>/product/add" class="btn btn-outline-theme me-2 add-product">Inventory List</a> -->
 		<!-- Categories <small>page header description goes here...</small> -->
-	</h1>
+	</div>
 
 	<div class="mb-sm-4 mb-3 d-sm-flex" style="display: none !important;">
 		<div class="mt-sm-0 mt-2"><a href="#" class="text-body text-decoration-none"><i class="fa fa-download fa-fw me-1 text-muted"></i> Export</a></div>
@@ -31,21 +51,6 @@
 	<!-- BEGIN #datatable -->
 	<div id="datatable" class="mb-5">
 		<div class="card">
-			<ul class="nav nav-tabs nav-tabs-v2 px-4">
-				<li class="nav-item me-3">
-					<a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">
-						<div class="d-flex align-items-center">
-		                    <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
-		                        <img alt="" class="mw-100 mh-100" src="<?= $img ?>">
-		                    </div>
-		                    <div class="ms-3">
-		                        <a href="<?= $proudct_detail ?>" target="_blank"><?= $product_name ?></a>
-		                    </div>
-		                </div>
-					</a>
-				</li>
-				<!-- <li class="nav-item me-3"><a href="#deletedTab" class="nav-link px-2" data-bs-toggle="tab">Deleted</a></li> -->
-			</ul>
 			<div class="tab-content p-4">
 				<div class="tab-pane fade show active" id="allTab">
 					<!-- BEGIN input-group -->
@@ -75,10 +80,9 @@
 						<table id="inv_detail" class="table text-nowrap w-100">
 							<thead class="w-100">
 								<tr>
-									<th>Product</th>
-									<th>Code</th>
-									<th>Category</th>
+									<th>Location</th>
 									<th>Qty</th>
+									<th>Purchase Total Price</th>
 									<th>Sale Unit Cost</th>
 									<th>Sale Unit Pice</th>
 									<th>Date</th>

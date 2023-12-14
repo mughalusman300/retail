@@ -94,12 +94,13 @@ class Product extends BaseController
                 }
 
                 $img = IMGURL.$row->product_img;
+                $proudct_detail = URL. '/product/edit/'. $row->product_id;
                 $nestedData['product'] = '<div class="d-flex align-items-center">
                                                 <div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
                                                     <img alt="" class="mw-100 mh-100" src="'. $img .'">
                                                 </div>
                                                 <div class="ms-3">
-                                                    <a href="page_product_details.html">'. $row->product_name. '</a>
+                                                    <a href="'.$proudct_detail.'" target="_blank">'. $row->product_name. '</a>
                                                 </div>
                                             </div>';
                 $nestedData['product_code'] = $row->product_code;

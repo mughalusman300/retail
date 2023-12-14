@@ -326,7 +326,7 @@ class Commonmodel extends Model {
                 unlink($file); // delete file
             }
         }
-        $barcodeOptions = ['text' => $text];
+        $barcodeOptions = ['text' => $text, 'barHeight' => 50];
 
         // No required options.
         $rendererOptions = array();

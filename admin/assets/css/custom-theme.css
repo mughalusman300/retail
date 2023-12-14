@@ -31,3 +31,14 @@ tr.child li {
     object-fit: cover;
     border-radius: 3px !important; 
 }
+
+.bar-code-view {
+    width: 200px;
+    border: 1px solid #D8D8D8;
+    padding: 15px;
+    max-width: 100%;
+    background: #FFFFFF;
+}
+.bar-code-view .printimg {
+    cursor: pointer;
+}

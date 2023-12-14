@@ -64,6 +64,7 @@
 							<thead class="w-100">
 								<tr>
 									<th>Product</th>
+									<th>Variation</th>
 									<th>Code</th>
 									<th>Category</th>
 									<th>Qty</th>

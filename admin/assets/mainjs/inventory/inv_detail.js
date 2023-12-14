@@ -11,7 +11,6 @@ $(document).ready(function(){
 				$('td:eq(3)', row).addClass('align-middle');
 				$('td:eq(4)', row).addClass('align-middle');
 				$('td:eq(5)', row).addClass('align-middle');
-				$('td:eq(6)', row).addClass('align-middle');
 			},
 			responsive: false,
 			// buttons: [
@@ -35,22 +34,20 @@ $(document).ready(function(){
 		     	"type": "POST",
 		    },
 	    	"columns": [
-		        { "data": "product" },
-		        { "data": "product_code" },
-		        { "data": "category_title" },
+		        { "data": "location" },
 		        { "data": "sale_qty" },
+		        { "data": "purch_total_price" },
 		        { "data": "sale_unit_cost" },
 		        { "data": "sale_unit_price" },
 		        { "data": "date" },
 		    ],
 	    	"columnDefs": [
-	        	{ targets: 0, width: '400px' },
+	        	{ targets: 0, width: '200px' },
 	        	{ targets: 1, width: '200px' },
 	        	{ targets: 2, width: '200px' },
 	        	{ targets: 3, width: '200px' },
 	        	{ targets: 4, width: '200px' },
 	        	{ targets: 5, width: '200px' },
-	        	{ targets: 6, width: '200px' },
 	        ]
 	    });
 	}
