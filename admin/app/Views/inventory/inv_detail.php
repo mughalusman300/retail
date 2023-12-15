@@ -7,26 +7,26 @@
 	</ul>
 	
 	<div class="page-header d-flex justify-content-between">
-		<div class="d-flex align-items-center">
+		<div class="d-flex align-items-end">
 	        <div class="w-70px h-70px bg-gray-100">
 	            <img alt="" class="mw-100 mh-100" src="<?= $img ?>">
 	        </div>
 	        <div class="ms-3">
 	            <a href="<?= $proudct_detail ?>" target="_blank"><?= $product_name ?></a>
+	            <small class="d-flex"><?= $variation; ?></small>
 	        </div>
 
+
+	    </div>
+	    <div class="fs-5 d-flex align-items-end">
 	        <?php if($barcode != ''):?>
 		        <div class="bar-code-view ms-4 d-flex justify-content-between">
 		            <img src="<?= URL?>/pdf/<?= $barcode?>.png" alt="barcode">
-		            <a href="<?= URL?>/inventory/product_barcode/<?= $barcode ?>" target="_blank" class="printimg">
+		            <a href="<?= URL?>/inventory/product_barcode/<?= $full_barcode ?>" target="_blank" class="printimg">
 		                <img src="<?= URL?>/assets/img/icon/printer.svg" alt="print">
 		            </a>
 		        </div>
 		    <?php endif;?>
-
-	    </div>
-	    <div class="fs-5 d-flex align-items-end">
-	    	<?= $variation ?>
 	    </div>
 		<!-- <a type="button" href="<?= URL?>/product/add" class="btn btn-outline-theme me-2 add-product">Inventory List</a> -->
 		<!-- Categories <small>page header description goes here...</small> -->

@@ -48,10 +48,10 @@ class Inventory extends BaseController
                 $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
                 
                 if ($row->barcode != '') {
-                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:140px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></a>
+                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></a>
                     ';
                 } else {
-                    $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:140px"
+                    $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:160px"
                         data-inv_in_id="'.$row->inv_in_id.'"
                         data-product_id="'.$row->product_id.'"
                         data-product_code="'.$row->product_code.'" 
@@ -353,6 +353,8 @@ class Inventory extends BaseController
         $data['product'] = $product;
 
         $barcode = $row->barcode;
+        $data['full_barcode'] = $barcode;
+
         $length = strlen($barcode);
         if ($length == 13) {
             $barcode = substr($barcode, 1);
