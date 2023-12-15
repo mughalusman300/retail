@@ -371,13 +371,13 @@ class Inventory extends BaseController
             $variation_arr = array();
             $variants = $this->Inventorymodel->getProductVariants($row->product_id);
             if ($row->v1 != '') {
-                $variation_arr[] = '<div class="me-3">Variantion =></div> <div class="me-4"><span class="text-theme" style="font-weight:700">'. $variants['v1'] .'</span> : '. $row->v1 .'</div>';
+                $variation_arr[] = '<div class="me-3">Variantion =></div> <div class="me-4"><span class="text-theme" style="font-weight:600">'. $variants['v1'] .'</span> : '. $row->v1 .'</div>';
             }
             if ($row->v2 != '') {
-                $variation_arr[] = '<div class="me-4"> <span class="text-theme" style="font-weight:700">'. $variants['v2'] .'</span> : '. $row->v2 .'</div>';
+                $variation_arr[] = '<div class="me-4"> <span class="text-theme" style="font-weight:600">'. $variants['v2'] .'</span> : '. $row->v2 .'</div>';
             }
             if ($row->v3 != '') {
-                $variation_arr[] = '<div class="me-4"> <span class="text-theme" style="font-weight:700">'. $variants['v3'] .'</span> : '. $row->v3 .'</div>';
+                $variation_arr[] = '<div class="me-4"> <span class="text-theme" style="font-weight:600">'. $variants['v3'] .'</span> : '. $row->v3 .'</div>';
             }
             $variation = implode(' ', $variation_arr);
         }
