@@ -20,11 +20,20 @@
 	    </div>
 	    <div class="fs-5 d-flex align-items-end">
 	        <?php if($barcode != ''):?>
-		        <div class="bar-code-view ms-4 d-flex justify-content-between">
-		            <img src="<?= URL?>/pdf/<?= $barcode?>.png" alt="barcode">
-		            <a href="<?= URL?>/inventory/product_barcode/<?= $full_barcode ?>" target="_blank" class="printimg">
-		                <img src="<?= URL?>/assets/img/icon/printer.svg" alt="print">
-		            </a>
+		        <div class="bar-code-view ms-4">
+		        	<div class="row">
+		        		<div class="col-10" style="font-size: 12px;text-align: center">
+					        <div style="font-weight: bold;color:#333"><?= $product->product_code ?></div>
+				            <img src="<?= URL?>/pdf/<?= $barcode?>.png" alt="barcode">
+					    </div>
+					    <div class="col-2"  style="vertical-align: middle;">
+				        	<div class="">
+					            <a href="<?= URL?>/inventory/product_barcode/<?= $full_barcode ?>" target="_blank" class="printimg">
+					                <img src="<?= URL?>/assets/img/icon/printer.svg" alt="print">
+					            </a>
+					        </div>
+					    </div>
+					</div>
 		        </div>
 		    <?php endif;?>
 	    </div>
