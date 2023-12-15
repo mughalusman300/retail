@@ -83,9 +83,16 @@ tr.child li {
 }
 .product-upload-img-div {
     width: 80%;
-    padding: 0;
+    /*padding: 0;*/
 }
-
+.image-parent-div {
+    /*padding-right: 10px;*/
+}
+@media (min-width: 1200px) and (max-width: 1700px) { 
+    .main-row {
+        width: 100% !important;
+    }
+}
 @media only screen and (max-width: 425px) { 
     .product-upload-radio-btn-div{
         width: 20%;
