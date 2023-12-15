@@ -39,9 +39,9 @@ $(document).ready(function() {
 	});
 
 	$(document).on('click', '.add-more-image', function(){
-		var html = `<div class="main-row col-6 mb-2">
+		var html = `<div class="main-row col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-2">
 						<div class="row">
-							<div class="col-1 text-center">
+							<div class="product-upload-radio-btn-div text-center">
 								<div class="form-check form-switch mt-1">
 	                            	<input type="checkbox" class="form-check-input default" name="default" value="1">
 									<input type="hidden" class="default_image" name="default_image" value="">
@@ -49,21 +49,21 @@ $(document).ready(function() {
 	                        	</div>
 							</div>
 
-							<div class="col-11 upload-row text-end">
+							<div class="product-upload-img-div upload-row text-end">
 								<div class="img-col">
 									<img  class="img-preview product-img-preview" style="display: none;" title="Click here to remove this file" src="">
 								</div>
 								<button
 									style="display: none;" 
 									type="button" 
-									class="btn btn-sm btn-danger remove-img mt-1"
+									class="btn btn-sm btn-outline-danger remove-img mt-2"
 									data-attachment_id=""
 								>
 									Delete
 								</button>
 								<input type="file" name="product_img[]" id="product_img" placeholder=" Attachments" class="form-control attachment-file  product_img" accept="gif, .jpg, .png," style="display: none">
 
-								<button type="button" class=" btn btn-default btn-browse form-control" style="width:auto">
+								<button type="button" class=" btn btn-default btn-browse product-upload-btn form-control" >
 				                    <i class="fa fa-cloud-upload"></i>
 				                    Uploade Image           
 				                </button>

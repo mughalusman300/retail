@@ -78,3 +78,22 @@ tr.child li {
 /*.select2-selection .select2-selection--single {
 
 }*/
+.product-upload-radio-btn-div{
+    width: 20%;
+}
+.product-upload-img-div {
+    width: 80%;
+    padding: 0;
+}
+
+@media only screen and (max-width: 425px) { 
+    .product-upload-radio-btn-div{
+        width: 20%;
+    }
+    .product-upload-img-div{
+        width: 60%;
+    }
+}
+/*.main-row {
+    display: contents;
+}*/

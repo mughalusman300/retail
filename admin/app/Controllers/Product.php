@@ -50,9 +50,7 @@ class Product extends BaseController
                 $nestedData['check'] = '<div class="form-check">
                                                 <input type="checkbox" class="form-check-input" id="checkbox"
                                                 data-product_id="'.$row->product_id.'"
-                                                data-product_code="'.$row->product_code.'" 
-                                                data-product_desc="'.$row->product_desc.'"
-                                                >
+                                                data-product_code="'.$row->product_code.'"                                                 >
                                                 <label class="form-check-label" for="checkbox"></label>
                                             </div>';
                 $edit_url = URL. '/product/edit/'. $row->product_id;
@@ -60,7 +58,6 @@ class Product extends BaseController
                 $action = '<a  href="'. $edit_url .'" class="btn btn-outline-theme edit-product"
                     data-product_id="'.$row->product_id.'"
                     data-product_code="'.$row->product_code.'" 
-                    data-product_desc="'.$row->product_desc.'"
                     >Edit</a>
                 ';
 
