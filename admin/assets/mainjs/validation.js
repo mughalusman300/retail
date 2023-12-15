@@ -191,10 +191,12 @@ function checkValidation(el) {
                 }
             } else if(field.hasClass("select2")) {
                 if (value == '') {
-                    field.siblings(".select2-container").find("span .select2-selection").css('border-color','red');
+                    // field.siblings(".select2-container").find("span .select2-selection").css('border-color','red');
+                    field.siblings(".select2-container").find("span .select2-selection").addClass('is-invalid');
                     check = false;
                 } else {
-                    field.siblings(".select2-container").find("span .select2-selection").css('border-color','#ccc');
+                    // field.siblings(".select2-container").find("span .select2-selection").css('border-color','#ccc');
+                    field.siblings(".select2-container").find("span .select2-selection").removeClass('is-invalid');
                 }
             }
 

@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	// $('.select2').editableSelect({ effects: 'default' });
+	// $('.select2').select2({
+	// 	theme: "classic"
+	// });
 
 	function option_values(){
 

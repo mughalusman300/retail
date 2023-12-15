@@ -1,5 +1,12 @@
 $(document).ready(function(){
-		
+	$( '.select2' ).select2( {
+	    theme: "bootstrap-5",
+	    selectionCssClass: "select2--small",
+	    dropdownCssClass: "select2--small",
+	});
+	$(document).on('select2:open', () => {
+		document.querySelector('.select2-search__field').focus();
+	});	
 	$(document).on('change', '.product_id', function() {
 		var product_id = $('.product_id').val();
 		if (product_id != '') {

@@ -164,33 +164,6 @@
 										</select>
 									</div>
 								</div>
-								<div class="row mb-2">
-
-									<div class="col-4">
-										<label class="form-label">Purch Unit</label>
-										<input type="text" readonly="" value="1 Bundale =">
-									</div>
-
-									<div class="col-4">
-										<label class="form-label">Inventory Unit</label>
-										<select name="inv_unit" id="inv_unit" class="form-control inv_unit validate-input select">
-											<option value="">Select</option>
-											<?php foreach($uom as $row) :?>
-												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
-											<?php endforeach; ?>
-										</select>
-									</div>
-
-									<div class="col-4">
-										<label class="form-label">Sale Unit</label>
-										<select name="sale_unit" id="sale_unit" class="form-control select2 sale_unit validate-input select ">
-											<option value="">Select</option>
-											<?php foreach($uom as $row) :?>
-												<option value="<?= $row->uom_code ?>"><?= $row->uom_code ?></option>
-											<?php endforeach; ?>
-										</select>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>
