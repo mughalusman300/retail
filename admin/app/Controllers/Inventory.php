@@ -48,7 +48,9 @@ class Inventory extends BaseController
                 $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
                 
                 if ($row->barcode != '') {
-                    $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></a>
+                    // $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></a>
+                    // ';
+                    $action = '<button type="button" data-barcode="'. $row->barcode .'"  class="btn btn-outline-theme print-barcode" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></button>
                     ';
                 } else {
                     $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:160px"
@@ -306,22 +308,28 @@ class Inventory extends BaseController
         return $this->response->setJSON($result);
     }
 
-    public function product_barcode($barcode){
-        $length = strlen($barcode);
-        $inv_in_line = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
-        if ($inv_in_line) {
-            $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $inv_in_line->product_id)), 'saimtech_product');
-            $data['product'] = $product;
-            if ($length == 13) {
-                $barcode = substr($barcode, 1);
-            } 
-            if($length == 13 || $length == 12) {
-                $barcode = substr($barcode, 0, -1);
+    public function product_barcode($barcode, $qty = 1){
+
+        if ($qty > 0 && $qty < 101 ) {
+            $length = strlen($barcode);
+            $inv_in_line = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
+            if ($inv_in_line) {
+                $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $inv_in_line->product_id)), 'saimtech_product');
+                $data['product'] = $product;
+                if ($length == 13) {
+                    $barcode = substr($barcode, 1);
+                } 
+                if($length == 13 || $length == 12) {
+                    $barcode = substr($barcode, 0, -1);
+                }
+                $data['barcode'] = $barcode;
+                $data['qty'] = $qty;
+                return view('product/print_barcode', $data);
+            } else {
+                echo 'Product Barcode Not Found';
             }
-            $data['barcode'] = $barcode;
-            return view('product/print_barcode', $data);
-        } else {
-            echo 'Product Barcode Not Found';
+        } else{
+            echo 'Something went wrong Please try later!';
         }
     }
 

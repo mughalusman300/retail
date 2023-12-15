@@ -85,3 +85,4 @@
 	<!-- END #datatable -->
 </div>
 <?php include(APPPATH . 'views/modals/conversion-modal.php') ?>
+<?php include(APPPATH . 'views/modals/barcode-modal.php') ?>

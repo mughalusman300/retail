@@ -87,4 +87,36 @@ $(document).ready(function(){
 		});	
 	});
 
+	$(document).on('click','.print-barcode',function() {
+		var barcode = $(this).data('barcode');
+		$('.print_barcode').val(barcode);
+		$('.barcode-modal').modal('show');
+	});
+
+	$(document).on('click','.Proceed',function() {
+		var barcode = $('.print_barcode').val();
+		var qty = parseInt($('.barcode_qty').val());
+
+		if (qty == 0) {
+			$('.barcode_qty').addClass('is-invalid');
+			Swal.fire('', 'Quantity should be greater than zero!', 'error');
+			return false;
+		} else if (qty > 100) {
+			$('.barcode_qty').addClass('is-invalid');
+			Swal.fire('', 'Quantity should be less than 100!', 'error');
+			return false;
+		}
+
+		if (qty > 0 && qty <= 100) {
+			var url = base + "/inventory/product_barcode/"+barcode+"/"+qty;
+			var win = window.open(url, '_blank');
+			win.focus();
+		}
+
+		$('.barcode-modal').modal('hide');
+	});
+
+	$('.barcode-modal').on('hidden.bs.modal', function (e) {
+	    $('.barcode_qty').val(1);
+	});
 });

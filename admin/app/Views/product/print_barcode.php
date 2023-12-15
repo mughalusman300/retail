@@ -16,6 +16,7 @@ if (SITE == 'local') {
     define('WEBROOT', $_SERVER['DOCUMENT_ROOT'] . '/admin');
 }
 
+for ($x = 1; $x <= $qty; $x++) {
 $this->fpdf->AddPage('L', [40, 53], 0);
 $margin = 1.5;
 // $this->fpdf->SetDrawColor(28, 167, 79);
@@ -30,9 +31,10 @@ $this->fpdf->Cell(0,-5,$product->product_code,0,2,'C');
 // $link = $this->Commonmodel->generateProductBarcode('7941GRN-100888');
 $link = $this->Commonmodel->generateProductBarcode($barcode);
 $this->fpdf->Image($link, 4, 12, 45);	
+}
 
 $this->fpdf->Output();
-error_reporting(E_ALL); 
+
 ob_end_flush(); // Flush the output buffer
 exit;
 ?>
