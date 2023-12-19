@@ -88,6 +88,9 @@ tr.child li {
 .image-parent-div {
     /*padding-right: 10px;*/
 }
+.barcode-div i {
+    cursor: pointer;
+}
 @media (min-width: 1200px) and (max-width: 1700px) { 
     .main-row {
         width: 100% !important;

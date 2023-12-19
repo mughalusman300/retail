@@ -155,6 +155,7 @@ class Inventory extends BaseController
     }
 
     public function create(){
+        // dd($_POST);
         $result = array('success' =>  true);
 
         $product_id = $this->request->getVar('product_id');
@@ -183,7 +184,8 @@ class Inventory extends BaseController
         $sale_unit_cost = $this->request->getVar('sale_unit_cost');
 
         $sale_unit_price = $this->request->getVar('sale_unit_price');
-        $barcode = trim($this->request->getVar('barcode'));
+        $barcode = array_filter($this->request->getVar('barcode'));
+
         $desc = trim($this->request->getVar('desc'));
 
         $insert_data = array(
@@ -193,45 +195,22 @@ class Inventory extends BaseController
             'v3' => $v3, 
             'sale_qty' => $sale_qty, 
             'sale_unit_price' => $sale_unit_price, 
-            'barcode' => $barcode, 
+            // 'barcode' => $barcode, 
             // 'created_by' => $_SESSION['user_id'],
             'created_by' => 1,
         );
 
-        
-        if ($barcode != '') {
-
-            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
-            if ($already_exits_barcode_detail) {
-                $already_exits_product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $already_exits_barcode_detail->product_id)), 'saimtech_product');
-
-                    if ($product_id != $already_exits_barcode_detail->product_id) {
-                        $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with other product '.$already_exits_product->product_name.' please try with different one');
-                    } else if($product_id == $already_exits_barcode_detail->product_id && ($v1 != $already_exits_barcode_detail->v1 || $v2 != $already_exits_barcode_detail->v2 || $v3 != $already_exits_barcode_detail->v3)) {
-                            $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
-                    } else {
-                        $updat_inv_in_data['sale_unit_price'] =  $sale_unit_price;
-                        $updat_inv_in_data['sale_qty'] =  $already_exits_barcode_detail->sale_qty + $sale_qty;
-                        $updat_inv_in_data['update_by'] =  1;
-                        $this->Commonmodel->update_record($updat_inv_in_data, array('inv_in_id' => $already_exits_barcode_detail->inv_in_id), 'saimtech_inventory_in');
-                        $inv_in_id = $already_exits_barcode_detail->inv_in_id;
-                    }
-
-            } else {
-                $inv_in_id = $this->Commonmodel->insert_record($insert_data, 'saimtech_inventory_in');
-            }
+        $inv_row = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id, 'v1' => $v1, 'v2' => $v2, 'v3')), 'saimtech_inventory_in');
+        if ($inv_row) {
+            $updat_inv_in_data['sale_unit_price'] =  $sale_unit_price;
+            $updat_inv_in_data['sale_qty'] =  $inv_row->sale_qty + $sale_qty;
+            $updat_inv_in_data['update_by'] =  1;
+            $this->Commonmodel->update_record($updat_inv_in_data, array('inv_in_id' => $inv_row->inv_in_id), 'saimtech_inventory_in');
+            $inv_in_id = $inv_row->inv_in_id;
         } else {
-            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id, 'v1' => $v1, 'v2' => $v2, 'v3')), 'saimtech_inventory_in');
-            if ($already_exits_barcode_detail) {
-                $updat_inv_in_data['sale_unit_price'] =  $sale_unit_price;
-                $updat_inv_in_data['sale_qty'] =  $already_exits_barcode_detail->sale_qty + $sale_qty;
-                $updat_inv_in_data['update_by'] =  1;
-                $this->Commonmodel->update_record($updat_inv_in_data, array('inv_in_id' => $already_exits_barcode_detail->inv_in_id), 'saimtech_inventory_in');
-                $inv_in_id = $already_exits_barcode_detail->inv_in_id;
-            } else {
-                $inv_in_id = $this->Commonmodel->insert_record($insert_data, 'saimtech_inventory_in');
-            }
+            $inv_in_id = $this->Commonmodel->insert_record($insert_data, 'saimtech_inventory_in');
         }
+
         if ($inv_in_id) {
             $data_detail = array(
                 'inv_in_id' => $inv_in_id,
@@ -253,7 +232,23 @@ class Inventory extends BaseController
                 // 'created_by' => $_SESSION['user_id'],
                 'created_by' => 1,
             );
+
             $this->Commonmodel->insert_record($data_detail, 'saimtech_inventory_in_detail');
+
+            if (count($barcode) > 0) {
+                foreach($barcode as $value) {
+                    $barcode_data = array(
+                        'product_id' => $product_id, 
+                        'v1' => $v1, 
+                        'v2' => $v2, 
+                        'v3' => $v3, 
+                        'inv_in_id' => $inv_in_id, 
+                        'barcode' => $value, 
+                    );
+
+                    $this->Commonmodel->insert_record($barcode_data, 'saimtech_inventory_in_barcode');
+                }
+            }
         }
         return $this->response->setJSON($result);
     }
@@ -274,7 +269,7 @@ class Inventory extends BaseController
         } else if ($length > 13) {
             $result = array('success' =>  false, 'msg' => 'Barcode length should not be greater than 13 digits');
         } else {
-            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
+            $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in_barcode');
             if ($already_exits_barcode_detail) {
                 $already_exits_product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $already_exits_barcode_detail->product_id)), 'saimtech_product');
 
@@ -284,18 +279,17 @@ class Inventory extends BaseController
                     if ($v1 != $already_exits_barcode_detail->v1 || $v2 != $already_exits_barcode_detail->v2 || $v3 != $already_exits_barcode_detail->v3) {
                         $result = array('success' =>  false, 'msg' => 'Barocde '.$barcode.' is linked with an alternate variation of the product '.$already_exits_product->product_name);
                     }
+                } else {
+                    $result = array('success' =>  true, 'msg' => '');
+                    $inv_row = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id, 'v1' => $v1, 'v2' => $v2, 'v3')), 'saimtech_inventory_in');
+                    if ($inv_row && $sale_unit_price != $inv_row->sale_unit_price) {
+                        $msg = 'Sale unit price already exist for this product as '. $inv_row->sale_unit_price. '. It will be updated to the latest sale unit price';
+                        // $result = array('success' =>  true, 'msg' => $msg);
+                    }
                 }
 
-                if ($sale_unit_price != $already_exits_barcode_detail->sale_unit_price) {
-                    $msg = 'Sale unit price already exist for this product as '. $already_exits_barcode_detail->sale_unit_price. '. It will be updated to the latest sale unit price';
-                    $result = array('success' =>  true, 'msg' => $msg);
-                }
             } else {
-                $already_exits_barcode_detail = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $product_id, 'v1' => $v1, 'v2' => $v2, 'v3')), 'saimtech_inventory_in');
-                if ($already_exits_barcode_detail) {
-                    $result = array('success' =>  false, 'msg' => 'This product is linked with differnt barcode '.$already_exits_barcode_detail->barcode);
-                }
-
+                $result = array('success' =>  true, 'msg' => '');
             }
 
 

@@ -54,7 +54,21 @@ $(document).ready(function(){
 		validate = true; //remove temporary added
 		if (validate) {
 			var v1 = "", v2 = "", v3 = "";
-			var barcode = $('.barcode').val();
+			var barcode = $(this).val();
+			const values = $("input[name='barcode[]']").map(function () { return $(this).val(); }).get();
+            const filter = values.filter((value) => {
+                return value == barcode;
+            });
+            if (filter.length > 1) {
+            	$(this).focus();
+            	$(this).val('');
+            	$(this).addClass("is-invalid");
+            	var msg = 'This barcode ' + barcode + ' already scanned!'
+            	Swal.fire('', msg, 'info');
+
+            	return false;
+            }
+
 			var product_id = $('.product_id').val();
 			var sale_unit_price = $('.sale_unit_price').val();
 			if ($('.v1').is(':visible')) {
@@ -77,7 +91,9 @@ $(document).ready(function(){
 					data: mydata,        
 					success: function(data) {
 					    if (data.success) {
-						    Swal.fire('', data.msg, 'info');
+					    	if (data.msg != ''){
+ 						    	Swal.fire('', data.msg, 'info');
+					    	}
 						} else {
 							Swal.fire('', data.msg, 'error');
 							$('.barcode').val('');
@@ -144,7 +160,20 @@ $(document).ready(function(){
 		} else {
 			$('.sale_qty').val(inv_qty / inv_small_unit_qty);
 		}
-
-
 	});
+
+	$(document).on('click', '.add-more-barcode', function(){
+		var html = `<div class="col-4">
+				<div class="d-flex justify-content-between align-items-end">
+					<label class="form-label">Barcode</label> 
+					<span class="delete_barcode text-danger" id=""><i class="fa fa-remove"></i></span>
+				</div>
+				<input type="text" class="form-control dashspecialvalidation barcode" name="barcode[]" placeholder="Scan barcode">
+			</div>`;
+		$('.barcode-div').append(html);
+	});
+
+	$(document).on('click', '.delete_barcode', function(){
+		$(this).closest('.col-4').remove();
+	})
 });

@@ -135,13 +135,19 @@ $this->Commonmodel = new Commonmodel();
 		</div>
 
 	</div>
-	<div class="row mb-3">
-		
+	<div class="row mb-3 barcode-div">
 		<div class="col-4">
 			<label class="form-label">Barcode<span class="text-danger"></span></label><br>
-			<input type="text" class="form-control dashspecialvalidation barcode" name="barcode" placeholder="Scan barcode">
+			<input type="text" class="form-control dashspecialvalidation barcode" name="barcode[]" placeholder="Scan barcode">
 		</div>
-		<div class="col-8">
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-12 barcode-footer text-end">
+			<button type="button" class="btn btn-default add-more-barcode mt-1" style="width: 200px;">Add More Barcode</button>
+		</div>
+
+		<div class="col-12">
 			<label class="form-label">Description <span class="text-danger"></span></label><br>
 			<textarea type="textarea" class="form-control desc descriptionvalidation"  name="desc" placeholder="Add Description"  rows="4"></textarea>
 		</div>
