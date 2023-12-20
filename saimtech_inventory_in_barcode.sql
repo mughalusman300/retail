@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 19, 2023 at 09:01 AM
+-- Generation Time: Dec 20, 2023 at 07:03 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -31,8 +31,8 @@ CREATE TABLE `saimtech_inventory_in_barcode` (
   `barcode_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `v1` varchar(60) NOT NULL DEFAULT '',
+  `v2` varchar(60) NOT NULL DEFAULT '',
   `v3` varchar(60) NOT NULL DEFAULT '',
-  `v4` varchar(60) NOT NULL DEFAULT '',
   `inv_in_id` int(11) NOT NULL,
   `barcode` varchar(200) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()

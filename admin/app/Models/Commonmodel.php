@@ -319,13 +319,16 @@ class Commonmodel extends Model {
         //
     }
    
-    public function generateProductBarcode($text, $type = 'upca') {
-        $files = glob('pdf/*'); // get all file names
-        foreach($files as $file) { // iterate files
-            if (is_file($file)) {
-                unlink($file); // delete file
+    public function generateProductBarcode($text, $type = 'upca', $unlink = true) {
+        if ($unlink) {
+            $files = glob('pdf/*'); // get all file names
+            foreach($files as $file) { // iterate files
+                if (is_file($file)) {
+                    unlink($file); // delete file
+                }
             }
         }
+        
         $barcodeOptions = ['text' => $text, 'barHeight' => 50];
 
         // No required options.

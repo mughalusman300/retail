@@ -46,11 +46,13 @@ class Inventory extends BaseController
             foreach ($products as $row) {
                 $barcode_url = URL. '/inventory/product_barcode/'. $row->barcode;
                 $detail_url = URL. '/inventory/detail/'. $row->inv_in_id;
+
+                $barcodes = $this->Commonmodel->getRows(array('returnType' => 'count', 'conditions' => array('inv_in_id' => $row->inv_in_id)), 'saimtech_inventory_in_barcode');
                 
-                if ($row->barcode != '') {
+                if ($barcodes > 0) {
                     // $action = '<a  href="'. $barcode_url .'" target="_blank" class="btn btn-outline-theme" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></a>
                     // ';
-                    $action = '<button type="button" data-barcode="'. $row->barcode .'"  class="btn btn-outline-theme print-barcode" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></button>
+                    $action = '<button type="button" data-inv_in_id="'. $row->inv_in_id .'"  data-barcode="'. $row->barcode .'"  class="btn btn-outline-theme print-barcode" style="width:160px">Print Barcode <i class="fa fa-barcode" aria-hidden="true"></i></button>
                     ';
                 } else {
                     $action = '<button  type="button" class="btn btn-outline-success generate_barcode" style="width:160px"
@@ -232,7 +234,6 @@ class Inventory extends BaseController
                 // 'created_by' => $_SESSION['user_id'],
                 'created_by' => 1,
             );
-
             $this->Commonmodel->insert_record($data_detail, 'saimtech_inventory_in_detail');
 
             if (count($barcode) > 0) {
@@ -306,9 +307,9 @@ class Inventory extends BaseController
 
         if ($qty > 0 && $qty < 101 ) {
             $length = strlen($barcode);
-            $inv_in_line = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in');
-            if ($inv_in_line) {
-                $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $inv_in_line->product_id)), 'saimtech_product');
+            $barcode_line = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('barcode' => $barcode)), 'saimtech_inventory_in_barcode');
+            if ($barcode_line) {
+                $product = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('product_id' => $barcode_line->product_id)), 'saimtech_product');
                 $data['product'] = $product;
                 if ($length == 13) {
                     $barcode = substr($barcode, 1);
@@ -334,7 +335,17 @@ class Inventory extends BaseController
         $new_barcode = $this->Commonmodel->generateProductNewBarcode();
         $data = array('barcode' => $new_barcode);
 
-        $this->Commonmodel->update_record($data, array('inv_in_id' => $inv_in_id), 'saimtech_inventory_in');
+        $row = $this->Commonmodel->getRows(array('returnType' => 'single', 'conditions' => array('inv_in_id' => $inv_in_id)), 'saimtech_inventory_in');
+
+        $barcode_data = array(
+            'product_id' => $row->product_id, 
+            'v1' => $row->v1, 
+            'v2' => $row->v2, 
+            'v3' => $row->v3, 
+            'inv_in_id' => $inv_in_id, 
+            'barcode' => $new_barcode, 
+        );
+        $this->Commonmodel->insert_record($barcode_data, 'saimtech_inventory_in_barcode');
 
         $result = array('success' =>  true);
         return $this->response->setJSON($result);
@@ -441,5 +452,17 @@ class Inventory extends BaseController
         );
 
         echo json_encode($json_data);
+    }
+
+    public function getBarcodeData(){
+    	$result = array('success' =>  false);
+    	$inv_in_id = $this->request->getVar('inv_in_id');
+
+    	$data['barcode_data'] = $barcode_data = $this->Commonmodel->getRows(array('conditions' => array('inv_in_id' => $inv_in_id)), 'saimtech_inventory_in_barcode');
+    	if ($barcode_data) {
+	    	$html = view('inventory/inv_barcode_data', $data);
+	    	$result = array('success' =>  true, 'html' => $html);
+    	}
+    	return $this->response->setJSON($result);
     }
 }

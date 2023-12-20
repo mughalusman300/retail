@@ -66,7 +66,6 @@ $(document).ready(function(){
 	$(document).on('click','.generate_barcode',function() {
 		var inv_in_id = $(this).attr('data-inv_in_id');
 		var product_id = $(this).attr('data-product_id');
-		console.log(product_id);
 
 		var table = $('#inventory').dataTable();
 		var search = $(".search").val();
@@ -88,21 +87,35 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click','.print-barcode',function() {
-		var barcode = $(this).data('barcode');
-		$('.print_barcode').val(barcode);
-		$('.barcode-modal').modal('show');
+		var inv_in_id = $(this).data('inv_in_id');
+		
+
+		$.ajax({
+			url: base + "/Inventory/getBarcodeData",
+			type: "POST",
+			data: {inv_in_id: inv_in_id},        
+			success: function(data) {
+			    if (data.success) {
+			    	$('.barcode-modal').modal('show');
+			    	$('.barcode-modal .modal-body').html(data.html);
+				} else {
+					Swal.fire('', 'Something went wrong! Please try later', 'error');
+				}
+			}
+		});	
+
 	});
 
 	$(document).on('click','.Proceed',function() {
-		var barcode = $('.print_barcode').val();
-		var qty = parseInt($('.barcode_qty').val());
+		var barcode = $(this).closest('tr').find('.print_barcode').val();
+		var qty = parseInt($(this).closest('tr').find('.barcode_qty').val());
 
 		if (qty == 0) {
-			$('.barcode_qty').addClass('is-invalid');
+			$(this).closest('tr').find('.barcode_qty').addClass('is-invalid');
 			Swal.fire('', 'Quantity should be greater than zero!', 'error');
 			return false;
 		} else if (qty > 100) {
-			$('.barcode_qty').addClass('is-invalid');
+			$(this).closest('tr').find('.barcode_qty').addClass('is-invalid');
 			Swal.fire('', 'Quantity should be less than 100!', 'error');
 			return false;
 		}
@@ -113,7 +126,6 @@ $(document).ready(function(){
 			win.focus();
 		}
 
-		$('.barcode-modal').modal('hide');
 	});
 
 	$('.barcode-modal').on('hidden.bs.modal', function (e) {

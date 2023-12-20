@@ -91,6 +91,9 @@ tr.child li {
 .barcode-div i {
     cursor: pointer;
 }
+tr td {
+    vertical-align: middle;
+}
 @media (min-width: 1200px) and (max-width: 1700px) { 
     .main-row {
         width: 100% !important;
