@@ -94,7 +94,8 @@ tr.child li {
 tr td {
     vertical-align: middle;
 }
-@media (min-width: 1200px) and (max-width: 1700px) { 
+/*@media (min-width: 1200px) and (max-width: 1700px) { */
+@media (min-width: 1200px) { 
     .main-row {
         width: 100% !important;
     }
