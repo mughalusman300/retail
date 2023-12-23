@@ -42,4 +42,4 @@
 	<!-- END #datatable -->
 </div>
 <!-- END #content -->
-<?php include(APPPATH . 'views/modals/location-modal.php') ?>
+<?php include(APPPATH . 'Views/modals/location-modal.php') ?>

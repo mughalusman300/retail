@@ -41,4 +41,4 @@
 	<!-- END #datatable -->
 </div>
 <!-- END #content -->
-<?php include(APPPATH . 'views/modals/group-modal.php') ?>
+<?php include(APPPATH . 'Views/modals/group-modal.php') ?>

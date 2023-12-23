@@ -41,4 +41,4 @@
 	<!-- END #datatable -->
 </div>
 <!-- END #content -->
-<?php include(APPPATH . 'views/modals/variant-modal.php') ?>
+<?php include(APPPATH . 'Views/modals/variant-modal.php') ?>

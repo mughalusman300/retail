@@ -40,4 +40,4 @@
 	<!-- END #datatable -->
 </div>
 <!-- END #content -->
-<?php include(APPPATH . 'views/modals/uom-modal.php') ?>
+<?php include(APPPATH . 'Views/modals/uom-modal.php') ?>

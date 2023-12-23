@@ -42,4 +42,4 @@
 </div>
 <!-- END #content -->
 <input type="hidden" name="variant_id" value="<?= $variant->variant_id ?>" id="variant_id" class="variant_id">
-<?php include(APPPATH . 'views/modals/variant-detail-modal.php') ?>
+<?php include(APPPATH . 'Views/modals/variant-detail-modal.php') ?>

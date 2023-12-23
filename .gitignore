@@ -125,7 +125,7 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 
-
+raw_assets
 admin/system
 admin/raw_assets
 admin/writable
