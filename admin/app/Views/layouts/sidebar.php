@@ -60,6 +60,12 @@
                     </a>
                 </div>
                 <div class="menu-item">
+                    <a href="<?= URL?>/store" class="menu-link">
+                        <span class="menu-icon"><i class="fa fa-map-marker"></i></span>
+                        <span class="menu-text">Stores</span>
+                    </a>
+                </div>
+                <div class="menu-item">
                     <a href="<?= URL?>/location" class="menu-link">
                         <span class="menu-icon"><i class="fa fa-map-marker"></i></span>
                         <span class="menu-text">Locations</span>
